@@ -18,3 +18,29 @@ Add the following to your `settings.json`:
 ## 3. Use the **flake8** linter
 
 Open the Command Palette (**Ctrl/⌘+Shift+P** by default) and choose **Python: Select Linter** $\rightarrow$ **flake8**.
+
+# Install mypy for style check and Linting
+
+## 1. Install mypy
+```python
+pip install mypy
+```
+
+## 2. Add Gitlens extension
+https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
+
+## 3. Add these settings in your local settings.json
+```json
+{
+  "python.linting.mypyEnabled": true,
+  "python.linting.mypyArgs": [
+    "--ignore-missing-imports",
+    "--follow-imports=silent",
+    "--show-column-numbers",
+    "--allow-untyped-defs",
+    "--allow-subclassing-any",
+    "--allow-untyped-calls",
+    "--strict"
+  ]
+}
+```
