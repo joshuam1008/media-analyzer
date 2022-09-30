@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
 from transformers import BertTokenizer
-from sklearn.model_selection import test_train_split
+from sklearn.model_selection import train_test_split
 import re
 
 class TwitterSentimentDataset(Dataset):
@@ -42,6 +42,10 @@ def data_preprocess(df, text_col, label_col, num_labels, label_encodings=None):
 
   df[label_col] = df[label_col].apply(lambda x: build_list(x))
   return df
+
+def split_data(df):
+    train, val = train_test_split(df, test_size=0.2, random_state=42, shuffle=True)
+    return train, val
 
 def prep_data(df):
     dataset = TwitterSentimentDataset(df['text'].tolist(), df['sentiment'].tolist())
