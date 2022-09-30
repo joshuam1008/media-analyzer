@@ -24,6 +24,7 @@ jobs:
     - name: Activate Virtual Environment
       run: | 
         python -m venv venv
+        source venv/bin/activate
     - name: Install Dependencies
       run: |
         pip freeze > requirements.txt
