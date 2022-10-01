@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from sklearn.metrics import accuracy_score
+import os
 
 class SentimentTrainer():
     def __init__(self, epochs=5, lr=0.00005):
@@ -30,8 +31,16 @@ class SentimentTrainer():
             return results
 
     def train(self, model, train_loader, val_loader):
+        '''
+        Trains the model on the AdamW loss function using Cross Entropy as the loss function.
+         - model: The model loaded on the cuda device
+         - train_loader: The DataLoader of the training labels
+         - val_loader: The DataLoader of the validation labels
+        '''
         optimizer = torch.optim.AdamW(model.parameters(), lr=self.lr)
         loss_fn = torch.nn.CrossEntropyLoss()
+
+        os.mkdir('./checkpoints/')
 
         for e in range(self.epochs):
             tbar = tqdm(train_loader)
@@ -70,4 +79,4 @@ class SentimentTrainer():
             self.accuracies.append(np.mean(val_acc_temp))
             self.losses.append(np.mean(val_loss_temp))
             
-            torch.save(model.state_dict(), '/content/checkpoints/' + str(e) + '_checkpoint.pt')
+            torch.save(model.state_dict(), './checkpoints/' + str(e) + '_checkpoint.pt')
