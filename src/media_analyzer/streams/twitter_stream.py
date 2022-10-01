@@ -1,54 +1,71 @@
 #twitter streaming module 
+from concurrent.futures import thread
 import tweepy
 from twitter_analyzer.models import Tweet
 from queue import Queue
 from filters.filter import Filter
+import os
 #customize the stream filter method
-class TwtterStream(tweepy.StreamingClient):
+class TwitterStream(tweepy.StreamingClient):
     
-    def __init__(self,bear_token):
+    def __init__(self):
+        self.worker = None
         self.timeline: "Queue[Tweet]" = Queue()
-        self.connection_flag = True
-        self.pause_flag = False
-        super().__init__(bearer_token=bear_token)
+        self.connection_flag = False
+        self.pause_flag = True
+        super().__init__(bearer_token=os.getenv("BEAR_TOKEN"))
     
+    """
+    Connect to stream if not connected. Disconnet the stream otherwise
+    """
+    def toggle_module(self):
+        self.connection_flag = not self.connection_flag
+        #create worker and start the stream
+        if self.connection_flag:
+            self.pause_flag = False
+            self.worker = self.sample(threaded=True)
+        #join thread and stop stream
+        else:
+            self.pause_flag = True
+            if self.worker is not None:
+                self.worker.join()
+
+    #override the on_tweet method
     def on_tweet(self,tweet):
         #put into queue if stream is not paused
         if not self.pause_flag:
             self.timeline.put(Tweet(tweet))
-            self.timeline.task_done()
         #end stream 
         if not self.connection_flag:
             self.disconnect()
     
+    #things to do when connect to stream
     def on_connect(self):
         print("connected to stream\n")
-        self.pause_flag = False
-        self.connection_flag = True
-    
+
+    #things to do when disconnect to stream
     def on_disconnect(self):
         print("disconnected")
-        self.pause_falg = True
-        self.connection_flag = False
-
-    def pause_stream(self):
-        self.pause_flag = True
     
-    def resume_stream(self):
-        self.pause_flag = False
     
-    def stop_stream(self):
-        self.connection_flag = False
+    def pause_resume(self):
+        self.pause_flag = not self.pause_flag
+    
+  
     
     """
     return all tweet.text have been stored in stream buffer
     filter: a filter function used to filter stream
     """
     def result_generator(self,filters=[]):
-        results = []
+        #pour tweets into list
+        tmp_results = []
         while not self.timeline.empty():
-            result = self.timeline.get().text
+            tmp_results.append(self.timeline.get())
             self.timeline.task_done()
+        results = []
+        for tweet in tmp_results:
+            result = tweet.text
             add_to_results = True
             for filter in filters:
                 #if filter is a Filter object
