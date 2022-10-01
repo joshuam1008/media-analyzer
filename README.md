@@ -3,13 +3,6 @@ A Twitter stream sentiment analyzer written in Python.
 
 # [Documentation](https://github.com/joshuam1008/media-analyzer/blob/main/docs/index.md)
 
-# Contribution
-
-#### [Development environment setup](https://github.com/joshuam1008/media-analyzer/blob/main/docs/VSCode_Setup.md)
-
-#### [Style guide](https://github.com/joshuam1008/media-analyzer/blob/main/docs/style_guid.md)
-
-
 # Pending Development Plan
 | Iteration 1                | Iteration 2                       | Iteration 3               | Iteration 4              | Iteration 5            | Iteration 6   |
 | -------------------------- | --------------------------------- | ------------------------- | ------------------------ | ---------------------- | ------------- |
