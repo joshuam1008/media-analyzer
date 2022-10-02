@@ -36,12 +36,22 @@ def toggle_module(request):
                 modules[module_name].pause_resume()
             else:
                 return HttpResponseServerError("Not a valid operation on the module")
-
-
     return HttpResponse('')
-    
 
-# Create your views here.
+'''
+API for module status
+{module_name:status}
+-1:paused
+0:stoped
+1:running
+'''
+def get_module_status(request):
+    status = {}
+    for name,module in modules.items():
+        status[name] = module.get_status()
+    return JsonResponse(status)
+
+# main page
 def index(request):
     tweets = modules["stream"].result_generator()
     return render(request,"twitter_analyzer/index.html",{"tweets":tweets})

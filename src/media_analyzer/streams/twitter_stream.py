@@ -14,7 +14,19 @@ class TwitterStream(tweepy.StreamingClient):
         self.connection_flag = False
         self.pause_flag = True
         super().__init__(bearer_token=os.getenv("BEAR_TOKEN"))
-    
+        
+    '''
+    Get status
+    0 meanse stoped
+    1 means running
+    -1 means paused 
+    '''
+    def get_status(self):
+        if self.connection_flag:
+            return 1 if not self.pause_flag else -1
+        else:
+            return 0
+ 
     """
     Connect to stream if not connected. Disconnet the stream otherwise
     """
