@@ -12,3 +12,4 @@ A Twitter stream sentiment analyzer written in Python.
 
 deployment 
 https://sheltered-citadel-93242.herokuapp.com/twitter/
+currently using server side rendering, thus need to refresh page to get new stream
