@@ -5,10 +5,11 @@ import numpy as np
 from tqdm import tqdm
 from sklearn.metrics import accuracy_score
 import os
+import math
 
 class SentimentTrainer():
     def __init__(self, epochs=5, lr=0.00005):
-        self.losses = []
+        self.losses = [math.inf]
         self.accuracies = []
         self.epochs = epochs
         self.lr = lr
@@ -81,4 +82,6 @@ class SentimentTrainer():
             self.accuracies.append(np.mean(val_acc_temp))
             self.losses.append(np.mean(val_loss_temp))
             
-            torch.save(model.state_dict(), './checkpoints/' + str(e) + '_checkpoint.pt')
+            if self.losses[-1] < self.losses[-2]:
+                print('Loss improved from %f to %f...Saving Model' % (np.round(self.losses[-2], 4), np.round(self.losses[-1], 4)))
+                torch.save(model.state_dict(), './checkpoints/TwitterSentimentModel.pt')

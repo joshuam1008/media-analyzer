@@ -9,7 +9,7 @@ import re
 class TwitterSentimentDataset(Dataset):
   def __init__(self,
                text,
-               polarity,
+               polarity = None,
                max_len=64,
                model_name = 'bert-base-uncased'):
     self.text = text
@@ -28,8 +28,12 @@ class TwitterSentimentDataset(Dataset):
                                         return_tensors='pt',
                                         truncation=True,
                                         return_attention_mask=True)
-    output = self.polarity[index]
-    return torch.LongTensor(input['input_ids']), torch.LongTensor(input['attention_mask']), torch.FloatTensor(output)
+    if self.polarity != None:
+      output = self.polarity[index]
+      return torch.LongTensor(input['input_ids']), torch.LongTensor(input['attention_mask']), torch.FloatTensor(output)
+    else:
+      return torch.LongTensor(input['input_ids']), torch.LongTensor(input['attention_mask'])
+
 
 def data_preprocess(df, text_col, label_col, num_labels, label_encodings=None):
   if label_encodings is not None:
