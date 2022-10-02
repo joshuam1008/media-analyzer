@@ -1,7 +1,10 @@
-console.log("loaded")
+
+$( document ).ready(function() {
+    alert("loaded")
+    const csrftoken = Cookies.get('csrftoken')
+  });
 // listen to button click and send value to api
 $("button").click(async function() {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     let value = $(this).val();
     value = value.split(" ")
     value[1] = parseInt(value[1])
@@ -14,7 +17,7 @@ $("button").click(async function() {
         headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json',
-            "X-CSRFToken": csrftoken
+            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
         }
     })
     // alert(`module is ${value[0]} value is ${value[1]}.`);
