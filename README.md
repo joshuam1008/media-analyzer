@@ -10,3 +10,5 @@ A Twitter stream sentiment analyzer written in Python.
 | Overall sentiment on stream |                                   |                           |                          |                        |               |
 |                            |                                   |                           |                          |                        |               |
 
+deployment 
+https://sheltered-citadel-93242.herokuapp.com/twitter/
