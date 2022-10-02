@@ -1,2 +1,3 @@
 Django==4.1.1
 tweepy==4.9.0
+django-heroku==0.3.1
