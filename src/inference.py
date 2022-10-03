@@ -4,21 +4,23 @@ import sys
 sys.path.insert(0, '../')
 from train.model import TwitterSentimentModel
 from train.data import TwitterSentimentDataset
+from transformers import AutoTokenizer
 import numpy as np
 import pandas as pd
 import time
+from tqdm import tqdm
 
 class SentimentPredictor():
     def __init__(self, model_dir):
-        self.model = TwitterSentimentModel()
-        self.model.cuda()
+        self.model = TwitterSentimentModel(model_name='prajjwal1/bert-mini')
+        self.model.cpu()
         self.model.load_state_dict(torch.load(model_dir))
 
     def read_data(self, data):
         '''
         Load the data into the cuda device
         '''
-        return tuple(x.cuda() for x in data)
+        return tuple(x.cpu() for x in data)
 
     def get_pred(self, data):
         '''
@@ -35,16 +37,21 @@ class SentimentPredictor():
          - data_sample: A list of tweets to build inference on
         returns: A list of enumerated values (NEGATIVE, NEUTRAL, POSITIVE)
         '''
-        data_sample *= 2
-        data_input = TwitterSentimentDataset(text=data_sample)
-        data_input = DataLoader(data_input, batch_size=16, num_workers=1, shuffle=True, pin_memory=False, drop_last=False)
+
+        tokenizer = AutoTokenizer.from_pretrained('prajjwal1/bert-mini')
         pair = {0:'NEGATIVE', 1:'NEUTRAL', 2:'POSITIVE'}
         predicts = []
-        for (X, mask) in data_input:
-            data = self.read_data((X, mask))
-            preds = self.model(data[0].squeeze(), data[1].squeeze())
-            preds = self.get_pred(preds.detach().cpu().numpy())
-            for p in preds:
-                predicts.append(pair[p])
+        for data in tqdm(data_sample):
+            input = tokenizer.encode_plus(text = data,
+                                            add_special_tokens=True,
+                                            padding='max_length',
+                                            max_length = 64,
+                                            return_tensors='pt',
+                                            truncation=True,
+                                            return_attention_mask=True)
 
-        return predicts[::2]
+  
+            preds = self.model(input['input_ids'].cpu(), input['attention_mask'].cpu()).detach().numpy().ravel()
+            p = np.argmax(preds)
+            predicts.append(pair[p])
+        return predicts

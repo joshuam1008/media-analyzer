@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
-from transformers import BertTokenizer
+from transformers import AutoTokenizer
 from sklearn.model_selection import train_test_split
 import re
 
@@ -15,7 +15,7 @@ class TwitterSentimentDataset(Dataset):
     self.text = text
     self.polarity = polarity
     self.max_len = max_len
-    self.tokenizer = BertTokenizer.from_pretrained(model_name)
+    self.tokenizer = AutoTokenizer.from_pretrained(model_name)
   
   def __len__(self):
     return len(self.text)
@@ -51,8 +51,8 @@ def split_data(df):
     train, val = train_test_split(df, test_size=0.2, random_state=42, shuffle=True)
     return train, val
 
-def prep_data(df):
-    dataset = TwitterSentimentDataset(df['text'].tolist(), df['sentiment'].tolist())
+def prep_data(df, model_name):
+    dataset = TwitterSentimentDataset(df['text'].tolist(), df['sentiment'].tolist(), model_name=model_name)
     dataset = DataLoader(dataset, batch_size=64, num_workers=2, shuffle=True, pin_memory=False, drop_last=False)
     return dataset
 

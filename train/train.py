@@ -38,7 +38,7 @@ class SentimentTrainer():
          - train_loader: The DataLoader of the training labels
          - val_loader: The DataLoader of the validation labels
         '''
-        optimizer = torch.optim.AdamW(model.parameters(), lr=self.lr)
+        optimizer = torch.optim.AdamW(model.parameters(), lr=self.lr, amsgrad=True)
         loss_fn = torch.nn.CrossEntropyLoss()
         try:
             os.mkdir('./checkpoints/')
