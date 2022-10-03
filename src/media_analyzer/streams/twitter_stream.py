@@ -5,50 +5,57 @@ from twitter_analyzer.models import Tweet
 from queue import Queue
 from filters.filter import Filter
 import os
-#customize the stream filter method
+
+# Inherit from Tweepy's StreamingClinet to override filter, on_tweet, on_connect, etc.
 class TwitterStream(tweepy.StreamingClient):
     
     def __init__(self):
         self.worker = None
         self.timeline: "Queue[Tweet]" = Queue()
-        self.connection_flag = False
-        self.pause_flag = True
+
+        # True when stream is connected, false when disconnected.
+        self.is_connected = False
+
+        # True when stream is paused.
+        self.is_paused = True
+
+        # Initialize class with authorization
         super().__init__(bearer_token=os.getenv("BEAR_TOKEN"))
         
     '''
     Get status
-    0 meanse stoped
+    0 means stopped
     1 means running
     -1 means paused 
     '''
     def get_status(self):
-        if self.connection_flag:
-            return 1 if not self.pause_flag else -1
+        if self.is_connected:
+            return 1 if not self.is_paused else -1
         else:
             return 0
- 
+
     """
-    Connect to stream if not connected. Disconnet the stream otherwise
+    Connect to stream if not connected. Disconnect the stream otherwise
     """
     def toggle_module(self):
-        self.connection_flag = not self.connection_flag
+        self.is_connected = not self.is_connected
         #create worker and start the stream
-        if self.connection_flag:
-            self.pause_flag = False
+        if self.is_connected:
+            self.is_paused = False
             self.worker = self.sample(threaded=True)
         #join thread and stop stream
         else:
-            self.pause_flag = True
+            self.is_paused = True
             if self.worker is not None:
                 self.worker.join()
 
     #override the on_tweet method
     def on_tweet(self,tweet):
         #put into queue if stream is not paused
-        if not self.pause_flag:
+        if not self.is_paused:
             self.timeline.put(Tweet(tweet))
         #end stream 
-        if not self.connection_flag:
+        if not self.is_connected:
             self.disconnect()
     
     #things to do when connect to stream
@@ -61,7 +68,7 @@ class TwitterStream(tweepy.StreamingClient):
     
     
     def pause_resume(self):
-        self.pause_flag = not self.pause_flag
+        self.is_paused = not self.is_paused
     
   
     
@@ -71,27 +78,27 @@ class TwitterStream(tweepy.StreamingClient):
     """
     def result_generator(self,filters=[]):
         #pour tweets into list
-        tmp_results = []
+        raw_tweets = []
         while not self.timeline.empty():
-            tmp_results.append(self.timeline.get())
+            raw_tweets.append(self.timeline.get())
             self.timeline.task_done()
         results = []
-        for tweet in tmp_results:
-            result = tweet.text
-            add_to_results = True
+        for tweet in raw_tweets:
+            tweet_text = tweet.text
+            passes_filter = True
             for filter in filters:
                 #if filter is a Filter object
                 if isinstance(filter,Filter):
                     #error handling incase crash
                     try:
-                        if not filter.filter(result):
-                            add_to_results = False
+                        if not filter.filter(tweet_text):
+                            passes_filter = False
                             break
                     except:
                         #print out the name of the filter
                         print(f'Error while using {type(filter).__name__}')
-            if add_to_results:
-                results.append(result)
+            if passes_filter:
+                results.append(tweet_text)
         return results
     
     

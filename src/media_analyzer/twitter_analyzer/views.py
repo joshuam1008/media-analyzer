@@ -1,4 +1,3 @@
-from nis import match
 from django.shortcuts import render
 from streams.twitter_stream import TwitterStream
 from django.http import HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse
@@ -8,8 +7,8 @@ import json
 modules = {'stream':TwitterStream()}
 #API for toggling module
 '''
-API for toggleing module
-three signal
+API for toggling module
+three signals:
 -1 pause
 0 stop
 1 start
@@ -18,6 +17,7 @@ the expected json should be
 '''
 def toggle_module(request):
     if request.method=="POST":
+        # De-Serialize Request to a Python Object
         packet = json.load(request)
         module_name = packet['name']
         print(module_name)
