@@ -18,16 +18,21 @@ api
 post "/twitter/fetch_result"
 1.fetch_result type post
 expected json in backend
+
 {"id":[id1,id2,id3],"category":['stream','sentiment','lang en']}
+
 id represent result of twitter you requested on.
 category is the type of result you requested.
 stream: if you request stream, the data in stream cache will be fetched along with other results you requested in category
 
 expected response for front end
-{stream:[id:{'sentiment':0,'lang':'en'}....],"inds": "id1":{'sentiment':0,'lang':'en'}, "id2":{'sentiment':None,'lang':None}....}
 
+{"stream":[id:{'sentiment':0,'lang':'en'}....],"inds": ["id1":{'sentiment':0,'lang':'en'}, "id2":{'sentiment':None,'lang':None}....]}
+
+I seperate stream with requested tweet so the stream can be appended to frontend easier.
 None means the backend will give it to you in the future.
 so in the next round you can call again to get the result.
+
 {"id":[id],"category":['stream','sentiment','lang en']}
 
 
