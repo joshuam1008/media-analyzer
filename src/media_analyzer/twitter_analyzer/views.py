@@ -68,6 +68,7 @@ API end point to return processed result and stream
 '''
 def send_result(request):
     if request.method=="POST":
+        # De-Serialize Request to a Python Object
         packet = json.load(request)
         #TODO: consider convert id and category to lower case and remove duplication for security
         categories = packet['category']

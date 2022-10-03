@@ -126,6 +126,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = ['https://sheltered-citadel-93242.herokuapp.com/*','https://*.127.0.0.1']
 
+
 import django_heroku
 django_heroku.settings(locals())
 
@@ -133,3 +134,5 @@ django_heroku.settings(locals())
 #TODO replace to address on production server for production
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
+
+
