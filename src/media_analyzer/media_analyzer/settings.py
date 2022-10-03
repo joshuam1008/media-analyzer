@@ -19,11 +19,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
+#TODO get from os.genenv() for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = "IH0ubSp12PN1r1D2K9mIN6HPXyfkJH7sziUxZZyySpM"
 
+#TODO set false for production
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -126,3 +128,8 @@ CSRF_TRUSTED_ORIGINS = ['https://sheltered-citadel-93242.herokuapp.com/*','https
 
 import django_heroku
 django_heroku.settings(locals())
+
+# Celery settings
+#TODO replace to address on production server for production
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
