@@ -12,14 +12,6 @@ modules_status = {'stream':True,'sentiment':False,'topic':False,'lang':False}
 data_base = {}
 #a cache stream over 2 secs period to alleviate call to database
 stream_cache = Queue()
-#map name to result generator
-category_to_task = {'sentiment'}
-
-#result buffer
-result_buffer = {}
-modules = {}
-
-
 '''
 clear stream cache
 input Queue: cache
