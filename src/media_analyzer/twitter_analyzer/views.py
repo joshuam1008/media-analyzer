@@ -8,10 +8,9 @@ modules = {'stream':TwitterStream()}
 #API for toggling module
 '''
 API for toggling module
-three signals:
+two signals:
 -1 pause
-0 stop
-1 start
+0 toggle
 the expected json should be 
 {'module1 name':signal,'module2 name' signal}
 '''
@@ -30,7 +29,7 @@ def toggle_module(request):
         if module_name not in module_name:
             return HttpResponseServerError("Module doesn't exist")
         else:
-            if state == 0 or state == 1:
+            if state == 0:
                 modules[module_name].toggle_module()
             elif state == -1:
                 modules[module_name].pause_resume()
