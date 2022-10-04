@@ -11,8 +11,9 @@ import time
 from tqdm import tqdm
 
 class SentimentPredictor():
-    def __init__(self, model_dir):
-        self.model = TwitterSentimentModel(model_name='prajjwal1/bert-mini')
+    def __init__(self, model_dir, model_name='prajjwal1/bert-mini'):
+        self.model_name = model_name
+        self.model = TwitterSentimentModel(model_name=self.model_name)
         self.model.cpu()
         self.model.load_state_dict(torch.load(model_dir))
 
@@ -38,7 +39,7 @@ class SentimentPredictor():
         returns: A list of enumerated values (NEGATIVE, NEUTRAL, POSITIVE)
         '''
 
-        tokenizer = AutoTokenizer.from_pretrained('prajjwal1/bert-mini')
+        tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         pair = {0:'NEGATIVE', 1:'NEUTRAL', 2:'POSITIVE'}
         predicts = []
         for data in tqdm(data_sample):
