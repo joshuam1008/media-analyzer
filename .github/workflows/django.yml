@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -36,6 +37,8 @@ jobs:
         # All errors treated as warnings. 
         flake8 src/media_analyzer --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run Tests with Coverage
+      env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
         cd src/media_analyzer
         coverage run --source="." manage.py test
