@@ -124,6 +124,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = ['https://sheltered-citadel-93242.herokuapp.com/*','https://*.127.0.0.1']
 
-if '/app' in os.environ['HOME']:
+if os.getenv('Home') != None and '/app' in os.getenv('HOME'):
     import django_heroku
     django_heroku.settings(locals())
