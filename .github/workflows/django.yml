@@ -42,4 +42,5 @@ jobs:
       run: |
         cd src/media_analyzer
         coverage run --source="." manage.py test
+        coverage report
 
