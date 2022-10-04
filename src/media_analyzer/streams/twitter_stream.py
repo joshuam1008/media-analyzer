@@ -85,7 +85,7 @@ class TwitterStream(tweepy.StreamingClient):
             raw_tweets.append(self.timeline.get())
             self.timeline.task_done()
         results = []
-        for tweet in tmp_results:
+        for tweet in raw_tweets:
             result = (tweet.get_id(),tweet.get_content())
             add_to_results = True
             for filter in self.subscription.values():
@@ -94,14 +94,14 @@ class TwitterStream(tweepy.StreamingClient):
                 if isinstance(filter,Filter):
                     #error handling incase crash
                     try:
-                        if not filter.filter(tweet_text):
+                        if not filter.filter(tweet.get_content()):
                             passes_filter = False
                             break
                     except:
                         #print out the name of the filter
                         print(f'Error while using {type(filter).__name__}')
             if passes_filter:
-                results.append(tweet_text)
+                results.append(tweet.get_content())
         return results
     
     
