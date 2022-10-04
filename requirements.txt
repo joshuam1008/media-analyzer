@@ -3,3 +3,5 @@ tweepy==4.9.0
 django-heroku==0.3.1
 celery==5.2.7
 APScheduler==3.9.1
+coverage==6.5.0
+flake8==5.0.4
