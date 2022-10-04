@@ -10,6 +10,8 @@ import os
 class TwitterStream(tweepy.StreamingClient):
     
     def __init__(self):
+        #subscribe filters
+        self.subscription = {}
         self.worker = None
         self.timeline: "Queue[Tweet]" = Queue()
 
@@ -73,10 +75,10 @@ class TwitterStream(tweepy.StreamingClient):
   
     
     """
-    return all tweet.text have been stored in stream buffer
+    return list of all tweet.text have been stored in stream buffer
     filter: a filter function used to filter stream
     """
-    def result_generator(self,filters=[]):
+    def result_generator(self):
         #pour tweets into list
         raw_tweets = []
         while not self.timeline.empty():
@@ -84,21 +86,22 @@ class TwitterStream(tweepy.StreamingClient):
             self.timeline.task_done()
         results = []
         for tweet in raw_tweets:
-            tweet_text = tweet.text
-            passes_filter = True
-            for filter in filters:
+            result = (tweet.get_id(),tweet.get_content())
+            add_to_results = True
+            for filter in self.subscription.values():
+
                 #if filter is a Filter object
                 if isinstance(filter,Filter):
                     #error handling incase crash
                     try:
-                        if not filter.filter(tweet_text):
+                        if not filter.filter(tweet.get_content()):
                             passes_filter = False
                             break
                     except:
                         #print out the name of the filter
                         print(f'Error while using {type(filter).__name__}')
             if passes_filter:
-                results.append(tweet_text)
+                results.append(tweet.get_content())
         return results
     
     

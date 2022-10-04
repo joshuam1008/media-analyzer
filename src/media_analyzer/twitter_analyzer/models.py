@@ -5,11 +5,12 @@ class Tweet():
     def __init__(self,tweet):
         # The tweet object itself. https://github.com/joshuam1008/media-analyzer/wiki/Twitter-Jason
         self.tweet = tweet
-
         # Text from the tweet. 
         self.text = tweet.text
-
-        # The id of the tweet as a string.
-        self.id_str = tweet.id_str
-
+        self.id = tweet.id_str
     
+    def get_content(self):
+        return self.tweet.text
+    
+    def get_id(self):
+        return self.tweet.id_str
