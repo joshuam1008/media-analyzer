@@ -2,6 +2,8 @@ var categories = ['stream', 'sentiment']
 var ids = []
 // listen to button click and send value to api
 
+stream_active = false;
+fetch_every_second = null;
 
 $(".stream-ctrl").click(async function () {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -12,22 +14,24 @@ $(".stream-ctrl").click(async function () {
     //split the buttton value by its spacing (such as "stream 1" to [stream, 1])
     button_value_as_arr = button_value.split(" ");
 
-    // if stream being toggled, toggle stream_active
-    if (button_value_integer == 0) {
-        stream_active = !stream_active;
-        // change button text to reflect stream status
-        if (stream_active) {
-            $(this).text("Stop Analysis");
-        } else {
-            $(this).text("Start Analysis");
-        }
-    }
-
     //the first element of the value property- its name
     button_value_name = button_value_as_arr[0];
 
     //the second element of the value property- the value
     button_value_integer = parseInt(button_value_as_arr[1]);
+
+    // if stream being toggled, toggle stream_active
+    if (button_value_integer == 0) {
+        stream_active = !stream_active;
+        // change button text to reflect stream status
+        if (stream_active) {
+            fetch_every_second = setInterval(fetch_result, 1000);
+            $(this).text("Stop Analysis");
+        } else {
+            clearInterval(fetch_every_second);
+            $(this).text("Start Analysis");
+        }
+    }
 
     //post a request to the server with the button details
     const response = await fetch('/twitter/toggle_modules', {
@@ -91,9 +95,3 @@ var fetch_result = async function () {
 
     // console.log(json_response);
 }
-setInterval(
-
-    function () {
-        fetch_result()
-    }, 1000
-);
