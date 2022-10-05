@@ -7,3 +7,4 @@ coverage==6.5.0
 flake8==5.0.4
 langdetect==1.0.9
 pdoc3==0.10.0
+black==22.8.0
