@@ -6,3 +6,4 @@ APScheduler==3.9.1
 coverage==6.5.0
 flake8==5.0.4
 langdetect==1.0.9
+pdoc3==0.10.0
