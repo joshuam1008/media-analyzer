@@ -26,9 +26,9 @@ class TestSentiment(TestCase):
 
         result_object = stream_cache.get()
         while (not stream_cache.empty()) and result_object['id'] != id:
+            self.assertIsNone(result_object.get('sentiment'))
             result_object = stream_cache.get()
         sentiment = result_object.get('sentiment')
-        print(result_object)
         valid_value = (sentiment == 1) or (sentiment == 0) or (sentiment == -1)
         self.assertTrue(valid_value)
 
@@ -43,5 +43,4 @@ class TestSentiment(TestCase):
 
         result_object = data_base[id]
         sentiment = result_object.get('sentiment')
-        #self.assertTrue((sentiment == 1) or (sentiment == 0) or (sentiment == -1))
-        self.assertTrue(True)
+        self.assertTrue((sentiment == 1) or (sentiment == 0) or (sentiment == -1))

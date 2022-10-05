@@ -6,7 +6,7 @@ import twitter_analyzer.tasks as tasks
 from apscheduler.schedulers.background import BackgroundScheduler
 import time
 from queue import Queue
-#module statuse
+#module status
 modules_status = {'stream':True,'sentiment':False,'topic':False,'lang':False}
 #simulate databse
 data_base = {}
@@ -35,7 +35,7 @@ def clear_cache(stream_cache,db):
                 continue
             if data['id'] not in db:
                 db[data['id']] = {}
-            db[data['id']][key]= data[key]
+            db[data['id']][key] = data[key]
 
 '''
 An event triggered scheduler
@@ -76,7 +76,7 @@ def send_result(request):
         for category in categories:
             modules_status[category] = True
         ids = packet['id']
-        fetched_result = {'stream':[],'inds':[]}
+        fetched_result = {'stream': [], 'inds': []}
         #fetch result from stream first if requested
         if 'stream' in categories:
             fetched_result['stream'] = fetch_from_stream(categories)
@@ -104,13 +104,13 @@ def fetch_from_stream(categories):
                 fetched_result[id][category]=data[category]
             #schedule to generate the result
             else:
-                #None value tell the frontend try again later
-                fetched_result[id][category]=None
-                schedule_result_by_category(category,stream_cache,None,None)
+                # None value tell the frontend try again later
+                fetched_result[id][category] = None
+                schedule_result_by_category(category, stream_cache, None, None)
         stream_cache.task_done()
         #put back to stream
         stream_cache.put(data)
-    return fetched_result             
+    return fetched_result
 
 '''
 fetch result from db,
