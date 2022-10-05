@@ -22,7 +22,7 @@ class TwitterStream(tweepy.StreamingClient):
         self.is_paused = True
 
         # Initialize class with authorization
-        super().__init__(bearer_token=os.getenv("BEAR_TOKEN"))
+        super().__init__(bearer_token="AAAAAAAAAAAAAAAAAAAAAERrhwEAAAAAU3I10j4N8MPNub2cMDLi1RElp1s%3DKxJlioyNX9PFGZVPnqpFUg7VtruqL7vP7pIrJVHtvOhKb0y77A")  # os.getenv("BEAR_TOKEN"))
         
     '''
     Get status
@@ -72,7 +72,7 @@ class TwitterStream(tweepy.StreamingClient):
     def pause_resume(self):
         self.is_paused = not self.is_paused
     
-  
+
     
     """
     return list of all tweet.text have been stored in stream buffer
@@ -95,12 +95,12 @@ class TwitterStream(tweepy.StreamingClient):
                     #error handling incase crash
                     try:
                         if not filter.filter(tweet.get_content()):
-                            passes_filter = False
+                            add_to_results = False
                             break
                     except:
                         #print out the name of the filter
                         print(f'Error while using {type(filter).__name__}')
-            if passes_filter:
+            if add_to_results:
                 results.append(tweet.get_content())
         return results
     
