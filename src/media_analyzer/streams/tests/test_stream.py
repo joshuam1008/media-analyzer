@@ -20,17 +20,21 @@ class TestStream(TestCase):
         stream.toggle_module()
 
         # Wait for Results
-        time.sleep(4)
+        time.sleep(10)
 
-        # Disconnect the Stream
-        stream.disconnect()
+        # Check if we were disconnected
+        if stream.running:
+            # Disconnect the Stream
+            stream.disconnect()
 
-        # Get Results of Stream.
-        results = stream.result_generator()
+            # Get Results of Stream.
+            results = stream.result_generator()
 
-        # Ensure we got something.
-        self.assertTrue(len(results) > 0)
+            # Ensure we got something.
+            self.assertTrue(len(results) > 0)
 
-        # Ensure we got strings.
-        first_result = results[0]
-        self.assertTrue(isinstance(first_result, str))
+            # Ensure we got strings.
+            first_result = results[0]
+            self.assertTrue(isinstance(first_result, str))
+        else:
+            print("Disconnected By Twitter")
