@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   {% comment %} django need this for security reason {% endcomment %}
-  
+
   {% csrf_token %}
 </head>
 
@@ -43,8 +43,8 @@
     <p style="font-size:large" class="font-weight-light">Get twitter stream sentiment analysis
       using real-time data.</p>
     <p> ** Insert Cool Slideshow With Pictures of our Cool Machine ** </p>
-    <button type="button" class="btn btn-primary" value="stream 0">Run Analysis</button>
-    <button type="button" class="btn btn-secondary" value="stream -1">Stop Analysis</button>
+    <button type="button" class="stream-ctrl btn btn-primary" value="stream 0">Start Analysis</button>
+    <button type="button" class="stream-ctrl btn btn-secondary" value="stream -1">Pause Analysis</button>
   </div>
 
 

@@ -1,17 +1,27 @@
-var categories = ['stream','sentiment']
+var categories = ['stream', 'sentiment']
 var ids = []
 // listen to button click and send value to api
 
 
-$("button").click(async function() {
+$(".stream-ctrl").click(async function () {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    
+
     //raw button value from its html 'value' property
     let button_value = $(this).val();
 
     //split the buttton value by its spacing (such as "stream 1" to [stream, 1])
     button_value_as_arr = button_value.split(" ");
 
+    // if stream being toggled, toggle stream_active
+    if (button_value_integer == 0) {
+        stream_active = !stream_active;
+        // change button text to reflect stream status
+        if (stream_active) {
+            $(this).text("Stop Analysis");
+        } else {
+            $(this).text("Start Analysis");
+        }
+    }
 
     //the first element of the value property- its name
     button_value_name = button_value_as_arr[0];
@@ -46,7 +56,7 @@ var add_tweet_to_ui = (tweet) => {
     list.appendChild(tweet_as_link);
 }
 
-var fetch_result = async function(){
+var fetch_result = async function () {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     const response = await fetch('/twitter/fetch_result', {
         method: 'POST',
@@ -66,7 +76,7 @@ var fetch_result = async function(){
         console.log("Tweet Id: " + tweet_id);
         console.log("Object: ");
         console.log(json_response.stream);
-        if(tweet != undefined){
+        if (tweet != undefined) {
             add_tweet_to_ui(tweet);
         }
     };
@@ -78,12 +88,12 @@ var fetch_result = async function(){
     new_tweet_ids.forEach(add_tweet);
 
 
-    
+
     // console.log(json_response);
 }
 setInterval(
 
     function () {
-       fetch_result()
+        fetch_result()
     }, 1000
 );
