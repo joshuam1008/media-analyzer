@@ -1,13 +1,11 @@
 from django.test import TestCase
 import sys
-
 # Add module to path
 sys.path.append('../twitter_analyzer')
 from twitter_analyzer.views import stream_cache, data_base
 
 # Add parent module to path
 sys.path.append('../twitter_analyzer/tasks')
-
 from twitter_analyzer.tasks import get_sentiment
 
 
@@ -18,7 +16,7 @@ class TestSentiment(TestCase):
     '''
     test sentiment storing and access
     '''
-    def test_valid_value_generation_cache(self): 
+    def test_valid_value_generation_cache(self):
         id = "1"
         text = "TEST TEXT ONE"
         # Put an item into the stream cache
