@@ -7,10 +7,10 @@ class Tweet():
         self.tweet = tweet
         # Text from the tweet. 
         self.text = tweet.text
-        self.id = tweet.id_str
+        self.id = tweet.id
     
     def get_content(self):
         return self.tweet.text
     
     def get_id(self):
-        return self.tweet.id_str
+        return self.tweet.id
