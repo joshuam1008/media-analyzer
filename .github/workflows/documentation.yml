@@ -38,8 +38,6 @@ jobs:
       - name: Configure PYTHONPATH
         run: |
           pwd;
-          ls;
-          export PYTHONPATH="${PYTHONPATH}:${PWD}/src/media_analyzer:${PWD}/src/media-analyzer/streams";
           python3 -c "import sys;
           print(sys.path);
           "
