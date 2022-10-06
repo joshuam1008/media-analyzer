@@ -1,7 +1,8 @@
 from django.test import TestCase
 import time
 from streams.twitter_stream import TwitterStream
-from ...twitter_analyzer import views
+from twitter_analyzer import views
+
 
 # Add module to path
 # sys.path.append("../twitter_analyzer")
