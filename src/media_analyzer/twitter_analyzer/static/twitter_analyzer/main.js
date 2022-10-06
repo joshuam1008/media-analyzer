@@ -117,7 +117,7 @@ var generate_overall_sentiment_result = function(position, overall_sentiment_res
 }
 
 var fetch_result = async function () {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;    
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     const response = await fetch('/twitter/fetch_result', {
         method: 'POST',
         body: JSON.stringify({

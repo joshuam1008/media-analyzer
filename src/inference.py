@@ -1,17 +1,12 @@
 import torch
-from torch.utils.data import DataLoader
 import sys
-
-sys.path.append("../..")
 import os
 from train.model import TwitterSentimentModel
-from train.data import TwitterSentimentDataset
 from transformers import AutoTokenizer
 import numpy as np
-import pandas as pd
-import time
-from tqdm import tqdm
 import re
+
+sys.path.append("../..")
 
 model_name = "prajjwal1/bert-mini"
 model_dir = os.path.join(
@@ -32,7 +27,7 @@ def make_prediction(data_sample):
         - data_sample: A tweet to make inference on
     returns: A dict of prediction (NEGATIVE, NEUTRAL, POSITIVE) and the cleaned text
     """
-    data_sample = re.sub("@\w*", "", data_sample).strip()
+    data_sample = re.sub(r"@\w*", "", data_sample).strip()
     pair = {0: "NEGATIVE", 1: "NEUTRAL", 2: "POSITIVE"}
     input = tokenizer.encode_plus(
         text=data_sample,
