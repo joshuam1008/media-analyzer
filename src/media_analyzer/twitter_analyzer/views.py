@@ -1,13 +1,14 @@
 from nis import match
 from django.shortcuts import render
-from streams.twitter_stream import TwitterStream
+from src.media_analyzer.streams.twitter_stream import TwitterStream
 from django.http import HttpRequest, HttpResponse, HttpResponseServerError, JsonResponse
 import json
+
 # stream = TwitterStream()
 # stream.toggle_module()
-modules = {'stream':TwitterStream()}
-#API for toggling module
-'''
+modules = {"stream": TwitterStream()}
+# API for toggling module
+"""
 API for toggleing module
 three signal
 -1 pause
@@ -15,13 +16,15 @@ three signal
 1 start
 the expected json should be 
 {'module1 name':signal,'module2 name' signal}
-'''
+"""
+
+
 def toggle_module(request):
-    if request.method=="POST":
+    if request.method == "POST":
         packet = json.load(request)
-        module_name = packet['name']
+        module_name = packet["name"]
         print(module_name)
-        state = packet['state']
+        state = packet["state"]
         print(state)
         try:
             state = int(state)
@@ -36,22 +39,26 @@ def toggle_module(request):
                 modules[module_name].pause_resume()
             else:
                 return HttpResponseServerError("Not a valid operation on the module")
-    return HttpResponse('')
+    return HttpResponse("")
 
-'''
+
+"""
 API for module status
 {module_name:status}
 -1:paused
 0:stoped
 1:running
-'''
+"""
+
+
 def get_module_status(request):
     status = {}
-    for name,module in modules.items():
+    for name, module in modules.items():
         status[name] = module.get_status()
     return JsonResponse(status)
+
 
 # main page
 def index(request):
     tweets = modules["stream"].result_generator()
-    return render(request,"twitter_analyzer/index.html",{"tweets":tweets})
+    return render(request, "twitter_analyzer/index.html", {"tweets": tweets})
