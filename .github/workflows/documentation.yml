@@ -37,7 +37,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Configure PYTHONPATH
         run: |
-          export PYTHONPATH="${PYTHONPATH}:/src/media_analyzer"
+          pwd;
+          export PYTHONPATH="${PYTHONPATH}:${PWD}/src/media_analyzer";
           python3 -c "import sys;
           print(sys.path);
           "
