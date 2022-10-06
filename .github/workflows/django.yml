@@ -40,8 +40,8 @@ jobs:
       env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
       run: |
-        echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src:$(pwd)/train" >> $GITHUB_ENV
-        echo $PYTHONPATH
+        echo "PYTHONPATH=$(pwd)/src:$(pwd)/train" >> $GITHUB_ENV
+        echo ${{ env.PYTHONPATH }}
         cd src/media_analyzer
         coverage run --source="." manage.py test
         coverage report
