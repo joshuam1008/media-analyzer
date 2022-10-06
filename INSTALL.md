@@ -16,6 +16,11 @@ export BEAR_TOKEN=""
 ```
 where you add the values between the quotations.
 
+Add the `src` folder and `train` folder to your `PYTHONPATH`. This can be done from the root project directory with:
+```
+export PYTHONPATH=$PYTHONPATH:$(pwd)/src:$(pwd)/train
+```
+
 Activate venv (linux/mac):
 ```bash
 source venv/bin/activate
