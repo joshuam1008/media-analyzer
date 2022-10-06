@@ -39,7 +39,9 @@ jobs:
     - name: Run Tests with Coverage
       env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          PYTHONPATH: ${{ env.PYTHONPATH}}:$(pwd)/src:$(pwd)/train
       run: |
+        echo $PYTHONPATH
         cd src/media_analyzer
         coverage run --source="." manage.py test
         coverage report
