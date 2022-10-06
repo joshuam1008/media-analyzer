@@ -70,7 +70,7 @@ var add_tweet_to_ui = (tweet) => {
 }
 
 var fetch_result = async function () {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;    
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     const response = await fetch('/twitter/fetch_result', {
         method: 'POST',
         body: JSON.stringify({
