@@ -3,7 +3,7 @@ from concurrent.futures import thread
 import tweepy
 from src.media_analyzer.twitter_analyzer.models import Tweet
 from queue import Queue
-from filters.filter import Filter
+from src.media_analyzer.filters.filter import Filter
 import os
 
 # customize the stream filter method
