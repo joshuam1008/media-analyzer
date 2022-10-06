@@ -23,7 +23,7 @@ class TestStream(TestCase):
         time.sleep(10)
 
         # Check if we were disconnected
-        if stream.running:
+        if stream.is_connected:
             # Disconnect the Stream
             stream.disconnect()
 

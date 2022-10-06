@@ -12,14 +12,24 @@ modules_status = {'stream':True,'sentiment':False,'topic':False,'lang':False}
 data_base = {}
 #a cache stream over 2 secs period to alleviate call to database
 stream_cache = Queue()
+
+# The Stream Object
+stream = TwitterStream()
+
+# Start the Stream
+stream.toggle_module()
+
 '''
 clear stream cache
 input Queue: cache
 '''
 def cache_stream(stream_cache):
-    id = time.time()
-    text = f"tweet at {time.time()}"
-    stream_cache.put({'id':id,'text':text})
+    stream_new_entries = stream.result_generator()
+    for entry in stream_new_entries:
+        entry_id = entry[0]
+        entry_text = entry[1]
+        stream_cache.put({'id': entry_id, 'text': entry_text})
+
 '''
 clear stream cache and copy to database
 stream_cache:Queue

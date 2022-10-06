@@ -66,6 +66,7 @@ class TwitterStream(tweepy.StreamingClient):
 
     #things to do when disconnect to stream
     def on_disconnect(self):
+        self.is_connected = False
         print("disconnected")
     
     
@@ -86,7 +87,6 @@ class TwitterStream(tweepy.StreamingClient):
             self.timeline.task_done()
         results = []
         for tweet in raw_tweets:
-            result = (tweet.get_id(),tweet.get_content())
             add_to_results = True
             for filter in self.subscription.values():
 
@@ -101,7 +101,7 @@ class TwitterStream(tweepy.StreamingClient):
                         #print out the name of the filter
                         print(f'Error while using {type(filter).__name__}')
             if add_to_results:
-                results.append(tweet.get_content())
+                results.append([tweet.get_id(), tweet.get_content()])
         return results
     
     
