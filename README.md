@@ -1,3 +1,4 @@
+[![testing](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml/badge.svg)](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml) 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7154682.svg)](https://doi.org/10.5281/zenodo.7154682)
 
 # Media Analyzer
