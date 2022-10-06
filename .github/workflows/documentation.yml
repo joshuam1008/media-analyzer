@@ -37,7 +37,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Configure PYTHONPATH
         run: |
-          export PYTHONPATH="${PYTHONPATH}:/src/media_analyzer:/src/media_analyzer/streams"
+          export PYTHONPATH="${PYTHONPATH}:/src/media_analyzer"
+          python3 -c "
+            import sys
+            print(sys.path)
+          "
       - name: Generate Documentation
         run: |
           pdoc --html src --force --output-dir docs
