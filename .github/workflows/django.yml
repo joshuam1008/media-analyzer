@@ -41,7 +41,6 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           PYTHONPATH: /home/runner/work/media-analyzer/media-analyzer/src:/home/runner/work/media-analyzer/media-analyzer/train
       run: |
-        echo $PYTHONPATH
         cd src/media_analyzer
         coverage run --source="." manage.py test
         coverage report

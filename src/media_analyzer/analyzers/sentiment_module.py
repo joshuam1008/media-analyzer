@@ -1,6 +1,6 @@
-# import sys
+import sys
 
-# sys.path.append("../../src")
+sys.path.append("../../src")
 from inference import make_prediction  # import random; import time
 
 
