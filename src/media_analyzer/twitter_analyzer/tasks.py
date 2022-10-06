@@ -2,9 +2,9 @@
 For celery to handle task in async way
 """
 from celery import shared_task
-from analyzers.sentiment_module import SentimentModule
-from analyzers.topic_module import TopicModule
-from analyzers.lang_detect import LangModule
+from ..analyzers.sentiment_module import SentimentModule
+from ..analyzers.topic_module import TopicModule
+from ..analyzers.lang_detect import LangModule
 
 
 @shared_task()
