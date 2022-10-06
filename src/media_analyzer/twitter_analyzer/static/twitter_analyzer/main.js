@@ -54,7 +54,16 @@ var add_tweet_to_ui = (tweet) => {
     tweet_as_link.classList.add("list-group-item");
     tweet_as_link.classList.add("list-group-item-action");
 
-    tweet_as_link.innerHTML = tweet;
+    tweet_as_link.innerHTML = tweet.text;
+
+    // make the tweet green if positive, red if negative, and gray if neutral for tweet.sentiment
+    if (tweet.sentiment == "POSITIVE") {
+        tweet_as_link.classList.add("list-group-item-success");
+    } else if (tweet.sentiment == "NEGATIVE") {
+        tweet_as_link.classList.add("list-group-item-danger");
+    } else if (tweet.sentiment == "NEUTRAL") {
+        tweet_as_link.classList.add("list-group-item-dark");
+    }
 
     const list = document.querySelector('#tweets');
     list.appendChild(tweet_as_link);
@@ -76,13 +85,13 @@ var fetch_result = async function () {
     });
 
     const add_tweet = (tweet_id) => {
-        tweet = json_response.stream[tweet_id]?.text;
-        console.log("Tweet Id: " + tweet_id);
+        tweet = json_response.stream[tweet_id];
+        console.log("Tweet Id: " + tweet_id + ", Sentiment: " + json_response.stream[tweet_id].sentiment);
         console.log("Object: ");
         console.log("ID:");
         console.log(ids);
         console.log(json_response.stream);
-        if (tweet != undefined) {
+        if (tweet && tweet.text) {
             add_tweet_to_ui(tweet);
         }
     };
