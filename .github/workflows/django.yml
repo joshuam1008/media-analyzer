@@ -39,11 +39,9 @@ jobs:
     - name: Run Tests with Coverage
       env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          PYTHONPATH: ${{ env.PYTHONPATH }}:${{env.GITHUB_WORKSPACE}}/src:${{env.GITHUB_WORKSPACE}}/train
       run: |
+        echo "PYTHONPATH=$PYTHONPATH:$(pwd)/src:$(pwd)/train" >> $GITHUB_ENV
         echo $PYTHONPATH
-        pwd
-        echo $GITHUB_PATH
         cd src/media_analyzer
         coverage run --source="." manage.py test
         coverage report
