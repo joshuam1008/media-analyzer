@@ -1,16 +1,24 @@
 var categories = ['stream', 'sentiment']
 var ids = []
+let summary = {
+    positive: 0,
+    negative: 0,
+    neutral: 0
+}
 // listen to button click and send value to api
 
 stream_active = false;
 fetch_every_second = null;
+
+// google.charts.load('current', {packages: ['corechart']});
+// google.charts.setOnLoadCallback(drawChart);
+
 
 $(".stream-ctrl").click(async function () {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     //raw button value from its html 'value' property
     let button_value = $(this).val();
-
     //split the buttton value by its spacing (such as "stream 1" to [stream, 1])
     button_value_as_arr = button_value.split(" ");
 
@@ -69,6 +77,45 @@ var add_tweet_to_ui = (tweet) => {
     list.appendChild(tweet_as_link);
 }
 
+//note: chen's code I (David) adapted.
+var generate_overall_sentiment_result = function(position, overall_sentiment_results){
+
+    //convert dictionary to format of datatable
+    var convert_dict_to_data_table = function(overal_sentiment_results){
+        let single_result = overall_sentiment_results
+        let data = [['Emo Level','Counts']]
+        for(let [category,value] of Object.entries(single_result)){
+            data.push([category,value])
+        }
+        return data
+    }
+    function plot_barchart(position,overall_sentiment_results) {
+        function drawChart(tag_name,data) {
+            let histogram_data = google.visualization.arrayToDataTable(data);
+    
+            let options = {
+                title: 'Overall Sentiment',
+                legend: {
+                    position: 'none'
+                },
+            };
+
+            let chart = new google.visualization.BarChart(tag_name);
+            chart.draw(histogram_data, options);
+        }
+        google.charts.load("current", {
+            packages: ["corechart"]
+        });
+        google.charts.setOnLoadCallback(
+            () =>{drawChart(position, convert_dict_to_data_table(overall_sentiment_results))
+            });
+    
+
+    
+    }
+    plot_barchart(position,overall_sentiment_results)
+}
+
 var fetch_result = async function () {
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;    
     const response = await fetch('/twitter/fetch_result', {
@@ -86,13 +133,10 @@ var fetch_result = async function () {
 
     const add_tweet = (tweet_id) => {
         tweet = json_response.stream[tweet_id];
-        console.log("Tweet Id: " + tweet_id + ", Sentiment: " + json_response.stream[tweet_id].sentiment);
-        console.log("Object: ");
-        console.log("ID:");
-        console.log(ids);
-        console.log(json_response.stream);
-        if (tweet && tweet.text) {
+        console.log(tweet);
+        if (tweet && tweet.text && tweet.sentiment) {
             add_tweet_to_ui(tweet);
+            summary[tweet.sentiment.toLowerCase()]++;
         }
     };
 
@@ -102,7 +146,7 @@ var fetch_result = async function () {
 
     new_tweet_ids.forEach(add_tweet);
 
-
+    generate_overall_sentiment_result(document.querySelector("#insert-chart"), summary)
 
     // console.log(json_response);
 }
