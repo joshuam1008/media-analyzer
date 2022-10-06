@@ -39,7 +39,7 @@ jobs:
         run: |
           export PYTHONPATH="${PYTHONPATH}:/src/media_analyzer"
           python3 -c "import sys;
-            print(sys.path);
+          print(sys.path);
           "
       - name: Generate Documentation
         run: |
