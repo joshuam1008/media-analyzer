@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import DataLoader
 import sys
 
-sys.path.insert(0, "../")
+sys.path.append("../..")
 import os
 from train.model import TwitterSentimentModel
 from train.data import TwitterSentimentDataset

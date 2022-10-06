@@ -22,7 +22,7 @@ class TwitterStream(tweepy.StreamingClient):
         self.is_paused = True
 
         # Initialize class with authorization
-        super().__init__(bearer_token="AAAAAAAAAAAAAAAAAAAAAERrhwEAAAAAU3I10j4N8MPNub2cMDLi1RElp1s%3DKxJlioyNX9PFGZVPnqpFUg7VtruqL7vP7pIrJVHtvOhKb0y77A")  # os.getenv("BEAR_TOKEN"))
+        super().__init__(bearer_token=os.getenv("BEAR_TOKEN"))
         
     '''
     Get status

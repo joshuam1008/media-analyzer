@@ -61,7 +61,7 @@ var add_tweet_to_ui = (tweet) => {
 }
 
 var fetch_result = async function () {
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;    
     const response = await fetch('/twitter/fetch_result', {
         method: 'POST',
         body: JSON.stringify({
@@ -79,6 +79,8 @@ var fetch_result = async function () {
         tweet = json_response.stream[tweet_id]?.text;
         console.log("Tweet Id: " + tweet_id);
         console.log("Object: ");
+        console.log("ID:");
+        console.log(ids);
         console.log(json_response.stream);
         if (tweet != undefined) {
             add_tweet_to_ui(tweet);
@@ -88,7 +90,7 @@ var fetch_result = async function () {
     let json_response = await response.json();
     // console.log(json_response.stream);
     let new_tweet_ids = Object.keys(json_response.stream);
-    console.log(new_tweet_ids);
+
     new_tweet_ids.forEach(add_tweet);
 
 

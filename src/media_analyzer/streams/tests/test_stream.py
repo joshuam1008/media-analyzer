@@ -1,9 +1,10 @@
 from django.test import TestCase
 import time, sys
-
 # Add module to path
 sys.path.append('../twitter_analyzer')
 from streams.twitter_stream import TwitterStream
+
+
 
 # IMPORTANT: Class uses bearer token to initialize new stream. This counts towards the limits
 # imposed by the twitter stream API. Don't run this test too much.

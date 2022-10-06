@@ -1,6 +1,6 @@
 import data
 import model
-import train
+import train_model
 import sys
 import argparse
 import pandas as pd
