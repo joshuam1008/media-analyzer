@@ -2,8 +2,9 @@ from django.test import TestCase
 import time, sys
 # Add module to path
 sys.path.append('../twitter_analyzer')
-from streams.twitter_stream import TwitterStream
 
+from streams.twitter_stream import TwitterStream
+from twitter_analyzer import views
 
 
 # IMPORTANT: Class uses bearer token to initialize new stream. This counts towards the limits
@@ -13,6 +14,9 @@ class TestStream(TestCase):
     Tests the Twitter Stream.
     '''
     def test_stream_responses(self):
+
+        # Disconnect Other stream running in view
+        views.stream.disconnect()
 
         # Initialize the Stream
         stream = TwitterStream()
@@ -35,7 +39,8 @@ class TestStream(TestCase):
             self.assertTrue(len(results) > 0)
 
             # Ensure we got strings.
-            first_result = results[0]
+            first_result = results[0][1]
+            print(first_result)
             self.assertTrue(isinstance(first_result, str))
         else:
             print("Disconnected By Twitter")

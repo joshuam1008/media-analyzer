@@ -22,7 +22,7 @@ class TwitterStream(tweepy.StreamingClient):
         self.is_paused = True
 
         # Initialize class with authorization
-        super().__init__(bearer_token=os.getenv("BEAR_TOKEN"))
+        super().__init__(bearer_token="AAAAAAAAAAAAAAAAAAAAAOn9awEAAAAAq3TgEs2AfsyDjyzdSXoho1hZqWs%3DiXFD8nUBNu7OPF7xBv2hBr0QTmx4KEew911vvyWA2S5kxJosAL") # os.getenv("BEAR_TOKEN"))
         
     '''
     Get status
@@ -68,7 +68,12 @@ class TwitterStream(tweepy.StreamingClient):
     def on_disconnect(self):
         self.is_connected = False
         print("disconnected")
-    
+
+    def on_exception(self):
+        self.disconnect()
+        self.is_connected = False
+        print("Disconnected by Twitter.")
+
     
     def pause_resume(self):
         self.is_paused = not self.is_paused

@@ -32,8 +32,7 @@ class TestSentiment(TestCase):
             self.assertIsNone(result_object.get("sentiment"))
             result_object = stream_cache.get()
         sentiment = result_object.get("sentiment")
-        valid_value = (sentiment == 1) or (sentiment == 0) or (sentiment == -1)
-        self.assertTrue(valid_value)
+        self.assertTrue((sentiment == "NEUTRAL") or (sentiment == "POSITIVE") or (sentiment == "NEGATIVE"))
 
     def test_valid_value_generation_db(self):
         id = "2"
@@ -46,4 +45,4 @@ class TestSentiment(TestCase):
 
         result_object = data_base[id]
         sentiment = result_object.get("sentiment")
-        self.assertTrue((sentiment == 1) or (sentiment == 0) or (sentiment == -1))
+        self.assertTrue((sentiment == "NEUTRAL") or (sentiment == "POSITIVE") or (sentiment == "NEGATIVE"))
