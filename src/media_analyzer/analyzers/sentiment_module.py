@@ -1,4 +1,4 @@
-from inference import make_prediction
+from src.inference import make_prediction
 
 # import random
 # import time
