@@ -39,7 +39,7 @@ jobs:
         run: |
           pwd;
           ls;
-          export PYTHONPATH="${PYTHONPATH}:${PWD}/src/media_analyzer:${PWD}/venv/lib/python3.10/site-packages";
+          export PYTHONPATH="${PYTHONPATH}:${PWD}/src/media_analyzer:$PWD/src";
           python3 -c "import sys;
           print(sys.path);
           "
