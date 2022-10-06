@@ -39,6 +39,7 @@ jobs:
     - name: Run Tests with Coverage
       env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          PYTHONPATH: /home/runner/work/media-analyzer/media-analyzer/src:/home/runner/work/media-analyzer/media-analyzer/train
       run: |
         cd src/media_analyzer
         coverage run --source="." manage.py test
