@@ -36,6 +36,8 @@ jobs:
           source venv/bin/activate
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Configure PYTHONPATH
+        env:
+          PYTHONPATH: /home/runner/work/media-analyzer/media-analyzer:/home/runner/work/media-analyzer/media-analyzer/src:/home/runner/work/media-analyzer/media-analyzer/train
         run: |
           pwd
           python3 -c "import sys;
