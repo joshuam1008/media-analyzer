@@ -1,13 +1,12 @@
 from django.test import TestCase
-import sys
+from ..views import stream_cache, data_base
+from ..tasks import get_sentiment
 
 # Add module to path
-sys.path.append("../twitter_analyzer")
-from twitter_analyzer.views import stream_cache, data_base
+# sys.path.append("../twitter_analyzer")
 
 # Add parent module to path
-sys.path.append("../twitter_analyzer/tasks")
-from twitter_analyzer.tasks import get_sentiment
+# sys.path.append("../twitter_analyzer/tasks")
 
 
 # Create your tests here.
@@ -32,7 +31,11 @@ class TestSentiment(TestCase):
             self.assertIsNone(result_object.get("sentiment"))
             result_object = stream_cache.get()
         sentiment = result_object.get("sentiment")
-        self.assertTrue((sentiment == "NEUTRAL") or (sentiment == "POSITIVE") or (sentiment == "NEGATIVE"))
+        self.assertTrue(
+            (sentiment == "NEUTRAL")
+            or (sentiment == "POSITIVE")
+            or (sentiment == "NEGATIVE")
+        )
 
     def test_valid_value_generation_db(self):
         id = "2"
@@ -45,4 +48,8 @@ class TestSentiment(TestCase):
 
         result_object = data_base[id]
         sentiment = result_object.get("sentiment")
-        self.assertTrue((sentiment == "NEUTRAL") or (sentiment == "POSITIVE") or (sentiment == "NEGATIVE"))
+        self.assertTrue(
+            (sentiment == "NEUTRAL")
+            or (sentiment == "POSITIVE")
+            or (sentiment == "NEGATIVE")
+        )

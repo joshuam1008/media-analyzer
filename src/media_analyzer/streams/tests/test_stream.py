@@ -1,18 +1,23 @@
 from django.test import TestCase
-import time, sys
-# Add module to path
-sys.path.append('../twitter_analyzer')
-
+import time
 from streams.twitter_stream import TwitterStream
-from twitter_analyzer import views
+from ...twitter_analyzer import views
+
+# Add module to path
+# sys.path.append("../twitter_analyzer")
 
 
-# IMPORTANT: Class uses bearer token to initialize new stream. This counts towards the limits
-# imposed by the twitter stream API. Don't run this test too much.
+"""
+IMPORTANT: Class uses bearer token to initialize new stream. This counts towards the limits
+imposed by the twitter stream API. Don't run this test too much.
+"""
+
+
 class TestStream(TestCase):
-    '''
+    """
     Tests the Twitter Stream.
-    '''
+    """
+
     def test_stream_responses(self):
 
         # Disconnect Other stream running in view

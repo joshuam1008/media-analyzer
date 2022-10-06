@@ -1,7 +1,6 @@
-import sys
+from ...inference import make_prediction  # import random; import time
 
-sys.path.append("../../src")
-from inference import make_prediction  # import random; import time
+# sys.path.append("../../src")
 
 
 class SentimentModule:
