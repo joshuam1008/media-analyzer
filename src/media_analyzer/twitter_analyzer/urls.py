@@ -17,7 +17,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-     path("toggle_modules",views.toggle_module,name="toggle_module"),
-     path("", views.index, name="twitter_anlaysis"),
-     path("get_module_status",views.get_module_status,name="get_module_status")
+    path("toggle_modules", views.toggle_module, name="toggle_module"),
+    path("", views.index, name="twitter_analysis"),
+    path("get_module_status", views.get_module_status, name="get_module_status"),
 ]
