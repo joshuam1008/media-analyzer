@@ -14,7 +14,7 @@
 * User can select a single tweet to view their individual sentiment analysis.
 * User can select multiple tweets to view the sentiment analysis of the group. 
 
-## How
+## What (Summary)
 To build this program, we are using the Twitter API to pull in a stream of tweets which are placed in a queue to be processed.  The list of tweets is processed by the deep learning model that has been fine tuned on sentiment classification.  The tweet ID is then given an associated sentiment prediction that is output to the stream.  The overall sentiment is held in a histogram to show the user the normal sentiment over the stream.
 
 ## Why
