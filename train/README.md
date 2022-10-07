@@ -19,10 +19,10 @@ IMPORTANT: The name of the model used in training must be used in src/inferece.p
 
 
 # Future Work
+Some future work to this model could include hyperparameter tuning, shrinking the mdoel for faster inference, testing other preprocessing techniquse to remove irrelevant information such as links, and potentially add more predictive models such as bot detection.
 
 # Contributing
-Any kind of enhancement or contribution is welcomed.
-
+All contributions are welcome such that the same coding guidelines are met.
 
 
 
