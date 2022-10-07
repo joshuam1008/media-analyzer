@@ -34,18 +34,11 @@ jobs:
         run: |
           python3 -m venv venv
           source venv/bin/activate
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Configure PYTHONPATH
-        run: |
-          pwd;
-          ls;
-          export PYTHONPATH="${PYTHONPATH}:${PWD}/src/media_analyzer:$PWD/src";
-          python3 -c "import sys;
-          print(sys.path);
-          "
       - name: Generate Documentation
+        env:
+          PYTHONPATH: /home/runner/work/media-analyzer/media-analyzer:/home/runner/work/media-analyzer/media-analyzer/src:/home/runner/work/media-analyzer/media-analyzer/src/media_analyzer:/home/runner/work/media-analyzer/media-analyzer/train
         run: |
-          pdoc --html src --force --output-dir docs
+          pdoc --html src/media_analyzer --force --output-dir docs
           echo ${{ github.ref }}
           git add .
           git config --local user.name "auto-generate doc"

@@ -7,3 +7,8 @@ coverage==6.5.0
 flake8==5.0.4
 langdetect==1.0.9
 pdoc3==0.10.0
+black==22.8.0
+torch==1.12.1
+transformers==4.22.2
+pandas==1.5.0
+sklearn==0.0

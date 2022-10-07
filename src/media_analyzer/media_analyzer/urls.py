@@ -17,6 +17,6 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('twitter/', include('twitter_analyzer.urls')),
-    path('admin/', admin.site.urls)
+    path("twitter/", include("twitter_analyzer.urls")),
+    path("admin/", admin.site.urls),
 ]
