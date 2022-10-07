@@ -2,7 +2,6 @@
 import tweepy
 from twitter_analyzer.models import Tweet
 from queue import Queue
-from filters.filter import Filter
 import os
 """
 Inherit from Tweepy's StreamingClinet to override filter, on_tweet, on_connect, etc.
@@ -49,7 +48,7 @@ class TwitterStream(tweepy.StreamingClient):
         # create worker and start the stream
         if self.is_connected:
             self.is_paused = False
-            # self.worker = self.sample(threaded=True)
+            self.worker = self.sample(threaded=True)
         # join thread and stop stream
         else:
             self.is_paused = True
@@ -95,19 +94,5 @@ class TwitterStream(tweepy.StreamingClient):
             self.timeline.task_done()
         results = []
         for tweet in raw_tweets:
-            add_to_results = True
-            for filter in self.subscription.values():
-
-                # if filter is a Filter object
-                if isinstance(filter, Filter):
-                    # error handling incase crash
-                    try:
-                        if not filter.filter(tweet.get_content()):
-                            add_to_results = False
-                            break
-                    except Exception:
-                        # print out the name of the filter
-                        print(f"Error while using {type(filter).__name__}")
-            if add_to_results:
-                results.append([tweet.get_id(), tweet.get_content()])
+            results.append([tweet.get_id(), tweet.get_content()])
         return results

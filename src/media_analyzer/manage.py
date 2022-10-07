@@ -2,14 +2,11 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-import twitter_analyzer.views
 
 
 def main():
     """Run administrative tasks."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "media_analyzer.settings")
-    # Sneak in the scheduler activation here
-    twitter_analyzer.views.start_scheduler()
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
