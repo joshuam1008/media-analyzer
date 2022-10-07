@@ -43,7 +43,7 @@ jobs:
         run: |
           cd src/media_analyzer
           python3 -m coverage run --source="." manage.py test
-          coverage = $(python3 -m coverage report)
+          coverage=$(python3 -m coverage report)
           echo "$coverage"
           regex="TOTAL.+[ ]([0-9]?[0-9]?[0-9])%"
           if  [[ $coverage =~ $regex ]]
