@@ -220,6 +220,7 @@ scheduler.start()
 def on_scheduler_crash(event):
     if event.exception:
         stream.disconnect()
+        scheduler.shutdown()
 
 
 scheduler.add_listener(on_scheduler_crash, EVENT_JOB_ERROR)
