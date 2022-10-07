@@ -15,7 +15,6 @@ stream_cache = Queue()
 
 # The Stream Object
 stream = TwitterStream()
-
 """
 clear stream cache
 input Queue: cache
