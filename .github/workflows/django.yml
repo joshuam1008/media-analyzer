@@ -38,6 +38,7 @@ jobs:
       - name: Run Tests with Coverage
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          BEAR_TOKEN: ${{ secrets.BEAR_TOKEN }}
           PYTHONPATH: /home/runner/work/media-analyzer/media-analyzer:/home/runner/work/media-analyzer/media-analyzer/src:/home/runner/work/media-analyzer/media-analyzer/src/media_analyzer:/home/runner/work/media-analyzer/media-analyzer/train
         id: CoverageReport
         run: |

@@ -1,4 +1,5 @@
 # twitter streaming module
+import os
 import tweepy
 from twitter_analyzer.models import Tweet
 from queue import Queue
@@ -28,8 +29,8 @@ class TwitterStream(tweepy.StreamingClient):
 
         # Initialize class with authorization
         super().__init__(
-            bearer_token="AAAAAAAAAAAAAAAAAAAAAERrhwEAAAAAU3I10j4N8MPNub2cMDLi1RElp1s%3DKxJlioyNX9PFGZVPnqpFUg7VtruqL7vP7pIrJVHtvOhKb0y77A"  # "AAAAAAAAAAAAAAAAAAAAAOn9awEAAAAAq3TgEs2AfsyDjyzdSXoho1hZqWs%3DiXFD8nUBNu7OPF7xBv2hBr0QTmx4KEew911vvyWA2S5kxJosAL"
-        )  # os.getenv("BEAR_TOKEN"))
+            bearer_token=os.getenv("BEAR_TOKEN")
+        )  # "AAAAAAAAAAAAAAAAAAAAAOn9awEAAAAAq3TgEs2AfsyDjyzdSXoho1hZqWs%3DiXFD8nUBNu7OPF7xBv2hBr0QTmx4KEew911vvyWA2S5kxJosAL"
 
     """
     Get status
