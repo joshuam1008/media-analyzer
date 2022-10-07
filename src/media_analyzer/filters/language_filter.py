@@ -12,4 +12,8 @@ class LanguageFilter(Filter):
 
     def filter(self, content):
         """Return true if content matches filter's language"""
-        return self.language == detect(content)
+        try:
+            result = self.language == detect(content)
+        except Exception:
+            result = False
+        return result
