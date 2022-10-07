@@ -209,18 +209,20 @@ def rest_module():
         modules_status[key] = False
 
 
-# init scheduler
-scheduler = BackgroundScheduler()
-# schedule job
-scheduler.add_job(schedule_job, "interval", seconds=2, kwargs={"scheduler": scheduler})
-scheduler.add_job(rest_module, "interval", minutes=5)
-scheduler.start()
+"""
+Start the scheduler
+"""
 
 
-def on_scheduler_crash(event):
-    if event.exception:
-        stream.disconnect()
-        scheduler.shutdown()
+def start_scheduler():
+    # init scheduler
+    scheduler = BackgroundScheduler()
+    # schedule job
+    scheduler.add_job(
+        schedule_job, "interval", seconds=2, kwargs={"scheduler": scheduler}
+    )
+    scheduler.add_job(rest_module, "interval", minutes=5)
+    scheduler.start()
 
 
-scheduler.add_listener(on_scheduler_crash, EVENT_JOB_ERROR)
+scheduler = None
