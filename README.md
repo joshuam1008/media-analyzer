@@ -4,6 +4,7 @@
 [![Release](https://img.shields.io/github/v/release/joshuam1008/media-analyzer?include_prereleases)](https://github.com/joshuam1008/media-analyzer/releases/tag/v0.0.1)
 [![Test Coverage](https://byob.yarr.is/joshuam1008/media-analyzer/coverage_report)](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml)
 [![Dependencies](https://img.shields.io/librariesio/github/joshuam1008/media-analyzer)](https://libraries.io/github/joshuam1008/media-analyzer)
+[![CodeQL](https://github.com/joshuam1008/media-analyzer/workflows/CodeQL/badge.svg)](https://github.com/joshuam1008/media-analyzer/actions/workflows/codeql.yml)
 
 # Media Analyzer
 A Twitter stream sentiment analyzer written in Python.
