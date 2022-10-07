@@ -4,6 +4,7 @@ from django.http import JsonResponse
 import json
 import twitter_analyzer.tasks as tasks
 from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.events import EVENT_JOB_ERROR
 from queue import Queue
 
 # module status
@@ -214,3 +215,11 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(schedule_job, "interval", seconds=2, kwargs={"scheduler": scheduler})
 scheduler.add_job(rest_module, "interval", minutes=5)
 scheduler.start()
+
+
+def on_scheduler_crash(event):
+    if event.exception:
+        stream.disconnect()
+
+
+scheduler.add_listener(on_scheduler_crash, EVENT_JOB_ERROR)
