@@ -15,6 +15,7 @@
 * User can select multiple tweets to view the sentiment analysis of the group. 
 
 ## How
+To build this program, we are using the Twitter API to pull in a stream of tweets which are placed in a queue to be processed.  The list of tweets is processed by the deep learning model that has been fine tuned on sentiment classification.  The tweet ID is then given an associated sentiment prediction that is output to the stream.  The overall sentiment is held in a histogram to show the user the normal sentiment over the stream.
 
 ## Why
 With Twitter and other social media platforms being a powerful tool for users to express their opinions on topics, we believe that marketing teams can use social media as a way to evaluate the public opinon on a product or feature.  We believe that a limitation in place is that these marketing teams can only processes a limited number of tweets / posts and the evaluation can be tedious.  With this in mind, we designed a tool that processes twitter streams to:
