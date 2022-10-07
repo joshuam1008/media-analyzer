@@ -17,5 +17,12 @@
 ## How
 
 ## Why
+With Twitter and other social media platforms being a powerful tool for users to express their opinions on topics, we believe that marketing teams can use social media as a way to evaluate the public opinon on a product or feature.  We believe that a limitation in place is that these marketing teams can only processes a limited number of tweets / posts and the evaluation can be tedious.  With this in mind, we designed a tool that processes twitter streams to:
+ - Predict the sentiment on thousands of tweets in a fraction of the time
+ - Show the sentiment of individual tweets
+ - Filter by specific sentiments
+ - Filter by a language
+
+This tool can be built upon to run sentiment on other social media platforms in a similar way and allow for limiting sentiment to sepcific accounts / topics.
 
 ## Short Video
