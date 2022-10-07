@@ -34,16 +34,9 @@ jobs:
         run: |
           python3 -m venv venv
           source venv/bin/activate
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Configure PYTHONPATH
-        env:
-          PYTHONPATH: /home/runner/work/media-analyzer/media-analyzer:/home/runner/work/media-analyzer/media-analyzer/src:/home/runner/work/media-analyzer/media-analyzer/train
-        run: |
-          pwd
-          python3 -c "import sys;
-          sys.path.append('"/home/runner/work/media-analyzer/media-analyzer/src/media-analyzer"');
-          print(sys.path)"
       - name: Generate Documentation
+        env:
+          PYTHONPATH: /home/runner/work/media-analyzer/media-analyzer:/home/runner/work/media-analyzer/media-analyzer/src:/home/runner/work/media-analyzer/media-analyzer/src/media_analyzer:/home/runner/work/media-analyzer/media-analyzer/train
         run: |
           pdoc --html src/media_analyzer --force --output-dir docs
           echo ${{ github.ref }}
