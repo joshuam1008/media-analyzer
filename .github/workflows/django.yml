@@ -38,8 +38,24 @@ jobs:
       - name: Run Tests with Coverage
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          BEAR_TOKEN: ${{ secrets.BEAR_TOKEN }}
           PYTHONPATH: /home/runner/work/media-analyzer/media-analyzer:/home/runner/work/media-analyzer/media-analyzer/src:/home/runner/work/media-analyzer/media-analyzer/src/media_analyzer:/home/runner/work/media-analyzer/media-analyzer/train
+        id: CoverageReport
         run: |
           cd src/media_analyzer
           python3 -m coverage run --source="." manage.py test
-          python3 -m coverage report
+          coverage=$(python3 -m coverage report)
+          echo "$coverage"
+          regex="TOTAL.+[ ]([0-9]?[0-9]?[0-9])%"
+          if  [[ $coverage =~ $regex ]]
+          then
+            echo "##[set-output name=total_coverage;]${BASH_REMATCH[1]}%"
+          fi
+      - name: Generate Coverage Badge
+        uses: RubbaBoy/BYOB@v1.3.0
+        with:
+          NAME: coverage_report
+          LABEL: 'Total Coverage'
+          STATUS: ${{ steps.CoverageReport.outputs.total_coverage }}
+          COLOR: 00EEFF
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

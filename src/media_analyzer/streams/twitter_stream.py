@@ -1,4 +1,5 @@
 # twitter streaming module
+import os
 import tweepy
 from twitter_analyzer.models import Tweet
 from queue import Queue
@@ -11,7 +12,8 @@ Inherit from Tweepy's StreamingClinet to override filter, on_tweet, on_connect, 
 
 class TwitterStream(tweepy.StreamingClient):
     """Subclass of Tweepy's StreamingClient. Overrides important method and used as an interface for
-    getting and processing actual tweets. """
+    getting and processing actual tweets."""
+
     def __init__(self):
         """Initialize the Stream."""
         # subscribe filters
@@ -27,8 +29,8 @@ class TwitterStream(tweepy.StreamingClient):
 
         # Initialize class with authorization
         super().__init__(
-            bearer_token="AAAAAAAAAAAAAAAAAAAAAOn9awEAAAAAq3TgEs2AfsyDjyzdSXoho1hZqWs%3DiXFD8nUBNu7OPF7xBv2hBr0QTmx4KEew911vvyWA2S5kxJosAL"
-        )  # os.getenv("BEAR_TOKEN"))
+            bearer_token=os.getenv("BEAR_TOKEN")
+        )  # "AAAAAAAAAAAAAAAAAAAAAOn9awEAAAAAq3TgEs2AfsyDjyzdSXoho1hZqWs%3DiXFD8nUBNu7OPF7xBv2hBr0QTmx4KEew911vvyWA2S5kxJosAL"
 
     """
     Get status
@@ -60,7 +62,7 @@ class TwitterStream(tweepy.StreamingClient):
                 self.worker.join()
 
     def on_tweet(self, tweet):
-        """Put a tweet into the timeline from the stream. 
+        """Put a tweet into the timeline from the stream.
         Automatically called when stream gets a tweet."""
         # put into queue if stream is not paused
         if not self.is_paused:
