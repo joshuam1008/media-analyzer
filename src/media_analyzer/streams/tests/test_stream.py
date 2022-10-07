@@ -20,6 +20,7 @@ class TestStream(TestCase):
     """
 
     def test_stream_responses(self):
+        """Tests opening a stream, getting some data, and ensuring the type. """
 
         # Disconnect Other stream running in view
         views.stream.disconnect()

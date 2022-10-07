@@ -19,6 +19,8 @@ class TestSentiment(TestCase):
     """
 
     def test_valid_value_generation_cache(self):
+        """Manually puts a value into the stream cache. Ensure the sentiment generated has
+        the correct type."""
         id = "1"
         text = "TEST TEXT ONE"
         # Put an item into the stream cache
@@ -38,6 +40,8 @@ class TestSentiment(TestCase):
         )
 
     def test_valid_value_generation_db(self):
+        """Manually put a value into the database. Ensure the sentiment generated has
+        the correct type."""
         id = "2"
         text = "TEST TEXT TWO"
 

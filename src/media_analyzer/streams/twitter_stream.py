@@ -10,7 +10,10 @@ Inherit from Tweepy's StreamingClinet to override filter, on_tweet, on_connect, 
 
 
 class TwitterStream(tweepy.StreamingClient):
+    """Subclass of Tweepy's StreamingClient. Overrides important method and used as an interface for
+    getting and processing actual tweets. """
     def __init__(self):
+        """Initialize the Stream."""
         # subscribe filters
         self.subscription = {}
         self.worker = None
@@ -35,16 +38,16 @@ class TwitterStream(tweepy.StreamingClient):
     """
 
     def get_status(self):
+        """Get the current status of the stream- whether it's running, paused, or connected."""
         if self.is_connected:
             return 1 if not self.is_paused else -1
         else:
             return 0
 
-    """
-    Connect to stream if not connected. Disconnect the stream otherwise
-    """
-
     def toggle_module(self):
+        """
+        Connect to stream if not connected. Disconnect the stream otherwise.
+        """
         self.is_connected = not self.is_connected
         # create worker and start the stream
         if self.is_connected:
@@ -56,8 +59,9 @@ class TwitterStream(tweepy.StreamingClient):
             if self.worker is not None:
                 self.worker.join()
 
-    # override the on_tweet method
     def on_tweet(self, tweet):
+        """Put a tweet into the timeline from the stream. 
+        Automatically called when stream gets a tweet."""
         # put into queue if stream is not paused
         if not self.is_paused:
             self.timeline.put(Tweet(tweet))
@@ -67,27 +71,33 @@ class TwitterStream(tweepy.StreamingClient):
 
     # things to do when connect to stream
     def on_connect(self):
+        """Run when the stream connects.
+        Log a message to let us know we're connected."""
         print("connected to stream\n")
 
     # things to do when disconnect to stream
     def on_disconnect(self):
+        """Run when the stream disconnects.
+        Log a message to let us know we're disonnected."""
+        print("connected to stream\n")
         self.is_connected = False
         print("disconnected")
 
     def on_exception(self):
+        """Run when the stream throws an exception.
+        Disconnect the stream and set appropriate flags."""
         self.disconnect()
         self.is_connected = False
         print("Disconnected by Twitter.")
 
     def pause_resume(self):
+        """Toggles whether stream is paused or not."""
         self.is_paused = not self.is_paused
 
-    """
-    return list of all tweet.text have been stored in stream buffer
-    filter: a filter function used to filter stream
-    """
-
     def result_generator(self):
+        """
+        Gets all tweets from the current timeline and returns them as serialized objects.
+        """
         # pour tweets into list
         raw_tweets = []
         while not self.timeline.empty():
