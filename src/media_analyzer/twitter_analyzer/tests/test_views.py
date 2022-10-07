@@ -9,7 +9,9 @@ mimic user behavior testing views and api
 
 
 class TestViews(TestCase):
+    """Tests the routing/URLs of the site."""
     def test_homepage(self):
+        """Tests the homepage URL."""
         client = Client()
         response = client.get("/twitter/")
         self.assertEqual(response.status_code, 200)

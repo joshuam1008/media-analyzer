@@ -26,6 +26,7 @@ input Queue: cache
 
 
 def cache_stream(stream_cache):
+    """Gets the results from the stream and puts them into the cache."""
     stream_new_entries = stream.result_generator()
     for entry in stream_new_entries:
         entry_id = entry[0]
@@ -33,14 +34,12 @@ def cache_stream(stream_cache):
         stream_cache.put({"id": entry_id, "text": entry_text})
 
 
-"""
-clear stream cache and copy to database
-stream_cache:Queue
-db:used a dictionary for database now
-"""
-
-
 def clear_cache(stream_cache, db):
+    """
+    clear stream cache and copy to database
+    stream_cache:Queue
+    db:used a dictionary for database for now.
+    """
     # save to db and clear cache
     while not stream_cache.empty():
         data = stream_cache.get()
@@ -53,16 +52,15 @@ def clear_cache(stream_cache, db):
             db[data["id"]][key] = data[key]
 
 
-"""
-An event triggered scheduler
-category: task name
-stream_cache: Queue
-ids: ind tweets need to be processed
-db: a dictionary, used to represent database for now
-"""
-
-
 def schedule_result_by_category(category, stream_cache, ids, db):
+
+    """
+    An event triggered scheduler
+    category: task name
+    stream_cache: Queue
+    ids: ind tweets need to be processed
+    db: a dictionary, used to represent database for now
+    """
     if category == "sentiment":
         scheduler.add_job(
             tasks.get_sentiment,
@@ -70,12 +68,11 @@ def schedule_result_by_category(category, stream_cache, ids, db):
         )
 
 
-"""
-scheduler for periodically schedule job
-"""
-
-
 def schedule_job(scheduler):
+    
+    """
+    scheduler for periodically scheduled jobs.
+    """
     if modules_status["sentiment"]:
         scheduler.add_job(
             tasks.get_sentiment,
@@ -98,12 +95,10 @@ def schedule_job(scheduler):
         scheduler.add_job(cache_stream, kwargs={"stream_cache": stream_cache})
 
 
-"""
-API end point to return processed result and stream
-"""
-
-
 def send_result(request):
+    """
+    API end point to return processed result and stream.
+    """
     if request.method == "POST":
         # De-Serialize Request to a Python Object
         packet = json.load(request)
@@ -122,14 +117,13 @@ def send_result(request):
         return JsonResponse(fetched_result)
 
 
-"""
-fetch result from stream by categories
-stream data alwasy has text data,
-if data not exist, schedule to generate it
-"""
-
-
 def fetch_from_stream(categories):
+    """
+    fetch result from stream by categories
+    stream data alwasy has text data,
+    if data not exist, schedule to generate it
+    """
+
     # remove stream from category
     categories.remove("stream")
     fetched_result = {}
@@ -153,13 +147,12 @@ def fetch_from_stream(categories):
     return fetched_result
 
 
-"""
-fetch result from db,
-if data not exist, schedule to generate it
-"""
-
-
 def fetch_from_db(ids, categories):
+    """
+    fetch result from db,
+    if data not exist, schedule to generate it
+    """
+
     fetched_result = {}
     for id in ids:
         # check if database has this entry
@@ -179,12 +172,11 @@ def fetch_from_db(ids, categories):
     return fetched_result
 
 
-"""
-The only page for this application
-"""
-
-
 def index(request):
+    """
+    The only page for this application
+    """
+
     results = []
     tweets = []
     for _ in range(stream_cache.qsize()):
@@ -198,12 +190,10 @@ def index(request):
     return render(request, "twitter_analyzer/index.html", {"tweets": tweets})
 
 
-"""
-rest module to save consumption
-"""
-
-
 def rest_module():
+    """
+    Periodically shuts down the model to reduce consumption.
+    """
     print("shutting down module")
     for key in modules_status.keys():
         modules_status[key] = False

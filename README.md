@@ -2,6 +2,9 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7154682.svg)](https://doi.org/10.5281/zenodo.7154682)
 [![License](https://img.shields.io/github/license/joshuam1008/media-analyzer)](https://github.com/joshuam1008/media-analyzer/blob/main/LICENSE)
 [![Release](https://img.shields.io/github/v/release/joshuam1008/media-analyzer?include_prereleases)](https://github.com/joshuam1008/media-analyzer/releases/tag/v0.0.1)
+[![Test Coverage](https://byob.yarr.is/joshuam1008/media-analyzer/coverage_report)](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml)
+[![Dependencies](https://img.shields.io/librariesio/github/joshuam1008/media-analyzer)](https://libraries.io/github/joshuam1008/media-analyzer)
+[![CodeQL](https://github.com/joshuam1008/media-analyzer/workflows/CodeQL/badge.svg)](https://github.com/joshuam1008/media-analyzer/actions/workflows/codeql.yml)
 
 # Media Analyzer
 A Twitter stream sentiment analyzer written in Python.
@@ -9,11 +12,11 @@ A Twitter stream sentiment analyzer written in Python.
 # [Documentation](https://github.com/joshuam1008/media-analyzer/blob/main/docs/index.md)
 
 # Pending Development Plan
-| Iteration 1                | Iteration 2                       | Iteration 3               | Iteration 4              | Iteration 5            | Iteration 6   |
-| -------------------------- | --------------------------------- | ------------------------- | ------------------------ | ---------------------- | ------------- |
-| Display Twitter stream     | Filter Twitter stream by language | Single sentiment Analysis | Filter stream by keyword | Filter stream by topic | Bot detection |
+| Iteration 1                 | Iteration 2                       | Iteration 3               | Iteration 4              | Iteration 5            | Iteration 6   |
+| --------------------------- | --------------------------------- | ------------------------- | ------------------------ | ---------------------- | ------------- |
+| Display Twitter stream      | Filter Twitter stream by language | Single sentiment Analysis | Filter stream by keyword | Filter stream by topic | Bot detection |
 | Overall sentiment on stream |                                   |                           |                          |                        |               |
-|                            |                                   |                           |                          |                        |               |
+|                             |                                   |                           |                          |                        |               |
 
 deployment 
 https://sheltered-citadel-93242.herokuapp.com/twitter/
