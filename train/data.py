@@ -41,7 +41,7 @@ class TwitterSentimentDataset(Dataset):
 def data_preprocess(df, text_col, label_col, num_labels, label_encodings=None):
     if label_encodings is not None:
         df[label_col] = df[label_col].apply(lambda x: label_encodings[x])
-    df[text_col] = df[text_col].apply(lambda x: re.sub("@\w*", "", str(x)).strip())
+    df[text_col] = df[text_col].apply(lambda x: re.sub(r"@\w*", "", str(x)).strip())
 
     def build_list(x):
         res = [0 for i in range(num_labels)]

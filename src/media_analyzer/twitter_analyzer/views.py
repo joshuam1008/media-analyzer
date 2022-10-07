@@ -4,7 +4,6 @@ from django.http import JsonResponse
 import json
 import twitter_analyzer.tasks as tasks
 from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.events import EVENT_JOB_ERROR
 from queue import Queue
 
 # module status
@@ -16,9 +15,6 @@ stream_cache = Queue()
 
 # The Stream Object
 stream = TwitterStream()
-
-# Start the Stream
-stream.toggle_module()
 
 """
 clear stream cache
@@ -210,11 +206,14 @@ def rest_module():
 
 
 """
-Start the scheduler
+Start the scheduler and twitter stream.
 """
 
 
 def start_scheduler():
+    # Start the Stream
+    stream.toggle_module()
+
     # init scheduler
     scheduler = BackgroundScheduler()
     # schedule job
