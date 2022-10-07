@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>media_analyzer.streams.twitter_stream API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>media_analyzer.streams.twitter_stream</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># twitter streaming module
+import tweepy
+from twitter_analyzer.models import Tweet
+from queue import Queue
+from filters.filter import Filter
+
+&#34;&#34;&#34;
+Inherit from Tweepy&#39;s StreamingClinet to override filter, on_tweet, on_connect, etc.
+&#34;&#34;&#34;
+
+
+class TwitterStream(tweepy.StreamingClient):
+    def __init__(self):
+        # subscribe filters
+        self.subscription = {}
+        self.worker = None
+        self.timeline: &#34;Queue[Tweet]&#34; = Queue()
+
+        # True when stream is connected, false when disconnected.
+        self.is_connected = False
+
+        # True when stream is paused.
+        self.is_paused = True
+
+        # Initialize class with authorization
+        super().__init__(
+            bearer_token=&#34;AAAAAAAAAAAAAAAAAAAAAOn9awEAAAAAq3TgEs2AfsyDjyzdSXoho1hZqWs%3DiXFD8nUBNu7OPF7xBv2hBr0QTmx4KEew911vvyWA2S5kxJosAL&#34;
+        )  # os.getenv(&#34;BEAR_TOKEN&#34;))
+
+    &#34;&#34;&#34;
+    Get status
+    0 means stopped
+    1 means running
+    -1 means paused
+    &#34;&#34;&#34;
+
+    def get_status(self):
+        if self.is_connected:
+            return 1 if not self.is_paused else -1
+        else:
+            return 0
+
+    &#34;&#34;&#34;
+    Connect to stream if not connected. Disconnect the stream otherwise
+    &#34;&#34;&#34;
+
+    def toggle_module(self):
+        self.is_connected = not self.is_connected
+        # create worker and start the stream
+        if self.is_connected:
+            self.is_paused = False
+            self.worker = self.sample(threaded=True)
+        # join thread and stop stream
+        else:
+            self.is_paused = True
+            if self.worker is not None:
+                self.worker.join()
+
+    # override the on_tweet method
+    def on_tweet(self, tweet):
+        # put into queue if stream is not paused
+        if not self.is_paused:
+            self.timeline.put(Tweet(tweet))
+        # end stream
+        if not self.is_connected:
+            self.disconnect()
+
+    # things to do when connect to stream
+    def on_connect(self):
+        print(&#34;connected to stream\n&#34;)
+
+    # things to do when disconnect to stream
+    def on_disconnect(self):
+        self.is_connected = False
+        print(&#34;disconnected&#34;)
+
+    def on_exception(self):
+        self.disconnect()
+        self.is_connected = False
+        print(&#34;Disconnected by Twitter.&#34;)
+
+    def pause_resume(self):
+        self.is_paused = not self.is_paused
+
+    &#34;&#34;&#34;
+    return list of all tweet.text have been stored in stream buffer
+    filter: a filter function used to filter stream
+    &#34;&#34;&#34;
+
+    def result_generator(self):
+        # pour tweets into list
+        raw_tweets = []
+        while not self.timeline.empty():
+            raw_tweets.append(self.timeline.get())
+            self.timeline.task_done()
+        results = []
+        for tweet in raw_tweets:
+            add_to_results = True
+            for filter in self.subscription.values():
+
+                # if filter is a Filter object
+                if isinstance(filter, Filter):
+                    # error handling incase crash
+                    try:
+                        if not filter.filter(tweet.get_content()):
+                            add_to_results = False
+                            break
+                    except Exception:
+                        # print out the name of the filter
+                        print(f&#34;Error while using {type(filter).__name__}&#34;)
+            if add_to_results:
+                results.append([tweet.get_id(), tweet.get_content()])
+        return results</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="media_analyzer.streams.twitter_stream.TwitterStream"><code class="flex name class">
+<span>class <span class="ident">TwitterStream</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Filter and sample realtime Tweets with Twitter API v2</p>
+<div class="admonition versionadded">
+<p class="admonition-title">Added in version:&ensp;4.6</p>
+</div>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>bearer_token</code></strong> :&ensp;<code>str</code></dt>
+<dd>Twitter API Bearer Token</dd>
+<dt><strong><code>return_type</code></strong> :&ensp;<code>type[dict | requests.Response | Response]</code></dt>
+<dd>Type to return from requests to the API</dd>
+<dt><strong><code>wait_on_rate_limit</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether to wait when rate limit is reached</dd>
+<dt><strong><code>chunk_size</code></strong> :&ensp;<code>int</code></dt>
+<dd>The default socket.read size. Default to 512, less than half the size
+of a Tweet so that it reads Tweets with the minimal latency of 2 reads
+per Tweet. Values higher than ~1kb will increase latency by waiting for
+more data to arrive but may also increase throughput by doing fewer
+socket read calls.</dd>
+<dt><strong><code>daemon</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether or not to use a daemon thread when using a thread to run the
+stream</dd>
+<dt><strong><code>max_retries</code></strong> :&ensp;<code>int</code></dt>
+<dd>Max number of times to retry connecting the stream</dd>
+<dt><strong><code>proxy</code></strong> :&ensp;<code>str | None</code></dt>
+<dd>URL of the proxy to use when connecting to the stream</dd>
+<dt><strong><code>verify</code></strong> :&ensp;<code>bool | str</code></dt>
+<dd>Either a boolean, in which case it controls whether to verify the
+server’s TLS certificate, or a string, in which case it must be a path
+to a CA bundle to use.</dd>
+</dl>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>running</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether there's currently a stream running</dd>
+<dt><strong><code>session</code></strong> :&ensp;<code>:class:</code>requests.Session``</dt>
+<dd>Requests Session used to connect to the stream</dd>
+<dt><strong><code>thread</code></strong> :&ensp;<code>:class:</code>threading.Thread<code>| None</code></dt>
+<dd>Thread used to run the stream</dd>
+<dt><strong><code>user_agent</code></strong> :&ensp;<code>str</code></dt>
+<dd>User agent used when connecting to the stream</dd>
+</dl>
+<p><strong>init</strong>(
+bearer_token, *, return_type=Response, wait_on_rate_limit=False,
+chunk_size=512, daemon=False, max_retries=inf, proxy=None,
+verify=True
+)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TwitterStream(tweepy.StreamingClient):
+    def __init__(self):
+        # subscribe filters
+        self.subscription = {}
+        self.worker = None
+        self.timeline: &#34;Queue[Tweet]&#34; = Queue()
+
+        # True when stream is connected, false when disconnected.
+        self.is_connected = False
+
+        # True when stream is paused.
+        self.is_paused = True
+
+        # Initialize class with authorization
+        super().__init__(
+            bearer_token=&#34;AAAAAAAAAAAAAAAAAAAAAOn9awEAAAAAq3TgEs2AfsyDjyzdSXoho1hZqWs%3DiXFD8nUBNu7OPF7xBv2hBr0QTmx4KEew911vvyWA2S5kxJosAL&#34;
+        )  # os.getenv(&#34;BEAR_TOKEN&#34;))
+
+    &#34;&#34;&#34;
+    Get status
+    0 means stopped
+    1 means running
+    -1 means paused
+    &#34;&#34;&#34;
+
+    def get_status(self):
+        if self.is_connected:
+            return 1 if not self.is_paused else -1
+        else:
+            return 0
+
+    &#34;&#34;&#34;
+    Connect to stream if not connected. Disconnect the stream otherwise
+    &#34;&#34;&#34;
+
+    def toggle_module(self):
+        self.is_connected = not self.is_connected
+        # create worker and start the stream
+        if self.is_connected:
+            self.is_paused = False
+            self.worker = self.sample(threaded=True)
+        # join thread and stop stream
+        else:
+            self.is_paused = True
+            if self.worker is not None:
+                self.worker.join()
+
+    # override the on_tweet method
+    def on_tweet(self, tweet):
+        # put into queue if stream is not paused
+        if not self.is_paused:
+            self.timeline.put(Tweet(tweet))
+        # end stream
+        if not self.is_connected:
+            self.disconnect()
+
+    # things to do when connect to stream
+    def on_connect(self):
+        print(&#34;connected to stream\n&#34;)
+
+    # things to do when disconnect to stream
+    def on_disconnect(self):
+        self.is_connected = False
+        print(&#34;disconnected&#34;)
+
+    def on_exception(self):
+        self.disconnect()
+        self.is_connected = False
+        print(&#34;Disconnected by Twitter.&#34;)
+
+    def pause_resume(self):
+        self.is_paused = not self.is_paused
+
+    &#34;&#34;&#34;
+    return list of all tweet.text have been stored in stream buffer
+    filter: a filter function used to filter stream
+    &#34;&#34;&#34;
+
+    def result_generator(self):
+        # pour tweets into list
+        raw_tweets = []
+        while not self.timeline.empty():
+            raw_tweets.append(self.timeline.get())
+            self.timeline.task_done()
+        results = []
+        for tweet in raw_tweets:
+            add_to_results = True
+            for filter in self.subscription.values():
+
+                # if filter is a Filter object
+                if isinstance(filter, Filter):
+                    # error handling incase crash
+                    try:
+                        if not filter.filter(tweet.get_content()):
+                            add_to_results = False
+                            break
+                    except Exception:
+                        # print out the name of the filter
+                        print(f&#34;Error while using {type(filter).__name__}&#34;)
+            if add_to_results:
+                results.append([tweet.get_id(), tweet.get_content()])
+        return results</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>tweepy.streaming.StreamingClient</li>
+<li>tweepy.client.BaseClient</li>
+<li>tweepy.streaming.BaseStream</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="media_analyzer.streams.twitter_stream.TwitterStream.get_status"><code class="name flex">
+<span>def <span class="ident">get_status</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_status(self):
+    if self.is_connected:
+        return 1 if not self.is_paused else -1
+    else:
+        return 0</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.streams.twitter_stream.TwitterStream.on_connect"><code class="name flex">
+<span>def <span class="ident">on_connect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is called after successfully connecting to the streaming API.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_connect(self):
+    print(&#34;connected to stream\n&#34;)</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.streams.twitter_stream.TwitterStream.on_disconnect"><code class="name flex">
+<span>def <span class="ident">on_disconnect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is called when the stream has disconnected.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_disconnect(self):
+    self.is_connected = False
+    print(&#34;disconnected&#34;)</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.streams.twitter_stream.TwitterStream.on_exception"><code class="name flex">
+<span>def <span class="ident">on_exception</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is called when an unhandled exception occurs.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>exception</code></strong> :&ensp;<code>Exception</code></dt>
+<dd>The unhandled exception</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_exception(self):
+    self.disconnect()
+    self.is_connected = False
+    print(&#34;Disconnected by Twitter.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.streams.twitter_stream.TwitterStream.on_tweet"><code class="name flex">
+<span>def <span class="ident">on_tweet</span></span>(<span>self, tweet)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is called when a Tweet is received.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>status</code></strong> :&ensp;<code>Tweet</code></dt>
+<dd>The Tweet received</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_tweet(self, tweet):
+    # put into queue if stream is not paused
+    if not self.is_paused:
+        self.timeline.put(Tweet(tweet))
+    # end stream
+    if not self.is_connected:
+        self.disconnect()</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.streams.twitter_stream.TwitterStream.pause_resume"><code class="name flex">
+<span>def <span class="ident">pause_resume</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pause_resume(self):
+    self.is_paused = not self.is_paused</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.streams.twitter_stream.TwitterStream.result_generator"><code class="name flex">
+<span>def <span class="ident">result_generator</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def result_generator(self):
+    # pour tweets into list
+    raw_tweets = []
+    while not self.timeline.empty():
+        raw_tweets.append(self.timeline.get())
+        self.timeline.task_done()
+    results = []
+    for tweet in raw_tweets:
+        add_to_results = True
+        for filter in self.subscription.values():
+
+            # if filter is a Filter object
+            if isinstance(filter, Filter):
+                # error handling incase crash
+                try:
+                    if not filter.filter(tweet.get_content()):
+                        add_to_results = False
+                        break
+                except Exception:
+                    # print out the name of the filter
+                    print(f&#34;Error while using {type(filter).__name__}&#34;)
+        if add_to_results:
+            results.append([tweet.get_id(), tweet.get_content()])
+    return results</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.streams.twitter_stream.TwitterStream.toggle_module"><code class="name flex">
+<span>def <span class="ident">toggle_module</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def toggle_module(self):
+    self.is_connected = not self.is_connected
+    # create worker and start the stream
+    if self.is_connected:
+        self.is_paused = False
+        self.worker = self.sample(threaded=True)
+    # join thread and stop stream
+    else:
+        self.is_paused = True
+        if self.worker is not None:
+            self.worker.join()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="media_analyzer.streams" href="index.html">media_analyzer.streams</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="media_analyzer.streams.twitter_stream.TwitterStream" href="#media_analyzer.streams.twitter_stream.TwitterStream">TwitterStream</a></code></h4>
+<ul class="two-column">
+<li><code><a title="media_analyzer.streams.twitter_stream.TwitterStream.get_status" href="#media_analyzer.streams.twitter_stream.TwitterStream.get_status">get_status</a></code></li>
+<li><code><a title="media_analyzer.streams.twitter_stream.TwitterStream.on_connect" href="#media_analyzer.streams.twitter_stream.TwitterStream.on_connect">on_connect</a></code></li>
+<li><code><a title="media_analyzer.streams.twitter_stream.TwitterStream.on_disconnect" href="#media_analyzer.streams.twitter_stream.TwitterStream.on_disconnect">on_disconnect</a></code></li>
+<li><code><a title="media_analyzer.streams.twitter_stream.TwitterStream.on_exception" href="#media_analyzer.streams.twitter_stream.TwitterStream.on_exception">on_exception</a></code></li>
+<li><code><a title="media_analyzer.streams.twitter_stream.TwitterStream.on_tweet" href="#media_analyzer.streams.twitter_stream.TwitterStream.on_tweet">on_tweet</a></code></li>
+<li><code><a title="media_analyzer.streams.twitter_stream.TwitterStream.pause_resume" href="#media_analyzer.streams.twitter_stream.TwitterStream.pause_resume">pause_resume</a></code></li>
+<li><code><a title="media_analyzer.streams.twitter_stream.TwitterStream.result_generator" href="#media_analyzer.streams.twitter_stream.TwitterStream.result_generator">result_generator</a></code></li>
+<li><code><a title="media_analyzer.streams.twitter_stream.TwitterStream.toggle_module" href="#media_analyzer.streams.twitter_stream.TwitterStream.toggle_module">toggle_module</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

@@ -1,17 +1,15 @@
 import torch
-import sys
 import os
-from train.model import TwitterSentimentModel
+from analyzers.sentiment_model.model import TwitterSentimentModel
 from transformers import AutoTokenizer
 import numpy as np
 import re
 
-sys.path.append("../..")
-
 model_name = "prajjwal1/bert-mini"
 model_dir = os.path.join(
-    os.path.dirname(__file__), "../train/checkpoints/TwitterSentimentModel.pt"
+    os.path.dirname(__file__), "sentiment_model/checkpoints/TwitterSentimentModel.pt"
 )
+print(model_dir)
 Sentiment = TwitterSentimentModel(model_name=model_name)
 Sentiment.cpu()
 # only use cpu if cuda is not available

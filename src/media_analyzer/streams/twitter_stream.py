@@ -3,8 +3,7 @@ import os
 import tweepy
 from twitter_analyzer.models import Tweet
 from queue import Queue
-from filters.filter import Filter
-
+import os
 """
 Inherit from Tweepy's StreamingClinet to override filter, on_tweet, on_connect, etc.
 """
@@ -30,7 +29,7 @@ class TwitterStream(tweepy.StreamingClient):
         # Initialize class with authorization
         super().__init__(
             bearer_token=os.getenv("BEAR_TOKEN")
-        )  # "AAAAAAAAAAAAAAAAAAAAAOn9awEAAAAAq3TgEs2AfsyDjyzdSXoho1hZqWs%3DiXFD8nUBNu7OPF7xBv2hBr0QTmx4KEew911vvyWA2S5kxJosAL"
+        ) 
 
     """
     Get status
@@ -107,19 +106,5 @@ class TwitterStream(tweepy.StreamingClient):
             self.timeline.task_done()
         results = []
         for tweet in raw_tweets:
-            add_to_results = True
-            for filter in self.subscription.values():
-
-                # if filter is a Filter object
-                if isinstance(filter, Filter):
-                    # error handling incase crash
-                    try:
-                        if not filter.filter(tweet.get_content()):
-                            add_to_results = False
-                            break
-                    except Exception:
-                        # print out the name of the filter
-                        print(f"Error while using {type(filter).__name__}")
-            if add_to_results:
-                results.append([tweet.get_id(), tweet.get_content()])
+            results.append([tweet.get_id(), tweet.get_content()])
         return results

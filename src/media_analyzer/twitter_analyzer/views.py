@@ -7,7 +7,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from queue import Queue
 
 # module status
-modules_status = {"stream": True, "sentiment": False, "topic": False, "lang": False}
+modules_status = {"stream": True, "sentiment": False,
+                  "topic": False, "lang": False}
 # simulate databse
 data_base = {}
 # a cache stream over 2 secs period to alleviate call to database
@@ -15,6 +16,8 @@ stream_cache = Queue()
 
 # The Stream Object
 stream = TwitterStream()
+# Start stream
+stream.toggle_module()
 
 """
 clear stream cache
@@ -164,7 +167,8 @@ def fetch_from_db(ids, categories):
             # schedule to generate the result
             else:
                 fetched_result[id][category] = None
-                schedule_result_by_category(category, stream_cache, id, data_base)
+                schedule_result_by_category(
+                    category, stream_cache, id, data_base)
     return fetched_result
 
 
@@ -195,22 +199,10 @@ def rest_module():
         modules_status[key] = False
 
 
-def start_scheduler():
-    """
-    Start the scheduler and twitter stream. Importantly called in manage.py.
-    """
-
-    # Start the Stream
-    stream.toggle_module()
-
-    # init scheduler
-    scheduler = BackgroundScheduler()
-    # schedule job
-    scheduler.add_job(
-        schedule_job, "interval", seconds=2, kwargs={"scheduler": scheduler}
-    )
-    scheduler.add_job(rest_module, "interval", minutes=5)
-    scheduler.start()
-
-
-scheduler = None
+# init scheduler
+scheduler = BackgroundScheduler()
+# schedule job
+scheduler.add_job(schedule_job, 'interval', seconds=2,
+                  kwargs={'scheduler': scheduler})
+scheduler.add_job(rest_module, 'interval', minutes=5)
+scheduler.start()
