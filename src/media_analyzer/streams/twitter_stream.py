@@ -29,7 +29,7 @@ class TwitterStream(tweepy.StreamingClient):
         # Initialize class with authorization
         super().__init__(
             bearer_token=os.getenv("BEAR_TOKEN")
-        ) 
+        )
 
     """
     Get status
@@ -108,3 +108,6 @@ class TwitterStream(tweepy.StreamingClient):
         for tweet in raw_tweets:
             results.append([tweet.get_id(), tweet.get_content()])
         return results
+
+
+stream = TwitterStream()

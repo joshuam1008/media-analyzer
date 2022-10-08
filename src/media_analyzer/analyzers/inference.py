@@ -4,7 +4,8 @@ from analyzers.sentiment_model.model import TwitterSentimentModel
 from transformers import AutoTokenizer
 import numpy as np
 import re
-
+from transformers import logging
+logging.set_verbosity_error()
 model_name = "prajjwal1/bert-mini"
 model_dir = os.path.join(
     os.path.dirname(__file__), "sentiment_model/checkpoints/TwitterSentimentModel.pt"

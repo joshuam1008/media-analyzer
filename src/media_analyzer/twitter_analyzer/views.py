@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from streams.twitter_stream import TwitterStream
+from streams.twitter_stream import stream
 from django.http import JsonResponse
 import json
 import twitter_analyzer.tasks as tasks
-from apscheduler.schedulers.background import BackgroundScheduler
 from queue import Queue
-
+from twitter_analyzer.scheduler import background_scheduler
+scheduler = background_scheduler.background_scheduler
 # module status
 modules_status = {"stream": True, "sentiment": False,
                   "topic": False, "lang": False}
@@ -14,8 +14,6 @@ data_base = {}
 # a cache stream over 2 secs period to alleviate call to database
 stream_cache = Queue()
 
-# The Stream Object
-stream = TwitterStream()
 # Start stream
 stream.toggle_module()
 
@@ -53,7 +51,6 @@ def clear_cache(stream_cache, db):
 
 
 def schedule_result_by_category(category, stream_cache, ids, db):
-
     """
     An event triggered scheduler
     category: task name
@@ -69,7 +66,7 @@ def schedule_result_by_category(category, stream_cache, ids, db):
 
 
 def schedule_job(scheduler):
-    
+    print("schedule job")
     """
     scheduler for periodically scheduled jobs.
     """
@@ -199,10 +196,11 @@ def rest_module():
         modules_status[key] = False
 
 
-# init scheduler
-scheduler = BackgroundScheduler()
-# schedule job
-scheduler.add_job(schedule_job, 'interval', seconds=2,
-                  kwargs={'scheduler': scheduler})
-scheduler.add_job(rest_module, 'interval', minutes=5)
-scheduler.start()
+if scheduler is not None:
+    # schedule job
+    scheduler.add_job(schedule_job, 'interval', seconds=2,
+                      kwargs={'scheduler': scheduler})
+    scheduler.add_job(rest_module, 'interval', minutes=5)
+    scheduler.start()
+else:
+    print("scheduler not initalized")
