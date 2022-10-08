@@ -1,6 +1,6 @@
 from django.test import TestCase
-from ..views import stream_cache, data_base
-from ..tasks import get_sentiment
+from twitter_analyzer.views import stream_cache, data_base
+from twitter_analyzer.tasks import get_sentiment
 
 # Add module to path
 # sys.path.append("../twitter_analyzer")

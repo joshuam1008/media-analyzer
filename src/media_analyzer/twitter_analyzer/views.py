@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from streams.twitter_stream import TwitterStream
+from streams.twitter_stream import stream
 from django.http import JsonResponse
 import json
 import twitter_analyzer.tasks as tasks
-from apscheduler.schedulers.background import BackgroundScheduler
 from queue import Queue
-
+from twitter_analyzer.scheduler import background_scheduler
+scheduler = background_scheduler.background_scheduler
 # module status
 modules_status = {"stream": True, "sentiment": False,
                   "topic": False, "lang": False}
@@ -14,10 +14,6 @@ data_base = {}
 # a cache stream over 2 secs period to alleviate call to database
 stream_cache = Queue()
 
-# The Stream Object
-stream = TwitterStream()
-# Start stream
-stream.toggle_module()
 
 """
 clear stream cache
@@ -53,7 +49,6 @@ def clear_cache(stream_cache, db):
 
 
 def schedule_result_by_category(category, stream_cache, ids, db):
-
     """
     An event triggered scheduler
     category: task name
@@ -69,30 +64,35 @@ def schedule_result_by_category(category, stream_cache, ids, db):
 
 
 def schedule_job(scheduler):
-    
     """
     scheduler for periodically scheduled jobs.
     """
+    # print("running routine")
+    clear_cache(stream_cache, data_base)
+    cache_stream(stream_cache)
+
     if modules_status["sentiment"]:
+        # cancel before reschedule to have a better performance
+        if scheduler.get_job('stream_sentiment'):
+            scheduler.remove_job('stream_sentiment')
         scheduler.add_job(
             tasks.get_sentiment,
-            kwargs={"stream_cache": stream_cache, "id": None, "db": None},
+            kwargs={"stream_cache": stream_cache, "id": None, "db": None}, id="stream_sentiment"
         )
     if modules_status["topic"]:
+        if scheduler.get_job('stream_topic'):
+            scheduler.remove_job('stream_topic')
         scheduler.add_job(
             tasks.get_topic,
-            kwargs={"stream_cache": stream_cache, "ids": None, "db": None},
+            kwargs={"stream_cache": stream_cache, "ids": None, "db": None}, id="stream_topic"
         )
     if modules_status["lang"]:
+        if scheduler.get_job('stream_lang'):
+            scheduler.remove_job('stream_lang')
         scheduler.add_job(
             tasks.get_lang,
-            kwargs={"stream_cache": stream_cache, "ids": None, "db": None},
+            kwargs={"stream_cache": stream_cache, "ids": None, "db": None}, id="stream_lang"
         )
-    if modules_status["stream"]:
-        scheduler.add_job(
-            clear_cache, kwargs={"stream_cache": stream_cache, "db": data_base}
-        )
-        scheduler.add_job(cache_stream, kwargs={"stream_cache": stream_cache})
 
 
 def send_result(request):
@@ -158,7 +158,6 @@ def fetch_from_db(ids, categories):
         # check if database has this entry
         if id not in data_base:
             continue
-        print("reached")
         for category in categories:
             fetched_result[id] = {}
             # fetch if exist
@@ -199,10 +198,11 @@ def rest_module():
         modules_status[key] = False
 
 
-# init scheduler
-scheduler = BackgroundScheduler()
-# schedule job
-scheduler.add_job(schedule_job, 'interval', seconds=2,
-                  kwargs={'scheduler': scheduler})
-scheduler.add_job(rest_module, 'interval', minutes=5)
-scheduler.start()
+if scheduler is not None:
+    # schedule job
+    scheduler.add_job(schedule_job, 'interval', seconds=2,
+                      kwargs={'scheduler': scheduler})
+    # scheduler.add_job(rest_module, 'interval', minutes=5)
+    scheduler.start()
+else:
+    print("scheduler not initalized")

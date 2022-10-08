@@ -1,5 +1,5 @@
 from django.test import TestCase
-from src.media_analyzer.analyzers import lang_detect, sentiment_module, topic_module
+from analyzers import lang_detect, sentiment_module, topic_module
 
 
 class TestAnalyzers(TestCase):
