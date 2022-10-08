@@ -1,6 +1,6 @@
-import data
-import model
-from train_model import SentimentTrainer
+from analyzers.sentiment_model import data
+from analyzers.sentiment_model import model
+from analyzers.sentiment_model.train_model import SentimentTrainer
 import argparse
 import pandas as pd
 
