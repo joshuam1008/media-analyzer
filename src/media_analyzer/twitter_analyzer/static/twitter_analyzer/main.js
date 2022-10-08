@@ -1,6 +1,10 @@
 var summary = {}
 var recieve_language = new Set()
 var selected_words = []
+var selected_langs = []
+//Language name from ISO 639-1 code
+var languageNames = new Intl.DisplayNames(['en'], {type: 'language'});
+var lang_tag_list = []
 //modified upon button click
 var categories = {
     'stream': false,
@@ -53,7 +57,12 @@ var save_tweets = function (json_response) {
                 all_tweets[id] = {}
             }
             for (category of Object.keys(data[id]))
-                all_tweets[id][category] = data[id][category]
+                if (category == 'lang'){
+                    all_tweets[id][category] = languageNames.of(data[id][category])
+                }
+                else{
+                    all_tweets[id][category] = data[id][category]
+                }
             //if result is none put twitter id into ids
             if (data[id][category] == null) {
                 //do nothing for now
@@ -172,31 +181,42 @@ var fetch_result = async function () {
     total_tweet += new_tweet_ids.length
     new_tweet_ids.forEach(add_tweet);
 }
+//add keyword or language label
+var add_keyword_lang = function () {
 
-var add_key_word = function () {
     let keyword = $("#input_keyword").val()
     $("#input_keyword").val("")
     if (keyword != "") {
         selected_words.push(keyword)
-        $("#keywords").append(`<button type="button" class="btn btn-info btn-sm keyword" onclick="delete_key_word(this)">${keyword}</button>`)
+        $("#keywords").append(`<button type="button" class="btn btn-info btn-sm keyword" onclick="delete_keyword_lang(this)">${keyword}</button>`)
     }
+    let lang = $("#input_lang").val()
+    $("#input_lang").val("")
+    if (lang != "") {
+        selected_langs.push(lang)
+        $("#langs").append(`<button type="button" class="btn btn-info btn-sm lang" onclick="delete_keyword_lang(this)">${lang}</button>`)
+    }
+}
+//remove keyword or language label
+var delete_keyword_lang = function (node) {
+    const type = node.classList.contains('lang') ? 'lang' : 'keyword'
+    const parent = node.parentNode
+    parent.removeChild(node)
+    const selected_list = type == 'lang' ? selected_langs : selected_words
+    const index = selected_list.indexOf(node.textContent);
+    if (index !== -1) {
+        selected_list.splice(index, 1);
+    }
+
+
     console.log(selected_words)
+    console.log(selected_langs)
 }
 
 // add keyword
 $("#submit").click(function () {
-    add_key_word()
+    add_keyword_lang()
 })
-//remove keyword
-var delete_key_word = function (keyword) {
-    const parent = keyword.parentNode
-    parent.removeChild(keyword)
-    const index = selected_words.indexOf(keyword.textContent);
-    if (index !== -1) {
-        selected_words.splice(index, 1);
-    }
-    console.log(selected_words)
-}
 //select which summary to generate
 $(".summary").click(function () {
     summary_category = $(this).val()
@@ -213,6 +233,8 @@ var generate_plot = function () {
                 plot_histo(position, summary, title)
             } else if (summary_category == 'lang') {
                 title = "Language Count"
+                lang_tag_list = Object.keys(summary)
+                // console.log(lang_tag_list)
                 //plot lang
                 plot_histo(position, summary, title)
             } 
@@ -247,6 +269,12 @@ var generate_summary = function () {
         }
     }
 }
+//input keyword
+$( "#input_lang" ).autocomplete({
+    source: lang_tag_list
+ });
+
+
 setInterval(
     function () {
         //fetch result
@@ -257,5 +285,7 @@ setInterval(
         generate_summary()
         //generate plot
         generate_plot()
+        //update auto complete
+        $('#input_lang').autocomplete("option", { source: lang_tag_list });
     }, 2000
 );

@@ -29,6 +29,7 @@ def cache_stream(stream_cache):
         entry_text = entry[1]
         stream_cache.put({"id": entry_id, "text": entry_text})
 
+
 def clear_cache(stream_cache, db):
     """
     clear stream cache and copy to database
@@ -66,24 +67,31 @@ def schedule_job(scheduler):
     """
     scheduler for periodically scheduled jobs.
     """
-    print("running routine")
+    # print("running routine")
     clear_cache(stream_cache, data_base)
     cache_stream(stream_cache)
 
     if modules_status["sentiment"]:
+        # cancel before reschedule to have a better performance
+        if scheduler.get_job('stream_sentiment'):
+            scheduler.remove_job('stream_sentiment')
         scheduler.add_job(
             tasks.get_sentiment,
-            kwargs={"stream_cache": stream_cache, "id": None, "db": None},
+            kwargs={"stream_cache": stream_cache, "id": None, "db": None}, id="stream_sentiment"
         )
     if modules_status["topic"]:
+        if scheduler.get_job('stream_topic'):
+            scheduler.remove_job('stream_topic')
         scheduler.add_job(
             tasks.get_topic,
-            kwargs={"stream_cache": stream_cache, "ids": None, "db": None},
+            kwargs={"stream_cache": stream_cache, "ids": None, "db": None}, id="stream_topic"
         )
     if modules_status["lang"]:
+        if scheduler.get_job('stream_lang'):
+            scheduler.remove_job('stream_lang')
         scheduler.add_job(
             tasks.get_lang,
-            kwargs={"stream_cache": stream_cache, "ids": None, "db": None},
+            kwargs={"stream_cache": stream_cache, "ids": None, "db": None}, id="stream_lang"
         )
 
 
