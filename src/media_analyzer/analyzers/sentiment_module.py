@@ -6,9 +6,9 @@ class SentimentModule:
 
     @classmethod
     def generate_result(cls, content):
-        """Returns value of sentiment for tweet content. NEGATIVE, NEUTRAL, or POSITIVE"""
+        """Returns value of sentiment for tweet content. NEGATIVE, NEUTRAL, POSITIVE, or error if cannot be determined"""
         try:
             result = make_prediction(content)["emo"]
         except Exception:
-            result = "NEUTRAL"  # if sentiment cannot be determined, default fo neutral
+            result = "error"  # sentiment cannot be determined
         return result
