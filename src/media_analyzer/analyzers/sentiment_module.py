@@ -1,15 +1,14 @@
 from analyzers.inference import make_prediction
 
-# import random
-# import time
-
-# sys.path.append("../../src")
-
 
 class SentimentModule:
     """Object used to determine sentiment of given content, using ML model."""
+
     @classmethod
     def generate_result(cls, content):
-        """Returns value of sentiment for tweet content. 0: Negative, 1: Neutral, 2: Positive"""
-        result = make_prediction(content)  # time.sleep(2.4)
-        return result["emo"]  # random.randint(-1, 1)
+        """Returns value of sentiment for tweet content. NEGATIVE, NEUTRAL, POSITIVE, or error if cannot be determined"""
+        try:
+            result = make_prediction(content)["emo"]
+        except Exception:
+            result = "error"  # sentiment cannot be determined
+        return result
