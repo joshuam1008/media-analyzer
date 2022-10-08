@@ -18,6 +18,6 @@ from . import views
 
 urlpatterns = [
     #  path("toggle_modules",views.toggle_module,name="toggle_module"),
-    path("", views.index, name="twitter_anlaysis"),
+    path("", views.index, name="twitter_analysis"),
     path("fetch_result", views.send_result, name="fetch_result"),
 ]
