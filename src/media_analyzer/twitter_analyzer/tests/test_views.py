@@ -24,13 +24,13 @@ class TestViews(TestCase):
         response = self.client.get("/twitter/")
         self.assertEqual(response.status_code, 200)
     """Test stream api"""
-    def test_stream(self):
-        time.sleep(1)  # wait for the server
-        response = self.client.post('/twitter/fetch_result', {"id": [], "category": ['stream']})
-        stream = json.loads(response.content)
-        print("recieved")
-        print(stream)
-        self.assertTrue(len(stream['stream'].keys()) != 0)
+    # def test_stream(self):
+    #     time.sleep(1)  # wait for the server
+    #     response = self.client.post('/twitter/fetch_result', {"id": [], "category": ['stream']})
+    #     stream = json.loads(response.content)
+    #     print("recieved")
+    #     print(stream)
+    #     self.assertTrue(len(stream['stream'].keys()) != 0)
 
 
 

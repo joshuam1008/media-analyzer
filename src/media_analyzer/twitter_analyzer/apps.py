@@ -10,4 +10,6 @@ class TwitterAnalyzerConfig(AppConfig):
         print("setting up app")
         from twitter_analyzer.scheduler import background_scheduler
         background_scheduler.start_scheduler()
-       
+        # Start stream
+        from streams.twitter_stream import stream
+        stream.toggle_module()

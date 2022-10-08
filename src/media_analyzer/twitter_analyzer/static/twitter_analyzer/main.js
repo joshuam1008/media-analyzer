@@ -1,16 +1,17 @@
 var summary = {}
+var recieve_language = new Set()
 var selected_words = []
 //modified upon button click
 var categories = {
     'stream': false,
     'sentiment': false,
-    'language': false
+    'lang': false
 }
 //missing data by category
 var missing_categories = {
     'stream': 0,
     'sentiment': 0,
-    'language': 0
+    'lang': 0
 }
 //stream rate
 var stream_rate = 0
@@ -26,6 +27,7 @@ id = 0
 //toggle result
 $(".nav-link").click(function () {
     let text = $(this).text()
+    let value = $(this).attr("value")
     //change text for buttom
     text = text.split(" ");
     if (text[0] == "Start") {
@@ -34,11 +36,11 @@ $(".nav-link").click(function () {
         text[0] = "Start"
     }
     //toggle module
-    let key = text[1].toLowerCase()
-    if (key in categories) {
-        categories[key] = !categories[key]
+    if (value in categories) {
+        categories[value] = !categories[value]
         $(this).html(text.join(" "))
     }
+    console.log(categories)
 })
 //save the tweet locally and static
 var save_tweets = function (json_response) {
@@ -209,7 +211,7 @@ var generate_plot = function () {
                 title = "Sentiment Count"
                 //plot sentiment
                 plot_histo(position, summary, title)
-            } else if (summary_category == 'language') {
+            } else if (summary_category == 'lang') {
                 title = "Language Count"
                 //plot lang
                 plot_histo(position, summary, title)

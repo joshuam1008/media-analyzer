@@ -14,8 +14,6 @@ data_base = {}
 # a cache stream over 2 secs period to alleviate call to database
 stream_cache = Queue()
 
-# Start stream
-stream.toggle_module()
 
 """
 clear stream cache
@@ -66,10 +64,13 @@ def schedule_result_by_category(category, stream_cache, ids, db):
 
 
 def schedule_job(scheduler):
-    print("schedule job")
     """
     scheduler for periodically scheduled jobs.
     """
+
+    clear_cache(stream_cache, data_base)
+    cache_stream(stream_cache)
+
     if modules_status["sentiment"]:
         scheduler.add_job(
             tasks.get_sentiment,
@@ -85,11 +86,6 @@ def schedule_job(scheduler):
             tasks.get_lang,
             kwargs={"stream_cache": stream_cache, "ids": None, "db": None},
         )
-    if modules_status["stream"]:
-        scheduler.add_job(
-            clear_cache, kwargs={"stream_cache": stream_cache, "db": data_base}
-        )
-        scheduler.add_job(cache_stream, kwargs={"stream_cache": stream_cache})
 
 
 def send_result(request):
@@ -155,7 +151,6 @@ def fetch_from_db(ids, categories):
         # check if database has this entry
         if id not in data_base:
             continue
-        print("reached")
         for category in categories:
             fetched_result[id] = {}
             # fetch if exist
@@ -200,7 +195,7 @@ if scheduler is not None:
     # schedule job
     scheduler.add_job(schedule_job, 'interval', seconds=2,
                       kwargs={'scheduler': scheduler})
-    scheduler.add_job(rest_module, 'interval', minutes=5)
+    # scheduler.add_job(rest_module, 'interval', minutes=5)
     scheduler.start()
 else:
     print("scheduler not initalized")
