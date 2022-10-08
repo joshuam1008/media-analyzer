@@ -1,5 +1,4 @@
 var summary = {}
-var recieve_language = new Set()
 var selected_words = []
 var selected_langs = []
 //Language name from ISO 639-1 code
@@ -96,12 +95,30 @@ var add_tweet_to_ui = (tweet_id, tweet, position) => {
         tweet_as_link.classList.add("list-group-item-dark");
     }
 
-
     position.appendChild(tweet_as_link);
     const list_2 = document.querySelector('#tweet_filtered');
-    list_2.appendChild(tweet_as_link.cloneNode(true));
+    let tweet_passes_filter = false;
+    for(filter of selected_words){
+        if(tweet.text.includes(filter)){
+            tweet_passes_filter = true;
+        }
+    }
+    if(tweet_passes_filter){
+        list_2.appendChild(tweet_as_link.cloneNode(true));
+    }
 }
 
+$("#clear-tweets").click(() => {
+    var ids = [];
+    var total_tweet = 0;
+    all_tweets = {};
+    id = 0;
+    $('#tweet_stream').empty();
+});
+
+$("#clear-filtered").click(() => {
+    $('#tweet_filtered').empty();
+});
 
 //note: chen's code I (David) adapted.
 var plot_histo = function (position, overall_sentiment_results, title) {
@@ -169,12 +186,21 @@ var fetch_result = async function () {
         tweet = json_response.stream[tweet_id];
         let position = document.querySelector('#tweet_stream');
         if (tweet && tweet.text) {
-            add_tweet_to_ui(tweet_id, tweet, position);
+            let add = true;
+            for (category of Object.keys(categories)){
+                if (category != "stream" && categories[category] == true && !(tweet[category])){
+                    add = false;
+                }
+            }
+            if(add){
+                add_tweet_to_ui(tweet_id, tweet, position);
+            }
             // summary[tweet.sentiment.toLowerCase()]++;
         }
     };
 
     let json_response = await response.json();
+
     //save result
     save_tweets(json_response)
     let new_tweet_ids = Object.keys(json_response.stream);
@@ -256,17 +282,19 @@ var generate_plot = function () {
 //add id to ids if the category is missing
 var generate_summary = function () {
     if (summary_category) {
+        let missing_count = 0;
         for (id of Object.keys(all_tweets)) {
             const key = all_tweets[id][summary_category]
             if (key) {
                 let current_value = summary[key] ?? 0
                 summary[key] = current_value + 1
             } else {
-                missing_categories[summary_category] += 1
+                missing_count++;
                 //TODO add to ids, but have to remove it when recieve 
-                // ids.push(parseInt(id))
+                // ids.push(parseInt(id));
             }
         }
+        missing_categories[summary_category] = missing_count;
     }
 }
 //input keyword
