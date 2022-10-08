@@ -29,7 +29,6 @@ def cache_stream(stream_cache):
         entry_text = entry[1]
         stream_cache.put({"id": entry_id, "text": entry_text})
 
-
 def clear_cache(stream_cache, db):
     """
     clear stream cache and copy to database
@@ -67,7 +66,7 @@ def schedule_job(scheduler):
     """
     scheduler for periodically scheduled jobs.
     """
-
+    print("running routine")
     clear_cache(stream_cache, data_base)
     cache_stream(stream_cache)
 
