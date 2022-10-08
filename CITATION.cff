@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Chen"
+  given-names: "Jianlin"
+- family-names: "Dolan"
+  given-names: "Connor"
+- family-names: "Mason"
+  given-names: "Joshua"
+- family-names: "Rao"
+  given-names: "Rohan"
+  orcid: "https://orcid.org/0000-0003-2576-9839"
+- family-names: "White"
+  given-names: "David"
+title: "Twitter Analyzer"
+version: 0.0.1
+doi: 10.5281/zenodo.7154682
+date-released: 2022-10-08
+url: "https://github.com/joshuam1008/media-analyzer/"
