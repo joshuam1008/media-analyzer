@@ -2,6 +2,8 @@
 
 [Testing local link](style_guide.md)
 
+[Testing link in another file](media_analyzer/index.html)
+
 ## Project Requirements
 ### Capabilities
 * Perform sentiment analysis on the general twitter stream using the twitter stream API.
