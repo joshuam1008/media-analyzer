@@ -1,3 +1,7 @@
+## Project Documentation
+
+[Testing local link](style_guide.md)
+
 ## Project Requirements
 ### Capabilities
 * Perform sentiment analysis on the general twitter stream using the twitter stream API.
