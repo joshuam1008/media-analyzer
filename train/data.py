@@ -4,7 +4,6 @@ from transformers import AutoTokenizer
 from sklearn.model_selection import train_test_split
 import re
 
-
 class TwitterSentimentDataset(Dataset):
     def __init__(self, text, polarity=None, max_len=64, model_name="bert-base-uncased"):
         self.text = text
@@ -39,8 +38,20 @@ class TwitterSentimentDataset(Dataset):
 
 
 def data_preprocess(df, text_col, label_col, num_labels, label_encodings=None):
+    if df is None:
+        raise Exception('df must be DataFrame, not None')
+    if label_col not in df.columns:
+        raise Exception(str(label_col) + ' not in dataframe columns')
+
+    if text_col not in df.columns:
+        raise Exception(str(text_col) + ' not in dataframe columns')
+
     if label_encodings is not None:
-        df[label_col] = df[label_col].apply(lambda x: label_encodings[x])
+        if len(label_encodings.keys()) == num_labels:
+            df[label_col] = df[label_col].apply(lambda x: label_encodings[x])
+        else:
+            raise Exception('Length of label_encoding does not match number of labels')
+
     df[text_col] = df[text_col].apply(lambda x: re.sub(r"@\w*", "", str(x)).strip())
 
     def build_list(x):
