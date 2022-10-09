@@ -20,18 +20,19 @@ Follow this link to view project documentation 👉    [click here](media_analyz
 ## What (Summary)
 To build this program, we are using the Twitter API to pull in a stream of tweets which are placed in a queue to be processed.  The list of tweets is processed by the deep learning model that has been fine tuned on sentiment classification.  The tweet ID is then given an associated sentiment prediction that is output to the stream.  The overall sentiment is held in a histogram to show the user the normal sentiment over the stream.
 
-## How
+## How...
 
-### To get started contributing:
+### ...to get started with contributing:
 1. Check out the VS Code setup.
-https://github.com/joshuam1008/media-analyzer/blob/main/docs/VSCode_Setup.md
+[https://github.com/joshuam1008/media-analyzer/blob/main/docs/VSCode_Setup.md](https://github.com/joshuam1008/media-analyzer/blob/main/docs/VSCode_Setup.md)
 
 2. Follow instructions for running the program as a developer.
-https://github.com/joshuam1008/media-analyzer/blob/main/INSTALL.md
+[https://github.com/joshuam1008/media-analyzer/blob/main/INSTALL.md](https://github.com/joshuam1008/media-analyzer/blob/main/INSTALL.md
+)
 
-Steps also listed at https://github.com/joshuam1008/media-analyzer/blob/main/CONTRIBUTING.md
+Steps also listed at [https://github.com/joshuam1008/media-analyzer/blob/main/CONTRIBUTING.md](https://github.com/joshuam1008/media-analyzer/blob/main/CONTRIBUTING.md)
 
-### To navigate the program
+### ...to navigate the program:
 
 #### Common Use Case: Get Overall Stream Sentiment
 1. Click "Start Sentiment" so that when the stream is started, sentiment information will be collected. 
@@ -44,19 +45,19 @@ Example word: "sky"
 1. Type "sky" into the text field and hit add.
 2. Click "Start Sentiment" so that when the stream is started, sentiment information will be collected.
 3. Click "Start Stream".
-You will now see tweets populate on the main stream and on the filtered stream on the right. Each red tweet is interpreted as negative, each gray tweet is neutral, and each green tweet is positive. 
+You will now see tweets populate on the main stream and on the filtered stream on the right. Red tweets are negative, gray tweets are neutral, and green tweets are positive.
 
 
 
 
 ## Why
-With Twitter and other social media platforms being a powerful tool for users to express their opinions on topics, we believe that marketing teams can use social media as a way to evaluate the public opinon on a product or feature.  We believe that a limitation in place is that these marketing teams can only processes a limited number of tweets / posts and the evaluation can be tedious.  With this in mind, we designed a tool that processes twitter streams to:
+With Twitter and other social media platforms being a powerful tool for users to express their opinions on topics, we believe that marketing teams can use social media as a way to evaluate the public opinion on a product or feature.  We believe that a limitation in place is that these marketing teams can only processes a limited number of tweets / posts and the evaluation can be tedious.  With this in mind, we designed a tool that processes twitter streams to:
  - Predict the sentiment on thousands of tweets quickly
  - Show the sentiment of individual tweets
  - Filter by keywords
  - Filter by a language
 
-This tool can be built upon to run sentiment on other social media platforms in a similar way and allow for limiting sentiment to sepcific accounts / topics. 
+This tool can be built upon to run sentiment on other social media platforms in a similar way and allow for limiting sentiment to specific accounts / topics.  It is also highly extensible and possible additional features include filtering by hashtags, mentions of a specific username, verified accounts, and more.
 Other social media analysis tools exist, but the fact that ours runs in real time sets it apart. 
 
 ## Short Video
