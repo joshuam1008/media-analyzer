@@ -8,6 +8,7 @@
 [![Test Coverage](https://byob.yarr.is/joshuam1008/media-analyzer/coverage_report)](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml)
 [![Dependencies](https://img.shields.io/librariesio/github/joshuam1008/media-analyzer)](https://libraries.io/github/joshuam1008/media-analyzer)
 [![CodeQL](https://github.com/joshuam1008/media-analyzer/workflows/CodeQL/badge.svg)](https://github.com/joshuam1008/media-analyzer/actions/workflows/codeql.yml)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=sheltered-citadel-93242)]
 
 
 
