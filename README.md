@@ -71,6 +71,8 @@
 
 ![Product Name Screen Shot][product-screenshot]
 
+A tool to perform sentiment analysis (positive, negative, neutral) on a live Twitter stream, filtered by language and keywords.
+
 To build this program, we are using the Twitter API to pull in a stream of tweets which are placed in a queue to be processed. The list of tweets is processed by the deep learning model that has been fine tuned on sentiment classification. The tweet ID is then given an associated sentiment prediction that is output to the stream. The overall sentiment is held in a histogram to show the user the normal sentiment over the stream.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
