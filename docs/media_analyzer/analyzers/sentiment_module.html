@@ -26,20 +26,20 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from src.inference import make_prediction
-
-# import random
-# import time
-
-# sys.path.append(&#34;../../src&#34;)
+<pre><code class="python">from analyzers.inference import make_prediction
 
 
 class SentimentModule:
+    &#34;&#34;&#34;Object used to determine sentiment of given content, using ML model.&#34;&#34;&#34;
+
     @classmethod
     def generate_result(cls, content):
-        &#34;&#34;&#34;Returns value of sentiment for tweet content. 0: Negative, 1: Neutral, 2: Positive&#34;&#34;&#34;
-        result = make_prediction(content)  # time.sleep(2.4)
-        return result[&#34;emo&#34;]  # random.randint(-1, 1)</code></pre>
+        &#34;&#34;&#34;Returns value of sentiment for tweet content. NEGATIVE, NEUTRAL, POSITIVE, or error if cannot be determined&#34;&#34;&#34;
+        try:
+            result = make_prediction(content)[&#34;emo&#34;]
+        except Exception:
+            result = &#34;error&#34;  # sentiment cannot be determined
+        return result</code></pre>
 </details>
 </section>
 <section>
@@ -55,17 +55,22 @@ class SentimentModule:
 <span>class <span class="ident">SentimentModule</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Object used to determine sentiment of given content, using ML model.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SentimentModule:
+    &#34;&#34;&#34;Object used to determine sentiment of given content, using ML model.&#34;&#34;&#34;
+
     @classmethod
     def generate_result(cls, content):
-        &#34;&#34;&#34;Returns value of sentiment for tweet content. 0: Negative, 1: Neutral, 2: Positive&#34;&#34;&#34;
-        result = make_prediction(content)  # time.sleep(2.4)
-        return result[&#34;emo&#34;]  # random.randint(-1, 1)</code></pre>
+        &#34;&#34;&#34;Returns value of sentiment for tweet content. NEGATIVE, NEUTRAL, POSITIVE, or error if cannot be determined&#34;&#34;&#34;
+        try:
+            result = make_prediction(content)[&#34;emo&#34;]
+        except Exception:
+            result = &#34;error&#34;  # sentiment cannot be determined
+        return result</code></pre>
 </details>
 <h3>Static methods</h3>
 <dl>
@@ -73,16 +78,19 @@ class SentimentModule:
 <span>def <span class="ident">generate_result</span></span>(<span>content)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Returns value of sentiment for tweet content. 0: Negative, 1: Neutral, 2: Positive</p></div>
+<div class="desc"><p>Returns value of sentiment for tweet content. NEGATIVE, NEUTRAL, POSITIVE, or error if cannot be determined</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def generate_result(cls, content):
-    &#34;&#34;&#34;Returns value of sentiment for tweet content. 0: Negative, 1: Neutral, 2: Positive&#34;&#34;&#34;
-    result = make_prediction(content)  # time.sleep(2.4)
-    return result[&#34;emo&#34;]  # random.randint(-1, 1)</code></pre>
+    &#34;&#34;&#34;Returns value of sentiment for tweet content. NEGATIVE, NEUTRAL, POSITIVE, or error if cannot be determined&#34;&#34;&#34;
+    try:
+        result = make_prediction(content)[&#34;emo&#34;]
+    except Exception:
+        result = &#34;error&#34;  # sentiment cannot be determined
+    return result</code></pre>
 </details>
 </dd>
 </dl>

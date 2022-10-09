@@ -61,11 +61,16 @@ Including another URLconf
 &#34;&#34;&#34;
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls.static import static
 
 urlpatterns = [
     path(&#34;twitter/&#34;, include(&#34;twitter_analyzer.urls&#34;)),
+    path(&#34;&#34;, include(&#34;twitter_analyzer.urls&#34;)),
     path(&#34;admin/&#34;, admin.site.urls),
-]</code></pre>
+] + static(
+    &#34;docs/&#34;,
+    document_root=&#34;docs/media_analyzer/index.html&#34;,
+)</code></pre>
 </details>
 </section>
 <section>

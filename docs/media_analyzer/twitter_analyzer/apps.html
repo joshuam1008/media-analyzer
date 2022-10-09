@@ -27,11 +27,44 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from django.apps import AppConfig
+import os
 
 
 class TwitterAnalyzerConfig(AppConfig):
+    &#34;&#34;&#34;Configuration for the twitter analyzer.&#34;&#34;&#34;
     default_auto_field = &#39;django.db.models.BigAutoField&#39;
-    name = &#39;twitter_analyzer&#39;</code></pre>
+    name = &#39;twitter_analyzer&#39;
+
+    def ready(self):
+        # init for test
+        run_test = os.environ.get(&#34;RUN_TEST&#34;)
+        if run_test:
+            print(&#34;setting up app&#34;)
+            from twitter_analyzer.scheduler import background_scheduler
+            print(&#34;initialize scheduler&#34;)
+            background_scheduler.start_scheduler()
+
+            # Start stream
+            from streams.twitter_stream import stream
+
+            print(&#34;initialize stream&#34;)
+            stream.toggle_module()
+        else: # only init after first reload
+            run_once = os.environ.get(&#39;CMDLINERUNNER_RUN_ONCE&#39;)
+            if run_once is None:
+                os.environ[&#39;CMDLINERUNNER_RUN_ONCE&#39;] = &#39;True&#39;
+                return
+
+            print(&#34;setting up app&#34;)
+            from twitter_analyzer.scheduler import background_scheduler
+            print(&#34;initialize scheduler&#34;)
+            background_scheduler.start_scheduler()
+
+            # Start stream
+            from streams.twitter_stream import stream
+
+            print(&#34;initialize stream&#34;)
+            stream.toggle_module()</code></pre>
 </details>
 </section>
 <section>
@@ -48,14 +81,46 @@ class TwitterAnalyzerConfig(AppConfig):
 <span>(</span><span>app_name, app_module)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Class representing a Django application and its configuration.</p></div>
+<div class="desc"><p>Configuration for the twitter analyzer.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TwitterAnalyzerConfig(AppConfig):
+    &#34;&#34;&#34;Configuration for the twitter analyzer.&#34;&#34;&#34;
     default_auto_field = &#39;django.db.models.BigAutoField&#39;
-    name = &#39;twitter_analyzer&#39;</code></pre>
+    name = &#39;twitter_analyzer&#39;
+
+    def ready(self):
+        # init for test
+        run_test = os.environ.get(&#34;RUN_TEST&#34;)
+        if run_test:
+            print(&#34;setting up app&#34;)
+            from twitter_analyzer.scheduler import background_scheduler
+            print(&#34;initialize scheduler&#34;)
+            background_scheduler.start_scheduler()
+
+            # Start stream
+            from streams.twitter_stream import stream
+
+            print(&#34;initialize stream&#34;)
+            stream.toggle_module()
+        else: # only init after first reload
+            run_once = os.environ.get(&#39;CMDLINERUNNER_RUN_ONCE&#39;)
+            if run_once is None:
+                os.environ[&#39;CMDLINERUNNER_RUN_ONCE&#39;] = &#39;True&#39;
+                return
+
+            print(&#34;setting up app&#34;)
+            from twitter_analyzer.scheduler import background_scheduler
+            print(&#34;initialize scheduler&#34;)
+            background_scheduler.start_scheduler()
+
+            # Start stream
+            from streams.twitter_stream import stream
+
+            print(&#34;initialize stream&#34;)
+            stream.toggle_module()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -70,6 +135,50 @@ class TwitterAnalyzerConfig(AppConfig):
 <dt id="media_analyzer.twitter_analyzer.apps.TwitterAnalyzerConfig.name"><code class="name">var <span class="ident">name</span></code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="media_analyzer.twitter_analyzer.apps.TwitterAnalyzerConfig.ready"><code class="name flex">
+<span>def <span class="ident">ready</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Override this method in subclasses to run code when Django starts.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ready(self):
+    # init for test
+    run_test = os.environ.get(&#34;RUN_TEST&#34;)
+    if run_test:
+        print(&#34;setting up app&#34;)
+        from twitter_analyzer.scheduler import background_scheduler
+        print(&#34;initialize scheduler&#34;)
+        background_scheduler.start_scheduler()
+
+        # Start stream
+        from streams.twitter_stream import stream
+
+        print(&#34;initialize stream&#34;)
+        stream.toggle_module()
+    else: # only init after first reload
+        run_once = os.environ.get(&#39;CMDLINERUNNER_RUN_ONCE&#39;)
+        if run_once is None:
+            os.environ[&#39;CMDLINERUNNER_RUN_ONCE&#39;] = &#39;True&#39;
+            return
+
+        print(&#34;setting up app&#34;)
+        from twitter_analyzer.scheduler import background_scheduler
+        print(&#34;initialize scheduler&#34;)
+        background_scheduler.start_scheduler()
+
+        # Start stream
+        from streams.twitter_stream import stream
+
+        print(&#34;initialize stream&#34;)
+        stream.toggle_module()</code></pre>
+</details>
 </dd>
 </dl>
 </dd>
@@ -94,6 +203,7 @@ class TwitterAnalyzerConfig(AppConfig):
 <ul class="">
 <li><code><a title="media_analyzer.twitter_analyzer.apps.TwitterAnalyzerConfig.default_auto_field" href="#media_analyzer.twitter_analyzer.apps.TwitterAnalyzerConfig.default_auto_field">default_auto_field</a></code></li>
 <li><code><a title="media_analyzer.twitter_analyzer.apps.TwitterAnalyzerConfig.name" href="#media_analyzer.twitter_analyzer.apps.TwitterAnalyzerConfig.name">name</a></code></li>
+<li><code><a title="media_analyzer.twitter_analyzer.apps.TwitterAnalyzerConfig.ready" href="#media_analyzer.twitter_analyzer.apps.TwitterAnalyzerConfig.ready">ready</a></code></li>
 </ul>
 </li>
 </ul>

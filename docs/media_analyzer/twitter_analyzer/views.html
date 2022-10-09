@@ -27,22 +27,21 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from django.shortcuts import render
-from streams.twitter_stream import TwitterStream
+from streams.twitter_stream import stream
 from django.http import JsonResponse
 import json
 import twitter_analyzer.tasks as tasks
-from apscheduler.schedulers.background import BackgroundScheduler
 from queue import Queue
-
+from twitter_analyzer.scheduler import background_scheduler
+scheduler = background_scheduler.background_scheduler
 # module status
-modules_status = {&#34;stream&#34;: True, &#34;sentiment&#34;: False, &#34;topic&#34;: False, &#34;lang&#34;: False}
+modules_status = {&#34;stream&#34;: True, &#34;sentiment&#34;: False,
+                  &#34;topic&#34;: False, &#34;lang&#34;: False}
 # simulate databse
 data_base = {}
 # a cache stream over 2 secs period to alleviate call to database
 stream_cache = Queue()
 
-# The Stream Object
-stream = TwitterStream()
 
 &#34;&#34;&#34;
 clear stream cache
@@ -51,6 +50,7 @@ input Queue: cache
 
 
 def cache_stream(stream_cache):
+    &#34;&#34;&#34;Gets the results from the stream and puts them into the cache.&#34;&#34;&#34;
     stream_new_entries = stream.result_generator()
     for entry in stream_new_entries:
         entry_id = entry[0]
@@ -58,14 +58,12 @@ def cache_stream(stream_cache):
         stream_cache.put({&#34;id&#34;: entry_id, &#34;text&#34;: entry_text})
 
 
-&#34;&#34;&#34;
-clear stream cache and copy to database
-stream_cache:Queue
-db:used a dictionary for database now
-&#34;&#34;&#34;
-
-
 def clear_cache(stream_cache, db):
+    &#34;&#34;&#34;
+    clear stream cache and copy to database
+    stream_cache:Queue
+    db:used a dictionary for database for now.
+    &#34;&#34;&#34;
     # save to db and clear cache
     while not stream_cache.empty():
         data = stream_cache.get()
@@ -78,16 +76,14 @@ def clear_cache(stream_cache, db):
             db[data[&#34;id&#34;]][key] = data[key]
 
 
-&#34;&#34;&#34;
-An event triggered scheduler
-category: task name
-stream_cache: Queue
-ids: ind tweets need to be processed
-db: a dictionary, used to represent database for now
-&#34;&#34;&#34;
-
-
 def schedule_result_by_category(category, stream_cache, ids, db):
+    &#34;&#34;&#34;
+    An event triggered scheduler
+    category: task name
+    stream_cache: Queue
+    ids: ind tweets need to be processed
+    db: a dictionary, used to represent database for now
+    &#34;&#34;&#34;
     if category == &#34;sentiment&#34;:
         scheduler.add_job(
             tasks.get_sentiment,
@@ -95,40 +91,42 @@ def schedule_result_by_category(category, stream_cache, ids, db):
         )
 
 
-&#34;&#34;&#34;
-scheduler for periodically schedule job
-&#34;&#34;&#34;
-
-
 def schedule_job(scheduler):
+    &#34;&#34;&#34;
+    scheduler for periodically scheduled jobs.
+    &#34;&#34;&#34;
+    # print(&#34;running routine&#34;)
+    clear_cache(stream_cache, data_base)
+    cache_stream(stream_cache)
+
     if modules_status[&#34;sentiment&#34;]:
+        # cancel before reschedule to have a better performance
+        if scheduler.get_job(&#39;stream_sentiment&#39;):
+            scheduler.remove_job(&#39;stream_sentiment&#39;)
         scheduler.add_job(
             tasks.get_sentiment,
-            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;id&#34;: None, &#34;db&#34;: None},
+            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;id&#34;: None, &#34;db&#34;: None}, id=&#34;stream_sentiment&#34;
         )
     if modules_status[&#34;topic&#34;]:
+        if scheduler.get_job(&#39;stream_topic&#39;):
+            scheduler.remove_job(&#39;stream_topic&#39;)
         scheduler.add_job(
             tasks.get_topic,
-            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;ids&#34;: None, &#34;db&#34;: None},
+            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;ids&#34;: None, &#34;db&#34;: None}, id=&#34;stream_topic&#34;
         )
     if modules_status[&#34;lang&#34;]:
+        if scheduler.get_job(&#39;stream_lang&#39;):
+            scheduler.remove_job(&#39;stream_lang&#39;)
         scheduler.add_job(
             tasks.get_lang,
-            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;ids&#34;: None, &#34;db&#34;: None},
+            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;ids&#34;: None, &#34;db&#34;: None}, id=&#34;stream_lang&#34;
         )
-    if modules_status[&#34;stream&#34;]:
-        scheduler.add_job(
-            clear_cache, kwargs={&#34;stream_cache&#34;: stream_cache, &#34;db&#34;: data_base}
-        )
-        scheduler.add_job(cache_stream, kwargs={&#34;stream_cache&#34;: stream_cache})
-
-
-&#34;&#34;&#34;
-API end point to return processed result and stream
-&#34;&#34;&#34;
 
 
 def send_result(request):
+    &#34;&#34;&#34;
+    API end point to return processed result and stream.
+    &#34;&#34;&#34;
     if request.method == &#34;POST&#34;:
         # De-Serialize Request to a Python Object
         packet = json.load(request)
@@ -147,14 +145,13 @@ def send_result(request):
         return JsonResponse(fetched_result)
 
 
-&#34;&#34;&#34;
-fetch result from stream by categories
-stream data alwasy has text data,
-if data not exist, schedule to generate it
-&#34;&#34;&#34;
-
-
 def fetch_from_stream(categories):
+    &#34;&#34;&#34;
+    fetch result from stream by categories
+    stream data alwasy has text data,
+    if data not exist, schedule to generate it
+    &#34;&#34;&#34;
+
     # remove stream from category
     categories.remove(&#34;stream&#34;)
     fetched_result = {}
@@ -178,19 +175,17 @@ def fetch_from_stream(categories):
     return fetched_result
 
 
-&#34;&#34;&#34;
-fetch result from db,
-if data not exist, schedule to generate it
-&#34;&#34;&#34;
-
-
 def fetch_from_db(ids, categories):
+    &#34;&#34;&#34;
+    fetch result from db,
+    if data not exist, schedule to generate it
+    &#34;&#34;&#34;
+
     fetched_result = {}
     for id in ids:
         # check if database has this entry
         if id not in data_base:
             continue
-        print(&#34;reached&#34;)
         for category in categories:
             fetched_result[id] = {}
             # fetch if exist
@@ -199,16 +194,16 @@ def fetch_from_db(ids, categories):
             # schedule to generate the result
             else:
                 fetched_result[id][category] = None
-                schedule_result_by_category(category, stream_cache, id, data_base)
+                schedule_result_by_category(
+                    category, stream_cache, id, data_base)
     return fetched_result
 
 
-&#34;&#34;&#34;
-The only page for this application
-&#34;&#34;&#34;
-
-
 def index(request):
+    &#34;&#34;&#34;
+    The only page for this application
+    &#34;&#34;&#34;
+
     results = []
     tweets = []
     for _ in range(stream_cache.qsize()):
@@ -222,37 +217,23 @@ def index(request):
     return render(request, &#34;twitter_analyzer/index.html&#34;, {&#34;tweets&#34;: tweets})
 
 
-&#34;&#34;&#34;
-rest module to save consumption
-&#34;&#34;&#34;
-
-
 def rest_module():
+    &#34;&#34;&#34;
+    Periodically shuts down the model to reduce consumption.
+    &#34;&#34;&#34;
     print(&#34;shutting down module&#34;)
     for key in modules_status.keys():
         modules_status[key] = False
 
 
-&#34;&#34;&#34;
-Start the scheduler and twitter stream.
-&#34;&#34;&#34;
-
-
-def start_scheduler():
-    # Start the Stream
-    stream.toggle_module()
-
-    # init scheduler
-    scheduler = BackgroundScheduler()
+if scheduler is not None:
     # schedule job
-    scheduler.add_job(
-        schedule_job, &#34;interval&#34;, seconds=2, kwargs={&#34;scheduler&#34;: scheduler}
-    )
-    scheduler.add_job(rest_module, &#34;interval&#34;, minutes=5)
+    scheduler.add_job(schedule_job, &#39;interval&#39;, seconds=2,
+                      kwargs={&#39;scheduler&#39;: scheduler})
+    # scheduler.add_job(rest_module, &#39;interval&#39;, minutes=5)
     scheduler.start()
-
-
-scheduler = None</code></pre>
+else:
+    print(&#34;scheduler not initalized&#34;)</code></pre>
 </details>
 </section>
 <section>
@@ -260,7 +241,7 @@ scheduler = None</code></pre>
 <section>
 <h2 class="section-title" id="header-variables">Global variables</h2>
 <dl>
-<dt id="media_analyzer.twitter_analyzer.views.stream"><code class="name">var <span class="ident">stream</span></code></dt>
+<dt id="media_analyzer.twitter_analyzer.views.stream_cache"><code class="name">var <span class="ident">stream_cache</span></code></dt>
 <dd>
 <div class="desc"><p>clear stream cache
 input Queue: cache</p></div>
@@ -274,12 +255,13 @@ input Queue: cache</p></div>
 <span>def <span class="ident">cache_stream</span></span>(<span>stream_cache)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Gets the results from the stream and puts them into the cache.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def cache_stream(stream_cache):
+    &#34;&#34;&#34;Gets the results from the stream and puts them into the cache.&#34;&#34;&#34;
     stream_new_entries = stream.result_generator()
     for entry in stream_new_entries:
         entry_id = entry[0]
@@ -291,12 +273,19 @@ input Queue: cache</p></div>
 <span>def <span class="ident">clear_cache</span></span>(<span>stream_cache, db)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>clear stream cache and copy to database
+stream_cache:Queue
+db:used a dictionary for database for now.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def clear_cache(stream_cache, db):
+    &#34;&#34;&#34;
+    clear stream cache and copy to database
+    stream_cache:Queue
+    db:used a dictionary for database for now.
+    &#34;&#34;&#34;
     # save to db and clear cache
     while not stream_cache.empty():
         data = stream_cache.get()
@@ -313,18 +302,23 @@ input Queue: cache</p></div>
 <span>def <span class="ident">fetch_from_db</span></span>(<span>ids, categories)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>fetch result from db,
+if data not exist, schedule to generate it</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def fetch_from_db(ids, categories):
+    &#34;&#34;&#34;
+    fetch result from db,
+    if data not exist, schedule to generate it
+    &#34;&#34;&#34;
+
     fetched_result = {}
     for id in ids:
         # check if database has this entry
         if id not in data_base:
             continue
-        print(&#34;reached&#34;)
         for category in categories:
             fetched_result[id] = {}
             # fetch if exist
@@ -333,7 +327,8 @@ input Queue: cache</p></div>
             # schedule to generate the result
             else:
                 fetched_result[id][category] = None
-                schedule_result_by_category(category, stream_cache, id, data_base)
+                schedule_result_by_category(
+                    category, stream_cache, id, data_base)
     return fetched_result</code></pre>
 </details>
 </dd>
@@ -341,12 +336,20 @@ input Queue: cache</p></div>
 <span>def <span class="ident">fetch_from_stream</span></span>(<span>categories)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>fetch result from stream by categories
+stream data alwasy has text data,
+if data not exist, schedule to generate it</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def fetch_from_stream(categories):
+    &#34;&#34;&#34;
+    fetch result from stream by categories
+    stream data alwasy has text data,
+    if data not exist, schedule to generate it
+    &#34;&#34;&#34;
+
     # remove stream from category
     categories.remove(&#34;stream&#34;)
     fetched_result = {}
@@ -374,12 +377,16 @@ input Queue: cache</p></div>
 <span>def <span class="ident">index</span></span>(<span>request)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The only page for this application</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def index(request):
+    &#34;&#34;&#34;
+    The only page for this application
+    &#34;&#34;&#34;
+
     results = []
     tweets = []
     for _ in range(stream_cache.qsize()):
@@ -397,12 +404,15 @@ input Queue: cache</p></div>
 <span>def <span class="ident">rest_module</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Periodically shuts down the model to reduce consumption.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def rest_module():
+    &#34;&#34;&#34;
+    Periodically shuts down the model to reduce consumption.
+    &#34;&#34;&#34;
     print(&#34;shutting down module&#34;)
     for key in modules_status.keys():
         modules_status[key] = False</code></pre>
@@ -412,44 +422,64 @@ input Queue: cache</p></div>
 <span>def <span class="ident">schedule_job</span></span>(<span>scheduler)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>scheduler for periodically scheduled jobs.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def schedule_job(scheduler):
+    &#34;&#34;&#34;
+    scheduler for periodically scheduled jobs.
+    &#34;&#34;&#34;
+    # print(&#34;running routine&#34;)
+    clear_cache(stream_cache, data_base)
+    cache_stream(stream_cache)
+
     if modules_status[&#34;sentiment&#34;]:
+        # cancel before reschedule to have a better performance
+        if scheduler.get_job(&#39;stream_sentiment&#39;):
+            scheduler.remove_job(&#39;stream_sentiment&#39;)
         scheduler.add_job(
             tasks.get_sentiment,
-            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;id&#34;: None, &#34;db&#34;: None},
+            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;id&#34;: None, &#34;db&#34;: None}, id=&#34;stream_sentiment&#34;
         )
     if modules_status[&#34;topic&#34;]:
+        if scheduler.get_job(&#39;stream_topic&#39;):
+            scheduler.remove_job(&#39;stream_topic&#39;)
         scheduler.add_job(
             tasks.get_topic,
-            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;ids&#34;: None, &#34;db&#34;: None},
+            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;ids&#34;: None, &#34;db&#34;: None}, id=&#34;stream_topic&#34;
         )
     if modules_status[&#34;lang&#34;]:
+        if scheduler.get_job(&#39;stream_lang&#39;):
+            scheduler.remove_job(&#39;stream_lang&#39;)
         scheduler.add_job(
             tasks.get_lang,
-            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;ids&#34;: None, &#34;db&#34;: None},
-        )
-    if modules_status[&#34;stream&#34;]:
-        scheduler.add_job(
-            clear_cache, kwargs={&#34;stream_cache&#34;: stream_cache, &#34;db&#34;: data_base}
-        )
-        scheduler.add_job(cache_stream, kwargs={&#34;stream_cache&#34;: stream_cache})</code></pre>
+            kwargs={&#34;stream_cache&#34;: stream_cache, &#34;ids&#34;: None, &#34;db&#34;: None}, id=&#34;stream_lang&#34;
+        )</code></pre>
 </details>
 </dd>
 <dt id="media_analyzer.twitter_analyzer.views.schedule_result_by_category"><code class="name flex">
 <span>def <span class="ident">schedule_result_by_category</span></span>(<span>category, stream_cache, ids, db)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>An event triggered scheduler
+category: task name
+stream_cache: Queue
+ids: ind tweets need to be processed
+db: a dictionary, used to represent database for now</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def schedule_result_by_category(category, stream_cache, ids, db):
+    &#34;&#34;&#34;
+    An event triggered scheduler
+    category: task name
+    stream_cache: Queue
+    ids: ind tweets need to be processed
+    db: a dictionary, used to represent database for now
+    &#34;&#34;&#34;
     if category == &#34;sentiment&#34;:
         scheduler.add_job(
             tasks.get_sentiment,
@@ -461,12 +491,15 @@ input Queue: cache</p></div>
 <span>def <span class="ident">send_result</span></span>(<span>request)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>API end point to return processed result and stream.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def send_result(request):
+    &#34;&#34;&#34;
+    API end point to return processed result and stream.
+    &#34;&#34;&#34;
     if request.method == &#34;POST&#34;:
         # De-Serialize Request to a Python Object
         packet = json.load(request)
@@ -483,29 +516,6 @@ input Queue: cache</p></div>
         # fetch result in db
         fetched_result[&#34;inds&#34;] = fetch_from_db(ids, categories)
         return JsonResponse(fetched_result)</code></pre>
-</details>
-</dd>
-<dt id="media_analyzer.twitter_analyzer.views.start_scheduler"><code class="name flex">
-<span>def <span class="ident">start_scheduler</span></span>(<span>)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def start_scheduler():
-    # Start the Stream
-    stream.toggle_module()
-
-    # init scheduler
-    scheduler = BackgroundScheduler()
-    # schedule job
-    scheduler.add_job(
-        schedule_job, &#34;interval&#34;, seconds=2, kwargs={&#34;scheduler&#34;: scheduler}
-    )
-    scheduler.add_job(rest_module, &#34;interval&#34;, minutes=5)
-    scheduler.start()</code></pre>
 </details>
 </dd>
 </dl>
@@ -526,7 +536,7 @@ input Queue: cache</p></div>
 </li>
 <li><h3><a href="#header-variables">Global variables</a></h3>
 <ul class="">
-<li><code><a title="media_analyzer.twitter_analyzer.views.stream" href="#media_analyzer.twitter_analyzer.views.stream">stream</a></code></li>
+<li><code><a title="media_analyzer.twitter_analyzer.views.stream_cache" href="#media_analyzer.twitter_analyzer.views.stream_cache">stream_cache</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
@@ -540,7 +550,6 @@ input Queue: cache</p></div>
 <li><code><a title="media_analyzer.twitter_analyzer.views.schedule_job" href="#media_analyzer.twitter_analyzer.views.schedule_job">schedule_job</a></code></li>
 <li><code><a title="media_analyzer.twitter_analyzer.views.schedule_result_by_category" href="#media_analyzer.twitter_analyzer.views.schedule_result_by_category">schedule_result_by_category</a></code></li>
 <li><code><a title="media_analyzer.twitter_analyzer.views.send_result" href="#media_analyzer.twitter_analyzer.views.send_result">send_result</a></code></li>
-<li><code><a title="media_analyzer.twitter_analyzer.views.start_scheduler" href="#media_analyzer.twitter_analyzer.views.start_scheduler">start_scheduler</a></code></li>
 </ul>
 </li>
 </ul>

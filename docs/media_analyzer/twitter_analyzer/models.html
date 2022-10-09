@@ -30,6 +30,8 @@
 
 # Create your models here.
 class Tweet:
+    &#34;&#34;&#34;A tweet. Made up of a tweet object (directly constructed from api) as well as
+    text and id fields for quick access.&#34;&#34;&#34;
     def __init__(self, tweet):
         # The tweet object itself. https://github.com/joshuam1008/media-analyzer/wiki/Twitter-Jason
         self.tweet = tweet
@@ -58,12 +60,15 @@ class Tweet:
 <span>(</span><span>tweet)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A tweet. Made up of a tweet object (directly constructed from api) as well as
+text and id fields for quick access.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Tweet:
+    &#34;&#34;&#34;A tweet. Made up of a tweet object (directly constructed from api) as well as
+    text and id fields for quick access.&#34;&#34;&#34;
     def __init__(self, tweet):
         # The tweet object itself. https://github.com/joshuam1008/media-analyzer/wiki/Twitter-Jason
         self.tweet = tweet

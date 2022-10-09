@@ -28,7 +28,10 @@
 </summary>
 <pre><code class="python">from django.test import TestCase
 from django.test import Client
-
+import json
+import time
+from twitter_analyzer.scheduler import background_scheduler
+from streams.twitter_stream import stream
 # Create your tests here.
 # Adapted from https://test-driven-django-development.readthedocs.io/en/latest/03-views.html#the-homepage-test
 &#34;&#34;&#34;
@@ -37,10 +40,83 @@ mimic user behavior testing views and api
 
 
 class TestViews(TestCase):
-    def test_homepage(self):
-        client = Client()
-        response = client.get(&#34;/twitter/&#34;)
-        self.assertEqual(response.status_code, 200)</code></pre>
+    def setUp(self):
+        # background_scheduler.start_scheduler()
+        # Django&#39;s TestCase already sets self.client so this line isn&#39;t required
+        self.client = Client()
+        # stream.toggle_module()
+    &#34;&#34;&#34;Tests the routing/URLs of the site.&#34;&#34;&#34;
+    def tests(self):
+        #cap the first letter to avoid been auto executed
+        print(&#34;test home page&#34;)
+        self.Test_homepage()
+        print(&#34;test stream&#34;)
+        self.Test_stream()
+        print(&#34;test sentiment&#34;)
+        self.Test_sentiment()
+        print(&#34;test lang&#34;)
+        self.Test_lang()
+        #put this at end to stop stand alone threae
+        print(&#34;closing thread&#34;)
+        self.Test_wrap_up()
+
+    def Test_homepage(self):
+        &#34;&#34;&#34;Tests the homepage URL.&#34;&#34;&#34;
+        response = self.client.get(&#34;/twitter/&#34;)
+        self.assertEqual(response.status_code, 200)
+    
+    &#34;&#34;&#34;Test stream api&#34;&#34;&#34;
+    def Test_stream(self):
+        #try three time 
+        for _ in range(3):
+            time.sleep(1)
+            response = self.client.post(&#39;/twitter/fetch_result&#39;, json.dumps(
+                {&#34;id&#34;: [], &#34;category&#34;: [&#39;stream&#39;]}), content_type=&#39;application/json&#39;)
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            if len(data[&#39;stream&#39;].keys()) &gt; 0:
+                return True
+        return False
+    &#39;&#39;&#39;Test if backend can generate sentiment&#39;&#39;&#39;
+    def Test_sentiment(self):
+         for _ in range(3):
+            time.sleep(1)
+            response = self.client.post(&#39;/twitter/fetch_result&#39;, json.dumps(
+                {&#34;id&#34;: [], &#34;category&#34;: [&#39;stream&#39;,&#39;sentiment&#39;]}), content_type=&#39;application/json&#39;)
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            #check if have sentiment
+            for id in data[&#39;stream&#39;].keys():
+                if &#39;sentiment&#39; in data[&#39;stream&#39;][id]:
+                    sentiment = data[&#39;stream&#39;][id][&#39;sentiment&#39;]
+                    if sentiment is not None:
+                        if &#39;NEGATIVE&#39; in sentiment or &#39;NEUTRAL&#39; in sentiment or &#39;POSITIVE&#39; in sentiment:
+                            return True
+
+         return False
+    &#39;&#39;&#39;Test if backend can generate language result&#39;&#39;&#39;
+    def Test_lang(self):
+         for _ in range(3):
+            time.sleep(1)
+            response = self.client.post(&#39;/twitter/fetch_result&#39;, json.dumps(
+                {&#34;id&#34;: [], &#34;category&#34;: [&#39;stream&#39;,&#39;lang&#39;]}), content_type=&#39;application/json&#39;)
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            #check if have sentiment
+            for id in data[&#39;stream&#39;].keys():
+                if &#39;lang&#39; in data[&#39;stream&#39;][id]:
+                    lang_tag = &#34;&#34;
+                    lang_tag = data[&#39;stream&#39;][id].get(&#39;lang&#39;,None)
+                    if lang_tag is not None:
+                        return True
+    &#34;&#34;&#34;Put at buttom to end other thread&#34;&#34;&#34;
+    def Test_wrap_up(self):
+        background_scheduler.stop_scheduler()
+        stream.disconnect()
+        if stream.worker is not None:
+            stream.worker.join()
+        self.assertTrue(background_scheduler.background_scheduler is None)
+    </code></pre>
 </details>
 </section>
 <section>
@@ -73,10 +149,82 @@ not have a method with the specified name.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TestViews(TestCase):
-    def test_homepage(self):
-        client = Client()
-        response = client.get(&#34;/twitter/&#34;)
-        self.assertEqual(response.status_code, 200)</code></pre>
+    def setUp(self):
+        # background_scheduler.start_scheduler()
+        # Django&#39;s TestCase already sets self.client so this line isn&#39;t required
+        self.client = Client()
+        # stream.toggle_module()
+    &#34;&#34;&#34;Tests the routing/URLs of the site.&#34;&#34;&#34;
+    def tests(self):
+        #cap the first letter to avoid been auto executed
+        print(&#34;test home page&#34;)
+        self.Test_homepage()
+        print(&#34;test stream&#34;)
+        self.Test_stream()
+        print(&#34;test sentiment&#34;)
+        self.Test_sentiment()
+        print(&#34;test lang&#34;)
+        self.Test_lang()
+        #put this at end to stop stand alone threae
+        print(&#34;closing thread&#34;)
+        self.Test_wrap_up()
+
+    def Test_homepage(self):
+        &#34;&#34;&#34;Tests the homepage URL.&#34;&#34;&#34;
+        response = self.client.get(&#34;/twitter/&#34;)
+        self.assertEqual(response.status_code, 200)
+    
+    &#34;&#34;&#34;Test stream api&#34;&#34;&#34;
+    def Test_stream(self):
+        #try three time 
+        for _ in range(3):
+            time.sleep(1)
+            response = self.client.post(&#39;/twitter/fetch_result&#39;, json.dumps(
+                {&#34;id&#34;: [], &#34;category&#34;: [&#39;stream&#39;]}), content_type=&#39;application/json&#39;)
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            if len(data[&#39;stream&#39;].keys()) &gt; 0:
+                return True
+        return False
+    &#39;&#39;&#39;Test if backend can generate sentiment&#39;&#39;&#39;
+    def Test_sentiment(self):
+         for _ in range(3):
+            time.sleep(1)
+            response = self.client.post(&#39;/twitter/fetch_result&#39;, json.dumps(
+                {&#34;id&#34;: [], &#34;category&#34;: [&#39;stream&#39;,&#39;sentiment&#39;]}), content_type=&#39;application/json&#39;)
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            #check if have sentiment
+            for id in data[&#39;stream&#39;].keys():
+                if &#39;sentiment&#39; in data[&#39;stream&#39;][id]:
+                    sentiment = data[&#39;stream&#39;][id][&#39;sentiment&#39;]
+                    if sentiment is not None:
+                        if &#39;NEGATIVE&#39; in sentiment or &#39;NEUTRAL&#39; in sentiment or &#39;POSITIVE&#39; in sentiment:
+                            return True
+
+         return False
+    &#39;&#39;&#39;Test if backend can generate language result&#39;&#39;&#39;
+    def Test_lang(self):
+         for _ in range(3):
+            time.sleep(1)
+            response = self.client.post(&#39;/twitter/fetch_result&#39;, json.dumps(
+                {&#34;id&#34;: [], &#34;category&#34;: [&#39;stream&#39;,&#39;lang&#39;]}), content_type=&#39;application/json&#39;)
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            #check if have sentiment
+            for id in data[&#39;stream&#39;].keys():
+                if &#39;lang&#39; in data[&#39;stream&#39;][id]:
+                    lang_tag = &#34;&#34;
+                    lang_tag = data[&#39;stream&#39;][id].get(&#39;lang&#39;,None)
+                    if lang_tag is not None:
+                        return True
+    &#34;&#34;&#34;Put at buttom to end other thread&#34;&#34;&#34;
+    def Test_wrap_up(self):
+        background_scheduler.stop_scheduler()
+        stream.disconnect()
+        if stream.worker is not None:
+            stream.worker.join()
+        self.assertTrue(background_scheduler.background_scheduler is None)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -87,8 +235,23 @@ not have a method with the specified name.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="media_analyzer.twitter_analyzer.tests.test_views.TestViews.test_homepage"><code class="name flex">
-<span>def <span class="ident">test_homepage</span></span>(<span>self)</span>
+<dt id="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_homepage"><code class="name flex">
+<span>def <span class="ident">Test_homepage</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Tests the homepage URL.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Test_homepage(self):
+    &#34;&#34;&#34;Tests the homepage URL.&#34;&#34;&#34;
+    response = self.client.get(&#34;/twitter/&#34;)
+    self.assertEqual(response.status_code, 200)</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_lang"><code class="name flex">
+<span>def <span class="ident">Test_lang</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -96,10 +259,126 @@ not have a method with the specified name.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def test_homepage(self):
-    client = Client()
-    response = client.get(&#34;/twitter/&#34;)
-    self.assertEqual(response.status_code, 200)</code></pre>
+<pre><code class="python">def Test_lang(self):
+     for _ in range(3):
+        time.sleep(1)
+        response = self.client.post(&#39;/twitter/fetch_result&#39;, json.dumps(
+            {&#34;id&#34;: [], &#34;category&#34;: [&#39;stream&#39;,&#39;lang&#39;]}), content_type=&#39;application/json&#39;)
+        data = response.json()
+        self.assertEqual(response.status_code, 200)
+        #check if have sentiment
+        for id in data[&#39;stream&#39;].keys():
+            if &#39;lang&#39; in data[&#39;stream&#39;][id]:
+                lang_tag = &#34;&#34;
+                lang_tag = data[&#39;stream&#39;][id].get(&#39;lang&#39;,None)
+                if lang_tag is not None:
+                    return True</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_sentiment"><code class="name flex">
+<span>def <span class="ident">Test_sentiment</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Test_sentiment(self):
+     for _ in range(3):
+        time.sleep(1)
+        response = self.client.post(&#39;/twitter/fetch_result&#39;, json.dumps(
+            {&#34;id&#34;: [], &#34;category&#34;: [&#39;stream&#39;,&#39;sentiment&#39;]}), content_type=&#39;application/json&#39;)
+        data = response.json()
+        self.assertEqual(response.status_code, 200)
+        #check if have sentiment
+        for id in data[&#39;stream&#39;].keys():
+            if &#39;sentiment&#39; in data[&#39;stream&#39;][id]:
+                sentiment = data[&#39;stream&#39;][id][&#39;sentiment&#39;]
+                if sentiment is not None:
+                    if &#39;NEGATIVE&#39; in sentiment or &#39;NEUTRAL&#39; in sentiment or &#39;POSITIVE&#39; in sentiment:
+                        return True
+
+     return False</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_stream"><code class="name flex">
+<span>def <span class="ident">Test_stream</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Test_stream(self):
+    #try three time 
+    for _ in range(3):
+        time.sleep(1)
+        response = self.client.post(&#39;/twitter/fetch_result&#39;, json.dumps(
+            {&#34;id&#34;: [], &#34;category&#34;: [&#39;stream&#39;]}), content_type=&#39;application/json&#39;)
+        data = response.json()
+        self.assertEqual(response.status_code, 200)
+        if len(data[&#39;stream&#39;].keys()) &gt; 0:
+            return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_wrap_up"><code class="name flex">
+<span>def <span class="ident">Test_wrap_up</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Test_wrap_up(self):
+    background_scheduler.stop_scheduler()
+    stream.disconnect()
+    if stream.worker is not None:
+        stream.worker.join()
+    self.assertTrue(background_scheduler.background_scheduler is None)</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.twitter_analyzer.tests.test_views.TestViews.setUp"><code class="name flex">
+<span>def <span class="ident">setUp</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Hook method for setting up the test fixture before exercising it.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setUp(self):
+    # background_scheduler.start_scheduler()
+    # Django&#39;s TestCase already sets self.client so this line isn&#39;t required
+    self.client = Client()
+    # stream.toggle_module()</code></pre>
+</details>
+</dd>
+<dt id="media_analyzer.twitter_analyzer.tests.test_views.TestViews.tests"><code class="name flex">
+<span>def <span class="ident">tests</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tests(self):
+    #cap the first letter to avoid been auto executed
+    print(&#34;test home page&#34;)
+    self.Test_homepage()
+    print(&#34;test stream&#34;)
+    self.Test_stream()
+    print(&#34;test sentiment&#34;)
+    self.Test_sentiment()
+    print(&#34;test lang&#34;)
+    self.Test_lang()
+    #put this at end to stop stand alone threae
+    print(&#34;closing thread&#34;)
+    self.Test_wrap_up()</code></pre>
 </details>
 </dd>
 </dl>
@@ -122,8 +401,14 @@ not have a method with the specified name.</p></div>
 <ul>
 <li>
 <h4><code><a title="media_analyzer.twitter_analyzer.tests.test_views.TestViews" href="#media_analyzer.twitter_analyzer.tests.test_views.TestViews">TestViews</a></code></h4>
-<ul class="">
-<li><code><a title="media_analyzer.twitter_analyzer.tests.test_views.TestViews.test_homepage" href="#media_analyzer.twitter_analyzer.tests.test_views.TestViews.test_homepage">test_homepage</a></code></li>
+<ul class="two-column">
+<li><code><a title="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_homepage" href="#media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_homepage">Test_homepage</a></code></li>
+<li><code><a title="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_lang" href="#media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_lang">Test_lang</a></code></li>
+<li><code><a title="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_sentiment" href="#media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_sentiment">Test_sentiment</a></code></li>
+<li><code><a title="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_stream" href="#media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_stream">Test_stream</a></code></li>
+<li><code><a title="media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_wrap_up" href="#media_analyzer.twitter_analyzer.tests.test_views.TestViews.Test_wrap_up">Test_wrap_up</a></code></li>
+<li><code><a title="media_analyzer.twitter_analyzer.tests.test_views.TestViews.setUp" href="#media_analyzer.twitter_analyzer.tests.test_views.TestViews.setUp">setUp</a></code></li>
+<li><code><a title="media_analyzer.twitter_analyzer.tests.test_views.TestViews.tests" href="#media_analyzer.twitter_analyzer.tests.test_views.TestViews.tests">tests</a></code></li>
 </ul>
 </li>
 </ul>

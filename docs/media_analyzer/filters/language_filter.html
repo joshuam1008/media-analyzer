@@ -26,11 +26,10 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from .filter import Filter
-from langdetect import detect
+<pre><code class="python">from langdetect import detect
 
 
-class LanguageFilter(Filter):
+class LanguageFilter():
     &#34;&#34;&#34;Filter for filtering content by a language&#34;&#34;&#34;
 
     def __init__(self, language=&#34;en&#34;):
@@ -38,9 +37,15 @@ class LanguageFilter(Filter):
         super().__init__()
         self.language = language
 
-    def filter(self, content):
-        &#34;&#34;&#34;Return true if content matches filter&#39;s language&#34;&#34;&#34;
-        return self.language == detect(content)</code></pre>
+    @classmethod
+    def filter(cls, content):
+        &#34;&#34;&#34;Return the language label, return error if can&#39;t detect&#34;&#34;&#34;
+        language = None
+        try:
+            language = detect(content)
+        except:
+            language = &#34;error&#34;
+        return language</code></pre>
 </details>
 </section>
 <section>
@@ -63,7 +68,7 @@ class LanguageFilter(Filter):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class LanguageFilter(Filter):
+<pre><code class="python">class LanguageFilter():
     &#34;&#34;&#34;Filter for filtering content by a language&#34;&#34;&#34;
 
     def __init__(self, language=&#34;en&#34;):
@@ -71,28 +76,36 @@ class LanguageFilter(Filter):
         super().__init__()
         self.language = language
 
-    def filter(self, content):
-        &#34;&#34;&#34;Return true if content matches filter&#39;s language&#34;&#34;&#34;
-        return self.language == detect(content)</code></pre>
+    @classmethod
+    def filter(cls, content):
+        &#34;&#34;&#34;Return the language label, return error if can&#39;t detect&#34;&#34;&#34;
+        language = None
+        try:
+            language = detect(content)
+        except:
+            language = &#34;error&#34;
+        return language</code></pre>
 </details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="media_analyzer.filters.filter.Filter" href="filter.html#media_analyzer.filters.filter.Filter">Filter</a></li>
-</ul>
-<h3>Methods</h3>
+<h3>Static methods</h3>
 <dl>
 <dt id="media_analyzer.filters.language_filter.LanguageFilter.filter"><code class="name flex">
-<span>def <span class="ident">filter</span></span>(<span>self, content)</span>
+<span>def <span class="ident">filter</span></span>(<span>content)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Return true if content matches filter's language</p></div>
+<div class="desc"><p>Return the language label, return error if can't detect</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def filter(self, content):
-    &#34;&#34;&#34;Return true if content matches filter&#39;s language&#34;&#34;&#34;
-    return self.language == detect(content)</code></pre>
+<pre><code class="python">@classmethod
+def filter(cls, content):
+    &#34;&#34;&#34;Return the language label, return error if can&#39;t detect&#34;&#34;&#34;
+    language = None
+    try:
+        language = detect(content)
+    except:
+        language = &#34;error&#34;
+    return language</code></pre>
 </details>
 </dd>
 </dl>

@@ -30,8 +30,10 @@
 
 
 class TopicModule:
+    &#34;&#34;&#34;Object used to determine topic of given content. Not implemented yet. &#34;&#34;&#34;
     @classmethod
     def generate_result(cls, content=None):
+        &#34;&#34;&#34;Determine the topic of given content.&#34;&#34;&#34;
         topic_index = random.randint(0, 3)
         topics = [&#34;topic1&#34;, &#34;topic2&#34;, &#34;topic3&#34;, &#34;topic4&#34;]
         return topics[topic_index]</code></pre>
@@ -50,14 +52,16 @@ class TopicModule:
 <span>class <span class="ident">TopicModule</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Object used to determine topic of given content. Not implemented yet.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class TopicModule:
+    &#34;&#34;&#34;Object used to determine topic of given content. Not implemented yet. &#34;&#34;&#34;
     @classmethod
     def generate_result(cls, content=None):
+        &#34;&#34;&#34;Determine the topic of given content.&#34;&#34;&#34;
         topic_index = random.randint(0, 3)
         topics = [&#34;topic1&#34;, &#34;topic2&#34;, &#34;topic3&#34;, &#34;topic4&#34;]
         return topics[topic_index]</code></pre>
@@ -68,13 +72,14 @@ class TopicModule:
 <span>def <span class="ident">generate_result</span></span>(<span>content=None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Determine the topic of given content.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def generate_result(cls, content=None):
+    &#34;&#34;&#34;Determine the topic of given content.&#34;&#34;&#34;
     topic_index = random.randint(0, 3)
     topics = [&#34;topic1&#34;, &#34;topic2&#34;, &#34;topic3&#34;, &#34;topic4&#34;]
     return topics[topic_index]</code></pre>

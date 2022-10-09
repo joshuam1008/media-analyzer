@@ -26,58 +26,59 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from django.test import TestCase
-import time
-from streams.twitter_stream import TwitterStream
-from twitter_analyzer import views
+<pre><code class="python"># from django.test import TestCase
+# import time
+# from streams.twitter_stream import TwitterStream
+# from twitter_analyzer import views
 
 
-# Add module to path
-# sys.path.append(&#34;../twitter_analyzer&#34;)
+# # Add module to path
+# # sys.path.append(&#34;../twitter_analyzer&#34;)
 
 
-&#34;&#34;&#34;
-IMPORTANT: Class uses bearer token to initialize new stream. This counts towards the limits
-imposed by the twitter stream API. Don&#39;t run this test too much.
-&#34;&#34;&#34;
+# &#34;&#34;&#34;
+# IMPORTANT: Class uses bearer token to initialize new stream. This counts towards the limits
+# imposed by the twitter stream API. Don&#39;t run this test too much.
+# &#34;&#34;&#34;
 
 
-class TestStream(TestCase):
-    &#34;&#34;&#34;
-    Tests the Twitter Stream.
-    &#34;&#34;&#34;
+# class TestStream(TestCase):
+#     &#34;&#34;&#34;
+#     Tests the Twitter Stream.
+#     &#34;&#34;&#34;
 
-    def test_stream_responses(self):
+#     def test_stream_responses(self):
+#         &#34;&#34;&#34;Tests opening a stream, getting some data, and ensuring the type. &#34;&#34;&#34;
 
-        # Disconnect Other stream running in view
-        views.stream.disconnect()
+#         # Disconnect Other stream running in view
+#         views.stream.disconnect()
 
-        # Initialize the Stream
-        stream = TwitterStream()
+#         # Initialize the Stream
+#         stream = TwitterStream()
 
-        # Start the Stream
-        stream.toggle_module()
+#         # Start the Stream
+#         stream.toggle_module()
 
-        # Wait for Results
-        time.sleep(10)
+#         # Wait for Results
+#         time.sleep(10)
 
-        # Check if we were disconnected
-        if stream.is_connected:
-            # Disconnect the Stream
-            stream.disconnect()
+#         # Check if we were disconnected
+#         if stream.is_connected:
+#             # Disconnect the Stream
+#             stream.disconnect()
 
-            # Get Results of Stream.
-            results = stream.result_generator()
+#             # Get Results of Stream.
+#             results = stream.result_generator()
 
-            # Ensure we got something.
-            self.assertTrue(len(results) &gt; 0)
+#             # Ensure we got something.
+#             self.assertTrue(len(results) &gt; 0)
 
-            # Ensure we got strings.
-            first_result = results[0][1]
-            print(first_result)
-            self.assertTrue(isinstance(first_result, str))
-        else:
-            print(&#34;Disconnected By Twitter&#34;)</code></pre>
+#             # Ensure we got strings.
+#             first_result = results[0][1]
+#             print(first_result)
+#             self.assertTrue(isinstance(first_result, str))
+#         else:
+#             print(&#34;Disconnected By Twitter&#34;)</code></pre>
 </details>
 </section>
 <section>
@@ -87,112 +88,6 @@ class TestStream(TestCase):
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-classes">Classes</h2>
-<dl>
-<dt id="media_analyzer.streams.tests.test_stream.TestStream"><code class="flex name class">
-<span>class <span class="ident">TestStream</span></span>
-<span>(</span><span>methodName='runTest')</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Tests the Twitter Stream.</p>
-<p>Create an instance of the class that will use the named test
-method when executed. Raises a ValueError if the instance does
-not have a method with the specified name.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class TestStream(TestCase):
-    &#34;&#34;&#34;
-    Tests the Twitter Stream.
-    &#34;&#34;&#34;
-
-    def test_stream_responses(self):
-
-        # Disconnect Other stream running in view
-        views.stream.disconnect()
-
-        # Initialize the Stream
-        stream = TwitterStream()
-
-        # Start the Stream
-        stream.toggle_module()
-
-        # Wait for Results
-        time.sleep(10)
-
-        # Check if we were disconnected
-        if stream.is_connected:
-            # Disconnect the Stream
-            stream.disconnect()
-
-            # Get Results of Stream.
-            results = stream.result_generator()
-
-            # Ensure we got something.
-            self.assertTrue(len(results) &gt; 0)
-
-            # Ensure we got strings.
-            first_result = results[0][1]
-            print(first_result)
-            self.assertTrue(isinstance(first_result, str))
-        else:
-            print(&#34;Disconnected By Twitter&#34;)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>django.test.testcases.TestCase</li>
-<li>django.test.testcases.TransactionTestCase</li>
-<li>django.test.testcases.SimpleTestCase</li>
-<li>unittest.case.TestCase</li>
-</ul>
-<h3>Methods</h3>
-<dl>
-<dt id="media_analyzer.streams.tests.test_stream.TestStream.test_stream_responses"><code class="name flex">
-<span>def <span class="ident">test_stream_responses</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def test_stream_responses(self):
-
-    # Disconnect Other stream running in view
-    views.stream.disconnect()
-
-    # Initialize the Stream
-    stream = TwitterStream()
-
-    # Start the Stream
-    stream.toggle_module()
-
-    # Wait for Results
-    time.sleep(10)
-
-    # Check if we were disconnected
-    if stream.is_connected:
-        # Disconnect the Stream
-        stream.disconnect()
-
-        # Get Results of Stream.
-        results = stream.result_generator()
-
-        # Ensure we got something.
-        self.assertTrue(len(results) &gt; 0)
-
-        # Ensure we got strings.
-        first_result = results[0][1]
-        print(first_result)
-        self.assertTrue(isinstance(first_result, str))
-    else:
-        print(&#34;Disconnected By Twitter&#34;)</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -204,16 +99,6 @@ not have a method with the specified name.</p></div>
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="media_analyzer.streams.tests" href="index.html">media_analyzer.streams.tests</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="media_analyzer.streams.tests.test_stream.TestStream" href="#media_analyzer.streams.tests.test_stream.TestStream">TestStream</a></code></h4>
-<ul class="">
-<li><code><a title="media_analyzer.streams.tests.test_stream.TestStream.test_stream_responses" href="#media_analyzer.streams.tests.test_stream.TestStream.test_stream_responses">test_stream_responses</a></code></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>

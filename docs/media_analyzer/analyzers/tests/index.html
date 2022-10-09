@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>media_analyzer.analyzers.lang_detect API documentation</title>
+<title>media_analyzer.analyzers.tests API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,83 +19,24 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>media_analyzer.analyzers.lang_detect</code></h1>
+<h1 class="title">Module <code>media_analyzer.analyzers.tests</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">from langdetect import detect
-
-
-class LangModule:
-    &#34;&#34;&#34;An object used to determine the language of given content.&#34;&#34;&#34;
-
-    @classmethod
-    def generate_result(cls, content=None):
-        &#34;&#34;&#34;Returns language of given content.&#34;&#34;&#34;
-        try:
-            result = detect(content)
-        except Exception:
-            result = &#34;error&#34;  # language not detected
-        return result</code></pre>
-</details>
 </section>
 <section>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt id="media_analyzer.analyzers.lang_detect.LangModule"><code class="flex name class">
-<span>class <span class="ident">LangModule</span></span>
-</code></dt>
+<dt><code class="name"><a title="media_analyzer.analyzers.tests.test_analyzers" href="test_analyzers.html">media_analyzer.analyzers.tests.test_analyzers</a></code></dt>
 <dd>
-<div class="desc"><p>An object used to determine the language of given content.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class LangModule:
-    &#34;&#34;&#34;An object used to determine the language of given content.&#34;&#34;&#34;
-
-    @classmethod
-    def generate_result(cls, content=None):
-        &#34;&#34;&#34;Returns language of given content.&#34;&#34;&#34;
-        try:
-            result = detect(content)
-        except Exception:
-            result = &#34;error&#34;  # language not detected
-        return result</code></pre>
-</details>
-<h3>Static methods</h3>
-<dl>
-<dt id="media_analyzer.analyzers.lang_detect.LangModule.generate_result"><code class="name flex">
-<span>def <span class="ident">generate_result</span></span>(<span>content=None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Returns language of given content.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def generate_result(cls, content=None):
-    &#34;&#34;&#34;Returns language of given content.&#34;&#34;&#34;
-    try:
-        result = detect(content)
-    except Exception:
-        result = &#34;error&#34;  # language not detected
-    return result</code></pre>
-</details>
+<div class="desc"></div>
 </dd>
 </dl>
-</dd>
-</dl>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -106,17 +47,12 @@ def generate_result(cls, content=None):
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="media_analyzer.analyzers" href="index.html">media_analyzer.analyzers</a></code></li>
+<li><code><a title="media_analyzer.analyzers" href="../index.html">media_analyzer.analyzers</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-classes">Classes</a></h3>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li>
-<h4><code><a title="media_analyzer.analyzers.lang_detect.LangModule" href="#media_analyzer.analyzers.lang_detect.LangModule">LangModule</a></code></h4>
-<ul class="">
-<li><code><a title="media_analyzer.analyzers.lang_detect.LangModule.generate_result" href="#media_analyzer.analyzers.lang_detect.LangModule.generate_result">generate_result</a></code></li>
-</ul>
-</li>
+<li><code><a title="media_analyzer.analyzers.tests.test_analyzers" href="test_analyzers.html">media_analyzer.analyzers.tests.test_analyzers</a></code></li>
 </ul>
 </li>
 </ul>

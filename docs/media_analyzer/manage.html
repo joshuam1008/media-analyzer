@@ -31,14 +31,11 @@
 &#34;&#34;&#34;Django&#39;s command-line utility for administrative tasks.&#34;&#34;&#34;
 import os
 import sys
-import twitter_analyzer.views
 
 
 def main():
     &#34;&#34;&#34;Run administrative tasks.&#34;&#34;&#34;
     os.environ.setdefault(&#34;DJANGO_SETTINGS_MODULE&#34;, &#34;media_analyzer.settings&#34;)
-    # Sneak in the scheduler activation here
-    twitter_analyzer.views.start_scheduler()
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -47,6 +44,8 @@ def main():
             &#34;available on your PYTHONPATH environment variable? Did you &#34;
             &#34;forget to activate a virtual environment?&#34;
         ) from exc
+    if &#34;test&#34; in sys.argv:
+         os.environ[&#39;RUN_TEST&#39;] = &#39;True&#39;
     execute_from_command_line(sys.argv)
 
 
@@ -73,8 +72,6 @@ if __name__ == &#34;__main__&#34;:
 <pre><code class="python">def main():
     &#34;&#34;&#34;Run administrative tasks.&#34;&#34;&#34;
     os.environ.setdefault(&#34;DJANGO_SETTINGS_MODULE&#34;, &#34;media_analyzer.settings&#34;)
-    # Sneak in the scheduler activation here
-    twitter_analyzer.views.start_scheduler()
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -83,6 +80,8 @@ if __name__ == &#34;__main__&#34;:
             &#34;available on your PYTHONPATH environment variable? Did you &#34;
             &#34;forget to activate a virtual environment?&#34;
         ) from exc
+    if &#34;test&#34; in sys.argv:
+         os.environ[&#39;RUN_TEST&#39;] = &#39;True&#39;
     execute_from_command_line(sys.argv)</code></pre>
 </details>
 </dd>
