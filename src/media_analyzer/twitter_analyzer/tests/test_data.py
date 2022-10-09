@@ -88,15 +88,3 @@ class TestData(TestCase):
         except_message = str(cm.exception)
         self.assertEqual(except_message, 'df must be DataFrame, not None')
 
-
-if __name__=='__main__':
-    t = TestData()
-    t.test_process_text()
-    t.test_process_text_multiple()
-    t.test_process_sentiment()
-    t.test_process_sentiment_multiple()
-    t.test_empty()
-    t.test_wrong_encodings()
-    t.test_wrong_text_col_sen()
-    t.test_wrong_text_col()
-    t.test_bad_df()
