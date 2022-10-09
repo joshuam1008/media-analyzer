@@ -28,7 +28,7 @@ If you spot a problem with the project, [search if an issue already exists](http
 
 #### Solve an issue
 
-Scan through our [existing issues](https://github.com/joshuam1008/media-analyzer/issues)) to find one that interests you. You can narrow down the search using `labels` as filters. See [this guide](https://docs.github.com/en/github-ae@latest/issues/tracking-your-work-with-issues/filtering-and-searching-issues-and-pull-requests#filtering-issues-and-pull-requests-by-labels) for more information on how to do this. If you find an issue to work on, you are welcome to open a PR with a fix.
+Scan through our [existing issues](https://github.com/joshuam1008/media-analyzer/issues) to find one that interests you. You can narrow down the search using `labels` as filters. See [this guide](https://docs.github.com/en/github-ae@latest/issues/tracking-your-work-with-issues/filtering-and-searching-issues-and-pull-requests#filtering-issues-and-pull-requests-by-labels) for more information on how to do this. If you find an issue to work on, you are welcome to open a PR with a fix.
 
 ### Make Changes
 
