@@ -9,7 +9,7 @@ class Scheduler():
         self.background_scheduler = BackgroundScheduler()
 
     def stop_scheduler(self):
-        self.background_scheduler.shutdown()
+        self.background_scheduler.shutdown(wait=False)
         self.background_scheduler = None
 
 
