@@ -9,7 +9,6 @@ class LangModule:
         """Returns language of given content."""
         try:
             result = detect(content)
-            print(result)
         except Exception:
             result = "error"  # language not detected
         return result
