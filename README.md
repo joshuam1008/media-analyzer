@@ -121,8 +121,8 @@ Examples and descriptions of how the project can be used are available at the [p
 - [x] Iteration 1: Display Twitter stream
 - [x] Iteration 2: Overall sentiment on stream
 - [x] Iteration 3: Filter Twitter stream by language
-- [ ] Iteration 4: Single sentiment Analysis
-- [ ] Iteration 5: Filter stream by keyword
+- [x] Iteration 4: Filter stream by keyword
+- [ ] Iteration 5: Single sentiment Analysis
 - [ ] Iteration 6: Filter stream by topic
 - [ ] Iteration 7: Bot detection
 
