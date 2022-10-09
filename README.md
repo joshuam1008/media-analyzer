@@ -166,7 +166,7 @@ Distributed under the GNU GPL-3.0 License. See [LICENSE](LICENSE) for more infor
 <!-- CONTACT -->
 ## Contact
 
-For reporting a conduct issue, see the Enforcement sectiong of our [code of conduct](CODE_OF_CONDUCT.md)
+For reporting a conduct issue, see the Enforcement section of our [code of conduct](CODE_OF_CONDUCT.md)
 
 Project Link: [https://github.com/joshuam1008/media-analyzer](https://github.com/joshuam1008/media-analyzer)
 
