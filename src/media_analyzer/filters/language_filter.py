@@ -1,8 +1,7 @@
-from .filter import Filter
 from langdetect import detect
 
 
-class LanguageFilter(Filter):
+class LanguageFilter():
     """Filter for filtering content by a language"""
 
     def __init__(self, language="en"):
@@ -10,6 +9,12 @@ class LanguageFilter(Filter):
         super().__init__()
         self.language = language
 
-    def filter(self, content):
-        """Return true if content matches filter's language"""
-        return self.language == detect(content)
+    @classmethod
+    def filter(cls, content):
+        """Return the language label, return error if can't detect"""
+        language = None
+        try:
+            language = detect(content)
+        except:
+            language = "error"
+        return language

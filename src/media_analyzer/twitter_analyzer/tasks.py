@@ -10,7 +10,7 @@ from analyzers.lang_detect import LangModule
 @shared_task()
 def get_sentiment(stream_cache=None, id=None, db=None):
     """
-    get sentiment result for stream or for ind tweets with id
+    Get sentiment results for stream or for ind tweets with id.
     """
     # generate result for stream first
     if id is None:
@@ -64,6 +64,8 @@ def get_lang(stream_cache, ids, db):
 # TODO A general method to reduce duplicate code
 @shared_task()
 def get_result_by_category(category, stream_cache, ids, db):
+    """Returns the result of a given category (sentiment, topic, language, etc.) of the given ids
+    within the stream cache."""
     # generate result for stream first
     if category == "sentiment":
         get_sentiment(stream_cache, ids, db)
