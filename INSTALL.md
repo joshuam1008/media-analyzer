@@ -89,13 +89,14 @@ pip install -r requirements.txt
 ## Run
 
 - Run server:
-  ```
+  ```bash
   python src/media_analyzer/manage.py runserver
   ```
 
 - Run tests:
-  ```
-  python src/media_analyzer/manage.py test
+  ```bash
+  cd src/media_analyzer
+  python manage.py test
   ```
   
   Visit http://localhost:8000/twitter.
