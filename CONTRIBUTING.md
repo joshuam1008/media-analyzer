@@ -18,7 +18,7 @@ To get an overview of the project, read the [README](README.md). Here are some r
 
 ## Getting started
 
-To navigate our codebase with confidence, see the [project documentation](https://joshuam1008.github.io/media-analyzer/).
+To navigate our codebase with confidence, see the [project overview/documentation](https://joshuam1008.github.io/media-analyzer/).
 
 ### Issues
 
