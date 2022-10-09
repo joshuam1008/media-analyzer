@@ -387,10 +387,8 @@ setInterval(
         //get static 
         get_static();
         //generate summary of result
-        generate_summary()
+        generate_summary();
         //generate plot
-        generate_plot()
-        //update auto complete
-        //$('#input_lang').autocomplete("option", { source: lang_tag_list });
+        generate_plot();
     }, 2000
 );

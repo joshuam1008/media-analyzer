@@ -137,10 +137,10 @@ def rest_module():
 
 if scheduler is not None:
     # start process on stream data
-    scheduler.add_job(cache_stream, kwargs={
-                      'stream_cache': stream_cache, 'scheduler': scheduler})
     scheduler.add_job(clear_cache, 'interval', seconds=2, kwargs={
                       'stream_cache': stream_cache, 'db': data_base})
+    scheduler.add_job(cache_stream, kwargs={
+                      'stream_cache': stream_cache, 'scheduler': scheduler})
     # scheduler.add_job(rest_module, 'interval', minutes=5)
     scheduler.start()
 else:
