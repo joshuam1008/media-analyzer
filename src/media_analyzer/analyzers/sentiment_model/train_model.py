@@ -101,3 +101,15 @@ class SentimentTrainer:
                     % (np.round(self.losses[-2], 4), np.round(self.losses[-1], 4))
                 )
                 torch.save(model.state_dict(), "./checkpoints/TwitterSentimentModel.pt")
+
+    def test_model(self, model, test_loader):
+        test_acc = []
+        for (X, mask, y) in test_loader:
+            data, target = self.read_data((X, mask, y))
+            model.eval()
+            with torch.no_grad():
+                preds = model(data[0].squeeze(), data[1].squeeze())
+                predicts = self.get_pred(preds.detach().cpu().numpy())
+                acc = accuracy_score(predicts, target.detach().cpu().numpy())
+                test_acc.append(acc)
+        return np.mean(test_acc)
