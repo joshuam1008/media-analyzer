@@ -2,7 +2,7 @@ var summary = {}
 var selected_words = []
 var selected_langs = []
 //Language name from ISO 639-1 code
-var languageNames = new Intl.DisplayNames(['en'], {type: 'language'});
+var languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
 var lang_tag_list = []
 //modified upon button click
 var categories = {
@@ -26,6 +26,64 @@ var total_tweet = 0
 //all tweet recieved
 all_tweets = {}
 id = 0
+
+langs = {
+    "af": "Afrikaans",
+    "ar": "Arabic",
+    "bg": "Bulgarian",
+    "bn": "Bengali",
+    "ca": "Catalan",
+    "cs": "Czech",
+    "cy": "Welsh",
+    "da": "Danish",
+    "de": "German",
+    "el": "Greek",
+    "en": "English",
+    "es": "Spanish",
+    "et": "Estonian",
+    "fa": "Persian",
+    "fi": "Finnish",
+    "fr": "French",
+    "gu": "Gujarati",
+    "he": "Hebrew",
+    "hi": "Hindi",
+    "hr": "Croatian",
+    "hu": "Hungarian",
+    "id": "Indonesian",
+    "it": "Italian",
+    "ja": "Japanese",
+    "kn": "Kannada",
+    "ko": "Korean",
+    "lt": "Lithuanian",
+    "lv": "Latvian",
+    "mk": "Macedonian",
+    "ml": "Malayalam",
+    "mr": "Marathi",
+    "ne": "Nepali",
+    "nl": "Dutch",
+    "no": "Norwegian",
+    "pa": "Punjabi",
+    "pl": "Polish",
+    "pt": "Portuguese",
+    "ro": "Romanian",
+    "ru": "Russian",
+    "sk": "Slovak",
+    "sl": "Slovenian",
+    "so": "Somali",
+    "sq": "Albanian",
+    "sv": "Swedish",
+    "sw": "Swahili",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "th": "Thai",
+    "tl": "Tagalog",
+    "tr": "Turkish",
+    "uk": "Ukrainian",
+    "ur": "Urdu",
+    "vi": "Vietnamese",
+    "zh-cn": "Chinese (China)",
+    "zh-tw ": "Chinese (Taiwan)"
+}
 
 //toggle result
 $(".nav-link").click(function () {
@@ -56,10 +114,10 @@ var save_tweets = function (json_response) {
                 all_tweets[id] = {}
             }
             for (category of Object.keys(data[id]))
-                if (category == 'lang'){
-                    all_tweets[id][category] = languageNames.of(data[id][category])
+                if (category == 'lang') {
+                    all_tweets[id][category] = langs[data[id][category]]
                 }
-                else{
+                else {
                     all_tweets[id][category] = data[id][category]
                 }
             //if result is none put twitter id into ids
@@ -98,14 +156,30 @@ var add_tweet_to_ui = (tweet_id, tweet, position) => {
     position.appendChild(tweet_as_link);
     const list_2 = document.querySelector('#tweet_filtered');
     let tweet_passes_filter = false;
-    for(filter of selected_words){
-        if(tweet.text.includes(filter)){
+
+    // if no selected words but selected languages, only show tweets in selected languages
+    if (selected_words.length == 0 && selected_langs.length > 0) {
+        if (selected_langs.includes(langs[tweet.lang])) {
             tweet_passes_filter = true;
         }
+    } else if (selected_words.length > 0 && selected_langs.length == 0) {
+        // if no selected languages but selected words, only show tweets with selected words
+        if (tweet.text.split(" ").some(word => selected_words.includes(word))) {
+            tweet_passes_filter = true;
+        }
+    } else if (selected_words.length > 0 && selected_langs.length > 0) {
+        // if both selected words and selected languages, only show tweets with selected words and selected languages
+        if (tweet.text.split(" ").some(word => selected_words.includes(word))) {
+            if (selected_langs.includes(langs[tweet.lang])) {
+                tweet_passes_filter = true;
+            }
+        }
     }
-    if(tweet_passes_filter){
-        list_2.appendChild(tweet_as_link.cloneNode(true));
+
+    if (tweet_passes_filter) {
+        list_2.appendChild(tweet_as_link);
     }
+
 }
 
 $("#clear-tweets").click(() => {
@@ -187,12 +261,12 @@ var fetch_result = async function () {
         let position = document.querySelector('#tweet_stream');
         if (tweet && tweet.text) {
             let add = true;
-            for (category of Object.keys(categories)){
-                if (category != "stream" && categories[category] == true && !(tweet[category])){
+            for (category of Object.keys(categories)) {
+                if (category != "stream" && categories[category] == true && !(tweet[category])) {
                     add = false;
                 }
             }
-            if(add){
+            if (add) {
                 add_tweet_to_ui(tweet_id, tweet, position);
             }
             // summary[tweet.sentiment.toLowerCase()]++;
@@ -208,16 +282,16 @@ var fetch_result = async function () {
     new_tweet_ids.forEach(add_tweet);
 }
 //add keyword or language label
-var add_keyword_lang = function () {
-
+var add_keyword = function () {
     let keyword = $("#input_keyword").val()
     $("#input_keyword").val("")
     if (keyword != "") {
         selected_words.push(keyword)
         $("#keywords").append(`<button type="button" class="btn btn-info btn-sm keyword" onclick="delete_keyword_lang(this)">${keyword}</button>`)
     }
-    let lang = $("#input_lang").val()
-    $("#input_lang").val("")
+}
+var add_lang = function () {
+    let lang = $("#lang_filter").val()
     if (lang != "") {
         selected_langs.push(lang)
         $("#langs").append(`<button type="button" class="btn btn-info btn-sm lang" onclick="delete_keyword_lang(this)">${lang}</button>`)
@@ -240,8 +314,11 @@ var delete_keyword_lang = function (node) {
 }
 
 // add keyword
-$("#submit").click(function () {
-    add_keyword_lang()
+$("#submit_lang").click(function () {
+    add_lang()
+})
+$("#submit_keyword").click(function () {
+    add_keyword()
 })
 //select which summary to generate
 $(".summary").click(function () {
@@ -249,7 +326,7 @@ $(".summary").click(function () {
 })
 //generate plot based on summary_category
 var generate_plot = function () {
-    if (summary_category){
+    if (summary_category) {
         if (Object.keys(summary).length != 0) {
             const position = document.querySelector("#insert_chart")
             let title = null
@@ -263,20 +340,20 @@ var generate_plot = function () {
                 // console.log(lang_tag_list)
                 //plot lang
                 plot_histo(position, summary, title)
-            } 
+            }
             summary = {}
         }
-        else{
+        else {
             $("#insert_chart").html('<h5 class="text-center" >Waiting on data</h5>')
         }
     }
-    else{
+    else {
         $("#insert_chart").html('<h5 class="text-center" >Select a category first</h5>')
     }
 
 
 
-    
+
 }
 //generate summary based on summary_category
 //add id to ids if the category is missing
@@ -297,10 +374,10 @@ var generate_summary = function () {
         missing_categories[summary_category] = missing_count;
     }
 }
-//input keyword
-$( "#input_lang" ).autocomplete({
-    source: lang_tag_list
- });
+
+for (const [key, value] of Object.entries(langs)) {
+    $("#lang_filter").append(`<option value="${value}">${value}</option>`)
+}
 
 
 setInterval(
@@ -314,6 +391,6 @@ setInterval(
         //generate plot
         generate_plot()
         //update auto complete
-        $('#input_lang').autocomplete("option", { source: lang_tag_list });
+        //$('#input_lang').autocomplete("option", { source: lang_tag_list });
     }, 2000
 );
