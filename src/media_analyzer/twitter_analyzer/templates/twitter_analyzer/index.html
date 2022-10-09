@@ -25,7 +25,7 @@
     <!-- Navbar adapted from https://getbootstrap.com/docs/4.3/components/navbar/ -->
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Media Analyzer</a>
+      <a class="navbar-brand" href="#" style="">Media Analyzer</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -43,20 +43,20 @@
             <a class="nav-link active" href="#" value="lang">Start Language Detection </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="docs/" tabindex="-1" aria-disabled="true">Documentation</a>
+            <a class="nav-link" href="/docs" tabindex="-1" aria-disabled="true">Documentation</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="https://github.com/joshuam1008/media-analyzer" tabindex="-1"
               aria-disabled="true">GitHub</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0 col-3">
-          <input class="form-control mr-sm-2" type="search" placeholder="input keyword" aria-label="Search"
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Input Keyword" aria-label="Search"
             style="display: inline; width: 70%" id="input_keyword">
           <button class="btn btn-outline-success my-2 my-sm-0" type="button" id="submit_keyword">Add</button>
         </form>
         <form class="form-inline my-2 my-lg-0">
-          <select class="selectpicker mr-sm-2 col-1" data-live-search="true" placeholder="input language"
+          <select class="selectpicker mr-sm-2 col-1" data-live-search="true" placeholder="Input Language"
             aria-label="Search" style="display: inline" id="lang_filter">
           </select>
           <button class="btn btn-outline-success my-2 my-sm-0" type="button" id="submit_lang">Add</button>
@@ -65,9 +65,9 @@
     </nav>
     <!--end of nav bar-->
 
-    <div class="row">
+    <div class="row mt-3">
       <div class="col-md-7">
-        <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="row row-cols-1 row-cols-md-4 g-4 mb-3">
           <div class="col">
             <div class="card h-100 text-bg-secondary mb-3">
               <div class="card-body">
@@ -105,9 +105,9 @@
 
 
         <div class="row">
-          <div class="col-12 bg-light>
+          <div class="col-12 bg-light">
             <h3 class=" text-center"> Twitter Stream </h3>
-            <button id="clear-tweets">Clear</button>
+            <button class="btn btn-danger" id="clear-tweets">Clear</button>
             <ul class="list-group overflow-auto p-2" id="tweet_stream" style="height:80vh">
               <!-- stream here-->
             </ul>
@@ -142,7 +142,7 @@
         <div class="row overflow_auto p-2" style="height:50vh">
           <div class='col-12 bg-light'>
             <h3 class=" text-center"> Filtered Stream </h3>
-            <button id="clear-filtered">Clear</button>
+            <button class="btn btn-danger" id="clear-filtered">Clear</button>
             <ul class="list-group overflow-auto p-2" id="tweet_filtered" style="height:69vh">
               <!-- filtered tweet here-->
             </ul>
