@@ -37,13 +37,13 @@ These instructions assume that you are starting with a local copy of the source 
 
 3. Set up Python module paths.
 
-   - Add the `src` and `train` directories to your `PYTHONPATH`. This can be done from the root project directory with the following command, or added to the `activate` script.
+   - Add the required directories to your `PYTHONPATH`. This can be done from the root project directory with the following command, or added to the `activate` script.
    
    <details>
      <summary>Bash</summary>
 
       ```bash
-      export PYTHONPATH=$PYTHONPATH:$(pwd)/src:$(pwd)/train
+      export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/src:$(pwd)/train:$(pwd)/src/media_analyzer
       ```
    </details>
    
@@ -51,7 +51,7 @@ These instructions assume that you are starting with a local copy of the source 
      <summary>PowerShell</summary>
      
       ```powershell
-      $env:PYTHONPATH += '$($pwd.path)\src;$($pwd.path)\train'
+      $env:PYTHONPATH += '$($pwd.path);$($pwd.path)\src;$($pwd.path)\train;$($pwd.path)\src\media_analyzer'
       ```
    </details>
    
