@@ -15,19 +15,15 @@ data_base = {}
 stream_cache = Queue()
 
 
-"""
-clear stream cache
-input Queue: cache
-"""
-
-
-def cache_stream(stream_cache):
+def cache_stream(stream_cache, scheduler):
     """Gets the results from the stream and puts them into the cache."""
     stream_new_entries = stream.result_generator()
     for entry in stream_new_entries:
-        entry_id = entry[0]
-        entry_text = entry[1]
-        stream_cache.put({"id": entry_id, "text": entry_text})
+        tweet = {'id': entry[0], 'text': entry[1]}
+        tasks.process_tweet_by_category(modules_status, tweet, stream_cache)
+    # scheduler next one when this one finished
+    scheduler.add_job(cache_stream, kwargs={
+                      'stream_cache': stream_cache, 'scheduler': scheduler})
 
 
 def clear_cache(stream_cache, db):
@@ -46,53 +42,6 @@ def clear_cache(stream_cache, db):
             if data["id"] not in db:
                 db[data["id"]] = {}
             db[data["id"]][key] = data[key]
-
-
-def schedule_result_by_category(category, stream_cache, ids, db):
-    """
-    An event triggered scheduler
-    category: task name
-    stream_cache: Queue
-    ids: ind tweets need to be processed
-    db: a dictionary, used to represent database for now
-    """
-    if category == "sentiment":
-        scheduler.add_job(
-            tasks.get_sentiment,
-            kwargs={"stream_cache": stream_cache, "id": ids, "db": data_base},
-        )
-
-
-def schedule_job(scheduler):
-    """
-    scheduler for periodically scheduled jobs.
-    """
-    # print("running routine")
-    clear_cache(stream_cache, data_base)
-    cache_stream(stream_cache)
-
-    if modules_status["sentiment"]:
-        # cancel before reschedule to have a better performance
-        if scheduler.get_job('stream_sentiment'):
-            scheduler.remove_job('stream_sentiment')
-        scheduler.add_job(
-            tasks.get_sentiment,
-            kwargs={"stream_cache": stream_cache, "id": None, "db": None}, id="stream_sentiment"
-        )
-    if modules_status["topic"]:
-        if scheduler.get_job('stream_topic'):
-            scheduler.remove_job('stream_topic')
-        scheduler.add_job(
-            tasks.get_topic,
-            kwargs={"stream_cache": stream_cache, "ids": None, "db": None}, id="stream_topic"
-        )
-    if modules_status["lang"]:
-        if scheduler.get_job('stream_lang'):
-            scheduler.remove_job('stream_lang')
-        scheduler.add_job(
-            tasks.get_lang,
-            kwargs={"stream_cache": stream_cache, "ids": None, "db": None}, id="stream_lang"
-        )
 
 
 def send_result(request):
@@ -140,7 +89,6 @@ def fetch_from_stream(categories):
             else:
                 # None value tell the frontend try again later
                 fetched_result[id][category] = None
-                schedule_result_by_category(category, stream_cache, None, None)
         stream_cache.task_done()
         # put back to stream
         stream_cache.put(data)
@@ -152,7 +100,6 @@ def fetch_from_db(ids, categories):
     fetch result from db,
     if data not exist, schedule to generate it
     """
-
     fetched_result = {}
     for id in ids:
         # check if database has this entry
@@ -166,8 +113,9 @@ def fetch_from_db(ids, categories):
             # schedule to generate the result
             else:
                 fetched_result[id][category] = None
-                schedule_result_by_category(
-                    category, stream_cache, id, data_base)
+                scheduler.add_job(tasks.process_id_by_category, kwargs={
+                    "categories": modules_status, 'id': id, "db": data_base
+                })
     return fetched_result
 
 
@@ -175,18 +123,7 @@ def index(request):
     """
     The only page for this application
     """
-
-    results = []
-    tweets = []
-    for _ in range(stream_cache.qsize()):
-        result = stream_cache.get()
-        stream_cache.task_done()
-        stream_cache.put(result)
-        results.append(result)
-
-    for result in results:
-        tweets.append(result["text"])
-    return render(request, "twitter_analyzer/index.html", {"tweets": tweets})
+    return render(request, "twitter_analyzer/index.html")
 
 
 def rest_module():
@@ -199,10 +136,13 @@ def rest_module():
 
 
 if scheduler is not None:
-    # schedule job
-    scheduler.add_job(schedule_job, 'interval', seconds=2,
-                      kwargs={'scheduler': scheduler})
+    # start process on stream data
+    scheduler.add_job(cache_stream, kwargs={
+                      'stream_cache': stream_cache, 'scheduler': scheduler})
+    scheduler.add_job(clear_cache, 'interval', seconds=2, kwargs={
+                      'stream_cache': stream_cache, 'db': data_base})
     # scheduler.add_job(rest_module, 'interval', minutes=5)
     scheduler.start()
 else:
-    print("scheduler not initalized")
+    # check apps.py for init
+    print("scheduler not initalized, check if the apps.py been set correctly")
