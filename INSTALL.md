@@ -99,4 +99,4 @@ pip install -r requirements.txt
   python manage.py test
   ```
   
-  Visit http://localhost:8000/twitter.
+  Visit http://localhost:8000/.
