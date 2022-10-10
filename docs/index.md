@@ -63,4 +63,7 @@ This tool can be built upon to run sentiment on other social media platforms in 
 Other social media analysis tools exist, but the fact that ours runs in real time sets it apart. 
 
 ## Short Video
-https://youtu.be/gJXU_zx9r98 
+[Click here to watch video](https://youtu.be/gJXU_zx9r98)
+
+
+👆
