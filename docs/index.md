@@ -18,7 +18,9 @@ Follow this link to view project documentation 👉    [click here](media_analyz
 * User can select multiple tweets to view the sentiment analysis of the group. 
 
 ## What (Summary)
-To build this program, we are using the Twitter API to pull in a stream of tweets which are placed in a queue to be processed.  The list of tweets is processed by the deep learning model that has been fine tuned on sentiment classification.  The tweet ID is then given an associated sentiment prediction that is output to the stream.  The overall sentiment is held in a histogram to show the user the normal sentiment over the stream.
+The Media Analyzer is a program we built using Django to process a stream of data. The goal of this program is to allow adding new natural langauge processing modules easily, without refactoring code and changing existing data pipline. We did so by using a event driven structure, and used a background scheduler to handle event so that the website will always be responsive. Tweets from stream will first be cached, then based on activated module 
+
+In this deployment we are using the Twitter API to pull in a stream of tweets which are placed in a queue to be processed.  The list of tweets is processed by the deep learning model that has been fine tuned on sentiment classification.  The tweet ID is then given an associated sentiment prediction that is output to the stream.  The overall sentiment is held in a histogram to show the user the normal sentiment over the stream.
 
 ## How...
 
