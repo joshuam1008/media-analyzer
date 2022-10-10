@@ -8,7 +8,7 @@ Follow this link to view project documentation 👉    [click here](media_analyz
 * Display sentiment analysis in aggregate (as a histogram, chart, etc.).
 * Can filter tweets containing certain language or content (can be simply implemented through a filter). 
 * Support access by multiple users.
-* Adding new module shouldn't require refactoring or change existing structure. 
+* Adding new module shouldn't require refactoring code or changing existing structure. 
 
 ### User Experience
 * User can start and stop the stream by clicking a "Start Stream" or "Stop Stream" button.
