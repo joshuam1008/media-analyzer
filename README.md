@@ -15,7 +15,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<a href="https://joshuam1008.github.io/media-analyzer/"><img src="images/logo.jpg" alt="Logo" width="90" height="80"></a>
+<a href="https://joshuam1008.github.io/media-analyzer/"><img src="images/logo.jpg" alt="Logo" height="80"></a>
 
 <h3 align="center">media-analyzer</h3>
 
