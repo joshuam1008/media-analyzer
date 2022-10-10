@@ -15,9 +15,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<a href="https://joshuam1008.github.io/media-analyzer/"><img src="images/logo.jpg" alt="Logo" height="80"></a>
-
-<h3 align="center">media-analyzer</h3>
+<a href="https://joshuam1008.github.io/media-analyzer/"><img src="images/logo.png" alt="Logo" height="150"></a>
 
   <p align="center">
     A Twitter stream analyzer
