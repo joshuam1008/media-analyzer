@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 
 <!-- PROJECT BADGES -->
-[![testing](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml/badge.svg)](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml) 
+[![testing](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml/badge.svg)](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7178746.svg)](https://doi.org/10.5281/zenodo.7178746)
 [![License](https://img.shields.io/github/license/joshuam1008/media-analyzer)](https://github.com/joshuam1008/media-analyzer/blob/main/LICENSE)
 [![Release](https://img.shields.io/github/v/release/joshuam1008/media-analyzer?include_prereleases)](https://github.com/joshuam1008/media-analyzer/releases/tag/v0.0.1)
@@ -9,8 +9,6 @@
 [![Dependencies](https://img.shields.io/librariesio/github/joshuam1008/media-analyzer)](https://libraries.io/github/joshuam1008/media-analyzer)
 [![CodeQL](https://github.com/joshuam1008/media-analyzer/workflows/CodeQL/badge.svg)](https://github.com/joshuam1008/media-analyzer/actions/workflows/codeql.yml)
 [![Heroku](https://heroku-badge.herokuapp.com/?app=sheltered-citadel-93242)](https://sheltered-citadel-93242.herokuapp.com/#)
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -23,15 +21,13 @@
     <a href="https://joshuam1008.github.io/media-analyzer/#project-documentation"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://joshuam1008.github.io/media-analyzer/#short-video">View Demo</a>
+    <a href="https://youtu.be/gJXU_zx9r98">View Demo</a>
     ·
     <a href="https://github.com/joshuam1008/media-analyzer/issues/new/choose">Report Bug</a>
     ·
     <a href="https://github.com/joshuam1008/media-analyzer/issues/new/choose">Request Feature</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -58,8 +54,6 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -78,8 +72,6 @@ To build this program, we are using the Twitter API to pull in a stream of tweet
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ### Built With
 
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
@@ -91,21 +83,16 @@ To build this program, we are using the Twitter API to pull in a stream of tweet
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
 Read through this `README` to find all relevant information and locations of other guides to get started.
-
 
 ### Installation
 
 Follow the steps listed in the [installation guide](INSTALL.md)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -114,26 +101,22 @@ Examples and descriptions of how the project can be used are available at the [p
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Iteration 1: Display Twitter stream
-- [x] Iteration 2: Overall sentiment on stream
-- [x] Iteration 3: Filter Twitter stream by language
-- [x] Iteration 4: Filter stream by keyword
-- [ ] Iteration 5: Single sentiment Analysis
-- [ ] Iteration 6: Filter stream by topic
-- [ ] Iteration 7: Bot detection
+* [x] Iteration 1: Display Twitter stream
+* [x] Iteration 2: Overall sentiment on stream
+* [x] Iteration 3: Filter Twitter stream by language
+* [x] Iteration 4: Filter stream by keyword
+* [ ] Iteration 5: Single sentiment Analysis
+* [ ] Iteration 6: Filter stream by topic
+* [ ] Iteration 7: Bot detection
 
 See the [full future roadmap](https://github.com/users/joshuam1008/projects/3)
 
 See the [open issues](https://github.com/joshuam1008/media-analyzer/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -153,16 +136,12 @@ See [detailed instructions here](CONTRIBUTING.md)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
 ## License
 
 Distributed under the GNU GPL-3.0 License. See [LICENSE](LICENSE) for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- CONTACT -->
 ## Contact
@@ -173,16 +152,12 @@ Project Link: [https://github.com/joshuam1008/media-analyzer](https://github.com
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
 * README is based off of [this template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -209,7 +184,6 @@ Project Link: [https://github.com/joshuam1008/media-analyzer](https://github.com
 [Scikitlearn-url]: https://scikit-learn.org/stable/
 [JavaScript.com]: https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
 [JavaScript-url]: https://www.javascript.com/
-
 
 <!--
 # Pending Development Plan
