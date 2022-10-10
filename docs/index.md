@@ -6,9 +6,9 @@ Follow this link to view project documentation 👉    [click here](media_analyz
 * Perform sentiment analysis on the general twitter stream using the twitter stream API.
 * Perform sentiment analysis on a given keyword to find sentiment of tweets containing that keyword.
 * Display sentiment analysis in aggregate (as a histogram, chart, etc.).
-* Display statistics about the sentiment analysis (accuracy, degree of certainty, etc.)
-* Display sentiment analysis for a manually-selected group of tweets or individual tweet. 
-* Can filter out tweets containing certain language or content (can be simply implemented through a filter). 
+* Can filter tweets containing certain language or content (can be simply implemented through a filter). 
+* Support access by multiple users.
+* Adding new module shouldn't require refactoring or change existing structure. 
 
 ### User Experience
 * User can start and stop the stream by clicking a "Start Stream" or "Stop Stream" button.
