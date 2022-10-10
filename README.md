@@ -2,7 +2,7 @@
 
 <!-- PROJECT BADGES -->
 [![testing](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml/badge.svg)](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml) 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7154682.svg)](https://doi.org/10.5281/zenodo.7154682)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7178746.svg)](https://doi.org/10.5281/zenodo.7178746)
 [![License](https://img.shields.io/github/license/joshuam1008/media-analyzer)](https://github.com/joshuam1008/media-analyzer/blob/main/LICENSE)
 [![Release](https://img.shields.io/github/v/release/joshuam1008/media-analyzer?include_prereleases)](https://github.com/joshuam1008/media-analyzer/releases/tag/v0.0.1)
 [![Test Coverage](https://byob.yarr.is/joshuam1008/media-analyzer/coverage_report)](https://github.com/joshuam1008/media-analyzer/actions/workflows/django.yml)
