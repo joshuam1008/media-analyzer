@@ -1,5 +1,5 @@
 # Sentiment Analysis Model Training
-This directory is responsible for training the sentiment analysis model used in the twitter stream.  This README will explain how to train and deploy the models for this project.
+This directory is responsible for training the sentiment analysis model used in the twitter stream.  This README will explain how to train and deploy the models for this project.  A CUDA enabled GPU is required to train the model, however, only a CPU is required to run inference.
 
 # Requirements
 - [PyTorch](https://pytorch.org/) (An open source deep learning platform) 
